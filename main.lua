@@ -22,6 +22,8 @@ function love.load()
 
     player_lasers = {}
     ufos = {}
+    ufo_time = 0
+
 
     start = love.timer.getTime()
 end
@@ -39,12 +41,12 @@ function love.mousereleased(x, y, button)
     }
 end
 
-function love.update()
+function love.update(dt)
     update_background()
     update_player()
     update_player_projectiles()
     trigger_timed_events()
-    update_ufo()
+    update_ufo(dt)
 end
 
 function update_background()
@@ -94,14 +96,19 @@ function update_player_projectiles()
     end
 end
 
-function update_ufo()
+function update_ufo(dt)
     for i, ufo in ipairs(ufos) do
         if 0 < ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()) and
             0 < ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) and
-            ufo.y < love.graphics.getHeight() -(UFO_SIZE_CF * ufo.image:getHeight()) then
+            ufo.y < love.graphics.getHeight() - (UFO_SIZE_CF * ufo.image:getHeight()) then
 
-                ufo.x = ufo.x - 2 -- just move straight in for now
-                -- probably need to add some common movement scheme like a sin wave or something
+                ufo.x = ufo.x + ufo.speed
+
+                if ufo.movement_pattern == 'sin' then
+                    -- TODO: Adjust amplitude, it's a little big
+                    ufo_time = ufo_time + dt
+                    ufo.y = ufo.y + math.sin(ufo_time)
+                end
         else
             table.remove(ufos, i)
         end
@@ -141,7 +148,7 @@ function object_hit(player_friendly, projectile)
             projectile.y < (player.y + (UFO_SIZE_CF * player.image:getHeight())) then
 
                 -- if player projectile overlapping player then destroy it
-                print('Handle game over stuff')
+            print('Handle game over stuff')
         end
     end
 end
@@ -151,21 +158,22 @@ function trigger_timed_events()
     time = love.timer.getTime() - start
     -- spawn just the first ufo in the game
     if time > 3.0 and time < 3.1 and #ufos == 0 then
-        spawn_ufo(100)
+        spawn_ufo('sin', 100)
     end
 
-    -- TESTING: just make one for now
+    -- spawn a second ufo
     if time > 5.0 and time < 5.1 and #ufos < 2 then
-        -- sometime two are being created?
-        spawn_ufo(500)
+        spawn_ufo('straight', 500)
     end
 end
 
-function spawn_ufo(y)
+function spawn_ufo(movement_pattern, y)
     -- add a new ufo to the list (takes a Y component for location)
     ufos[#ufos + 1] = {image = love.graphics.newImage("sprites/ufo.jpg"),
         x = love.graphics.getWidth(), --spawn offscreen and move in
-        y = y
+        y = y,
+        speed = -2,
+        movement_pattern = movement_pattern
     }
 end
 
