@@ -17,7 +17,8 @@ function love.load()
 
     player = {image = love.graphics.newImage("sprites/spaceship.png"),
         x = love.graphics.getWidth() / 2,
-        y = love.graphics.getHeight() / 2
+        y = love.graphics.getHeight() / 2,
+        alive = true
     }
 
     player_lasers = {}
@@ -29,10 +30,8 @@ function love.load()
 end
 
 function love.mousereleased(x, y, button)
-    --https://yal.cc/love2d-shooting-things/
-    --https://stackoverflow.com/questions/19957846/love2d-how-to-make-bullets
-
     -- Create a laser
+    -- TODO: Don't allow player to create laser on every click (make them wait some milliseconds)
     player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
         x = player.x,
         y = player.y,
@@ -119,20 +118,25 @@ end
 function update_ufo_projectiles(ufo)
     time =  love.timer.getTime() - ufo.create_time
 
-    if time > 0.5 and time < 0.6 then
+    -- TODO: maybe make this happen every so often?
+    -- Like every rand(3, 10) seconds make ufo shoot?
+    if time > 0.5 and time < 0.6 and #ufo.projectiles < 1 then
+        local direction = math.atan2((ufo.y - player.y), (ufo.x - player.x))
+
+        --TODO: projectiles can't be an attribute of ufo
         ufo.projectiles[#ufo.projectiles + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
             x = ufo.x,
             y = ufo.y,
-            dx = math.cos(0), -- stright line from ufo to player
-            dy = math.sin(0) -- stright line from ufo to player
+            dx = math.cos(direction),
+            dy = math.sin(direction)
         }
     end
 
     for i, projectile in ipairs(ufo.projectiles) do
         --TODO: Check if projectile is on the screen and destroy if not
         -- Probably should make a method to just destroy any projectile off screen
-        projectile.x = projectile.x + projectile.dx * PLAYER_PROJECTILE_SPEED -- player speed/
-        projectile.y = projectile.y + projectile.dy * PLAYER_PROJECTILE_SPEED
+        projectile.x = projectile.x - (projectile.dx * PLAYER_PROJECTILE_SPEED) -- player projectile speed for now
+        projectile.y = projectile.y - (projectile.dy * PLAYER_PROJECTILE_SPEED) -- TODO: vary projectile speed
         object_hit(false, projectile)
     end
 end
@@ -145,13 +149,13 @@ end
 function object_hit(player_friendly, projectile)
     -- Checks if projecile is overlapping an object an destroys it
 
-    if player_friendly then
+    if player_friendly == true then
         -- if it's a friendly projectile then check enemies
         for i, ufo in ipairs(ufos) do
-            if projectile.x > ufo.x and
-                projectile.x < (ufo.x + (UFO_SIZE_CF * ufo.image:getWidth())) and
-                projectile.y > ufo.y and
-                projectile.y < (ufo.y + (UFO_SIZE_CF * ufo.image:getHeight())) then
+            if projectile.x > (ufo.x - (UFO_SIZE_CF * ufo.image:getWidth()/2)) and
+                projectile.x < (ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()/2)) and
+                projectile.y > (ufo.y - (UFO_SIZE_CF * ufo.image:getHeight()/2)) and
+                projectile.y < (ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()/2)) then
 
                     -- if player projectile overlapping enemy then destroy it
                     table.remove(ufos, i)
@@ -160,13 +164,13 @@ function object_hit(player_friendly, projectile)
         end
     else
         -- if it's an enemy projectile then check player
-        if projectile.x > player.x and
-            projectile.x < (player.x + (UFO_SIZE_CF * player.image:getWidth())) and
-            projectile.y > player.y and
-            projectile.y < (player.y + (UFO_SIZE_CF * player.image:getHeight())) then
-
+        if projectile.x > (player.x - (PROJECTILE_SIZE_CF * player.image:getWidth()/2)) and -- might want to make edges of player their own attributes
+            projectile.x < (player.x + (PROJECTILE_SIZE_CF * player.image:getWidth()/2)) and
+            projectile.y > (player.y - (PROJECTILE_SIZE_CF * player.image:getHeight()/2)) and
+            projectile.y < (player.y + (PROJECTILE_SIZE_CF * player.image:getHeight()/2)) then
                 -- if player projectile overlapping player then destroy it
-                --TODO: handle game over stuff
+                -- this is a little funky, not sure what's going on
+                player.alive = false
         end
     end
 end
@@ -213,15 +217,17 @@ function draw_background()
 end
 
 function draw_player()
-    love.graphics.draw(player.image,
-        player.x,
-        player.y,
-        player.rotation,
-        PROJECTILE_SIZE_CF,
-        PROJECTILE_SIZE_CF,
-        player.image:getWidth()/2,
-        player.image:getHeight()/2
-    )
+    if player.alive == true then
+        love.graphics.draw(player.image,
+            player.x,
+            player.y,
+            player.rotation,
+            PROJECTILE_SIZE_CF,
+            PROJECTILE_SIZE_CF,
+            player.image:getWidth()/2,
+            player.image:getHeight()/2
+        )
+    end
 end
 
 function draw_projectile()
@@ -232,9 +238,6 @@ function draw_projectile()
             3 * math.pi / 2,
             PROJECTILE_SIZE_CF,
             PROJECTILE_SIZE_CF
-            -- TODO: Set the x and y offsets so that projectile shows up right in front of the player's nose.
-            -- (player_laser.image:getWidth()/2 - player.image:getWidth()/2),
-            -- (player_laser.image:getHeight()/2 - player.image:getHeight()/2)
         )
     end
 end
@@ -259,7 +262,7 @@ function draw_ufo_projectiles(ufo)
             ufo_laser.y,
             3 * math.pi / 2,
             PROJECTILE_SIZE_CF,
-            PROJECTILE_SIZE_CFe
+            PROJECTILE_SIZE_CF
         )
     end
 end
