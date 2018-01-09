@@ -8,6 +8,10 @@ PLAYER_PROJECTILE_SPEED = 7
 
 function love.load()
     -- Initial setup
+
+    -- get screen dimensions for setting window size
+    -- local _, _, flags = love.window.getMode()
+    -- local width, height = love.window.getDesktopDimensions(flags.display)
     love.window.setMode(600, 600)
 
     background = {image = love.graphics.newImage("sprites/background.jpg"),
@@ -18,13 +22,15 @@ function love.load()
     player = {image = love.graphics.newImage("sprites/spaceship.png"),
         x = love.graphics.getWidth() / 2,
         y = love.graphics.getHeight() / 2,
+        speed = 5,
         alive = true
     }
 
     player_lasers = {}
     ufos = {}
     ufo_time = 0
-
+    player_score = 0
+    ufo_counter = 0 -- this is the best I can come up with for now
 
     start = love.timer.getTime()
 end
@@ -38,6 +44,16 @@ function love.mousereleased(x, y, button)
         dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
         dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)
     }
+end
+
+function love.keypressed(key)
+    -- adjust player speed
+    if key == "e" and player.speed < 8 then
+        player.speed = player.speed + 1
+    end
+    if key == "q" and player.speed > 2 then
+        player.speed = player.speed - 1
+    end
 end
 
 function love.update(dt)
@@ -59,22 +75,20 @@ end
 
 function update_player()
     -- Handle player movement
-    -- TODO: Add a button to adjust player speed
     mouse_x, mouse_y = love.mouse.getPosition()
     get_player_rotation()
-    player_speed = 5
 
     if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and player.y > 0 then
-        player.y = player.y - player_speed
+        player.y = player.y - player.speed
     end
     if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and player.x > 0 then
-        player.x = player.x - player_speed
+        player.x = player.x - player.speed
     end
     if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and player.y < love.graphics.getHeight() then
-        player.y = player.y + player_speed
+        player.y = player.y + player.speed
     end
     if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x < love.graphics.getWidth() then
-        player.x = player.x + player_speed
+        player.x = player.x + player.speed
     end
 end
 
@@ -123,7 +137,7 @@ function update_ufo_projectiles(ufo)
     if time > 0.5 and time < 0.6 and #ufo.projectiles < 1 then
         local direction = math.atan2((ufo.y - player.y), (ufo.x - player.x))
 
-        --TODO: projectiles can't be an attribute of ufo
+        --TODO: projectiles can't be an attribute of ufo or else they destroy when the ufo destroys
         ufo.projectiles[#ufo.projectiles + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
             x = ufo.x,
             y = ufo.y,
@@ -133,11 +147,16 @@ function update_ufo_projectiles(ufo)
     end
 
     for i, projectile in ipairs(ufo.projectiles) do
-        --TODO: Check if projectile is on the screen and destroy if not
-        -- Probably should make a method to just destroy any projectile off screen
-        projectile.x = projectile.x - (projectile.dx * PLAYER_PROJECTILE_SPEED) -- player projectile speed for now
-        projectile.y = projectile.y - (projectile.dy * PLAYER_PROJECTILE_SPEED) -- TODO: vary projectile speed
-        object_hit(false, projectile)
+        if 0 < projectile.x and
+            0 < projectile.y and
+            projectile.x < love.graphics.getWidth() and
+            projectile.y < love.graphics.getHeight() then
+                projectile.x = projectile.x - (projectile.dx * PLAYER_PROJECTILE_SPEED) -- player projectile speed for now
+                projectile.y = projectile.y - (projectile.dy * PLAYER_PROJECTILE_SPEED) -- TODO: vary projectile speed
+                object_hit(false, projectile)
+        else
+            table.remove(ufo.projectiles, i)
+        end
     end
 end
 
@@ -152,22 +171,25 @@ function object_hit(player_friendly, projectile)
     if player_friendly == true then
         -- if it's a friendly projectile then check enemies
         for i, ufo in ipairs(ufos) do
+            -- TODO: Tighten up hitboxes
             if projectile.x > (ufo.x - (UFO_SIZE_CF * ufo.image:getWidth()/2)) and
-                projectile.x < (ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()/2)) and
+                projectile.x < (ufo.x + (UFO_SIZE_CF * ufo.image:getWidth())) and
                 projectile.y > (ufo.y - (UFO_SIZE_CF * ufo.image:getHeight()/2)) and
-                projectile.y < (ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()/2)) then
+                projectile.y < (ufo.y + (UFO_SIZE_CF * ufo.image:getHeight())) then
 
                     -- if player projectile overlapping enemy then destroy it
                     table.remove(ufos, i)
-                    -- TODO: need to destroy the projectile too
+                    player_score = player_score + 10
+                    -- table.remove(player.projectiles,)
+                    -- TODO: need to destroy the  player projectile too
             end
         end
     else
         -- if it's an enemy projectile then check player
-        if projectile.x > (player.x - (PROJECTILE_SIZE_CF * player.image:getWidth()/2)) and -- might want to make edges of player their own attributes
-            projectile.x < (player.x + (PROJECTILE_SIZE_CF * player.image:getWidth()/2)) and
-            projectile.y > (player.y - (PROJECTILE_SIZE_CF * player.image:getHeight()/2)) and
-            projectile.y < (player.y + (PROJECTILE_SIZE_CF * player.image:getHeight()/2)) then
+        if projectile.x > (player.x - (PROJECTILE_SIZE_CF * player.image:getWidth())/2) and -- might want to make edges of player their own attributes
+            projectile.x < (player.x + (PROJECTILE_SIZE_CF * player.image:getWidth())) and
+            projectile.y > (player.y - (PROJECTILE_SIZE_CF * player.image:getHeight())/2) and
+            projectile.y < (player.y + (PROJECTILE_SIZE_CF * player.image:getHeight())) then
                 -- if player projectile overlapping player then destroy it
                 -- this is a little funky, not sure what's going on
                 player.alive = false
@@ -178,27 +200,30 @@ end
 function trigger_timed_events()
     -- call time based events like spawning enemies or initiating bosses
     time = love.timer.getTime() - start
-    -- spawn just the first ufo in the game
-    if time > 3.0 and time < 3.1 and #ufos == 0 then
-        spawn_ufo('sin', 100)
+    -- spawn just the first ufo in the
+    if time > 3.0 and ufo_counter == 0 then
+        spawn_ufo('sin', 0.167)
     end
 
     -- spawn a second ufo
-    if time > 5.0 and time < 5.1 and #ufos < 2 then
-        spawn_ufo('straight', 500)
+    if time > 5.0 and ufo_counter == 1 then
+        spawn_ufo('straight', 0.833)
     end
 end
 
-function spawn_ufo(movement_pattern, y)
+function spawn_ufo(movement_pattern, y_percent)
     -- add a new ufo to the list
     ufos[#ufos + 1] = {image = love.graphics.newImage("sprites/ufo.jpg"),
         x = love.graphics.getWidth(), --spawn offscreen and move in
-        y = y,
-        speed = -2,
+        y = y_percent * love.graphics.getHeight(),
+        speed = -1,
         movement_pattern = movement_pattern,
         create_time = love.timer.getTime(), -- for timed events like firing projectiles
         projectiles = {}
     }
+
+    ufo_counter = ufo_counter + 1
+    print(ufo_counter)
 end
 
 function love.draw()
@@ -206,13 +231,13 @@ function love.draw()
     draw_player()
     draw_projectile()
     draw_ufos()
+    draw_text()
 end
 
 function draw_background()
     love.graphics.draw(background.image,
         background.x,
         background.y
-        -- height stuff
     )
 end
 
@@ -265,4 +290,8 @@ function draw_ufo_projectiles(ufo)
             PROJECTILE_SIZE_CF
         )
     end
+end
+
+function draw_text()
+    love.graphics.print(player_score, 0.9 * love.graphics.getWidth(), 0.04 * love.graphics.getHeight())
 end
