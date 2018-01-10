@@ -36,6 +36,7 @@ function love.load()
     ufo_time = 0
     player_score = 0
     ufo_counter = 0 -- this is the best I can come up with for now
+    story_text = ""
 
     start = love.timer.getTime()
 end
@@ -43,12 +44,14 @@ end
 function love.mousereleased(x, y, button)
     -- Create a laser
     -- TODO: Don't allow player to create laser on every click (make them wait some milliseconds)
-    player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
-        x = player.x,
-        y = player.y,
-        dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
-        dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)
-    }
+    if player.alive then
+        player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
+            x = player.x,
+            y = player.y,
+            dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
+            dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)
+        }
+    end
 end
 
 function love.keypressed(key)
@@ -67,6 +70,7 @@ function love.update(dt)
     update.player_projectiles()
     update.trigger_timed_events()
     update.ufo(dt)
+    update.ufo_projectiles()
 end
 
 function love.draw()
@@ -74,5 +78,6 @@ function love.draw()
     draw.player()
     draw.projectile()
     draw.ufos()
+    draw.ufo_projectiles()
     draw.text()
 end

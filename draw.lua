@@ -44,16 +44,16 @@ function draw.ufos()
             UFO_SIZE_CF,
             UFO_SIZE_CF
         )
-        draw_ufo_projectiles(ufo)
     end
 end
 
 function draw.text()
     love.graphics.print(player_score, 0.9 * love.graphics.getWidth(), 0.04 * love.graphics.getHeight())
+    love.graphics.print(story_text, 0.25 * love.graphics.getWidth(), 0.8 * love.graphics.getHeight())
 end
 
-function draw_ufo_projectiles(ufo)
-    for i, ufo_laser in ipairs(ufo.projectiles) do
+function draw.ufo_projectiles()
+    for i, ufo_laser in ipairs(ufo_lasers) do
         love.graphics.draw(ufo_laser.image,
             ufo_laser.x,
             ufo_laser.y,
