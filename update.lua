@@ -2,7 +2,7 @@
 
 update = {}
 
-function update.update_background()
+function update.background()
     -- move the background Flintstones style
     if background.x > - background.image:getWidth() + love.graphics.getWidth() then
         background.x = background.x - 3
@@ -11,7 +11,7 @@ function update.update_background()
     end
 end
 
-function update.update_player()
+function update.player()
     -- Handle player movement
     mouse_x, mouse_y = love.mouse.getPosition()
     utils.get_player_rotation()
@@ -30,7 +30,7 @@ function update.update_player()
     end
 end
 
-function update.update_player_projectiles()
+function update.player_projectiles()
     for i, player_laser in ipairs(player_lasers) do
         if 0 < player_laser.x and
             0 < player_laser.y and
@@ -47,7 +47,7 @@ function update.update_player_projectiles()
     end
 end
 
-function update.update_ufo(dt)
+function update.ufo(dt)
     for i, ufo in ipairs(ufos) do
         if 0 < ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()) and
             0 < ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) and

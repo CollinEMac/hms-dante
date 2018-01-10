@@ -31,6 +31,7 @@ function love.load()
     }
 
     player_lasers = {}
+    ufo_lasers = {}
     ufos = {}
     ufo_time = 0
     player_score = 0
@@ -61,17 +62,17 @@ function love.keypressed(key)
 end
 
 function love.update(dt)
-    update.update_background()
-    update.update_player()
-    update.update_player_projectiles()
+    update.background()
+    update.player()
+    update.player_projectiles()
     update.trigger_timed_events()
-    update.update_ufo(dt)
+    update.ufo(dt)
 end
 
 function love.draw()
-    draw.draw_background()
-    draw.draw_player()
-    draw.draw_projectile()
-    draw.draw_ufos()
-    draw.draw_text()
+    draw.background()
+    draw.player()
+    draw.projectile()
+    draw.ufos()
+    draw.text()
 end

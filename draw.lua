@@ -2,14 +2,14 @@
 
 draw = {}
 
-function draw.draw_background()
+function draw.background()
     love.graphics.draw(background.image,
         background.x,
         background.y
     )
 end
 
-function draw.draw_player()
+function draw.player()
     if player.alive == true then
         love.graphics.draw(player.image,
             player.x,
@@ -23,7 +23,7 @@ function draw.draw_player()
     end
 end
 
-function draw.draw_projectile()
+function draw.projectile()
     for i, player_laser in ipairs(player_lasers) do
         love.graphics.draw(player_laser.image,
             player_laser.x,
@@ -35,7 +35,7 @@ function draw.draw_projectile()
     end
 end
 
-function draw.draw_ufos()
+function draw.ufos()
     for i, ufo in ipairs(ufos) do
         love.graphics.draw(ufo.image,
             ufo.x,
@@ -48,7 +48,7 @@ function draw.draw_ufos()
     end
 end
 
-function draw.draw_text()
+function draw.text()
     love.graphics.print(player_score, 0.9 * love.graphics.getWidth(), 0.04 * love.graphics.getHeight())
 end
 
