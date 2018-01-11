@@ -31,6 +31,7 @@ function love.load()
     }
 
     player_lasers = {}
+    last_player_laser_create = 0
     ufo_lasers = {}
     ufos = {}
     ufo_time = 0
@@ -42,15 +43,12 @@ function love.load()
 end
 
 function love.mousereleased(x, y, button)
-    -- Create a laser
-    -- TODO: Don't allow player to create laser on every click (make them wait some milliseconds)
+    -- Create a laser if player is alive
     if player.alive then
-        player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
-            x = player.x,
-            y = player.y,
-            dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
-            dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)
-        }
+        -- If there are already player_lasers then wait some milliseconds before creating another
+        if #player_lasers == 0 or (love.timer.getTime() > last_player_laser_create + 0.3) then
+            update.create_player_projectiles()
+        end
     end
 end
 

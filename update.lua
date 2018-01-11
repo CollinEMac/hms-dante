@@ -82,7 +82,7 @@ function update.trigger_timed_events()
 
     --Write story text
     if time > 6.0 then
-        story_text = "This is a story all about how my life got flip"
+        story_text = "Story Text"
     end
 end
 
@@ -93,11 +93,21 @@ function spawn_ufo(movement_pattern, y_percent)
         y = y_percent * love.graphics.getHeight(),
         speed = -1,
         movement_pattern = movement_pattern,
-        create_time = love.timer.getTime(), -- for timed events like firing projectiles
-        -- projectiles = {}
+        create_time = love.timer.getTime() -- for timed events like firing projectiles
     }
 
     ufo_counter = ufo_counter + 1
+end
+
+function update.create_player_projectiles()
+    player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
+        x = player.x,
+        y = player.y,
+        dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
+        dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)
+    }
+
+    last_player_laser_create = love.timer.getTime()
 end
 
 function create_ufo_projectiles(ufo)
@@ -137,7 +147,7 @@ function object_hit(player_friendly, projectile, projectile_i)
     if player_friendly == true then
         -- if it's a friendly projectile then check enemies
         for i, ufo in ipairs(ufos) do
-            -- TODO: Tighten up hitboxes (A level priority)
+            -- TODO: Tighten up hitboxes: Actually not a big deal until I have final sprites
             if projectile.x > (ufo.x - (UFO_SIZE_CF * ufo.image:getWidth()/2)) and
                 projectile.x < (ufo.x + (UFO_SIZE_CF * ufo.image:getWidth())) and
                 projectile.y > (ufo.y - (UFO_SIZE_CF * ufo.image:getHeight()/2)) and
