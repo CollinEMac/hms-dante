@@ -17,6 +17,7 @@ function love.load()
     -- local _, _, flags = love.window.getMode()
     -- local width, height = love.window.getDesktopDimensions(flags.display)
     love.window.setMode(600, 600)
+    love.window.setTitle('Starship Dante')
 
     background = {image = love.graphics.newImage("sprites/background.jpg"),
         x = 0,

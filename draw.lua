@@ -2,6 +2,34 @@
 
 draw = {}
 
+
+-- Synopsis
+--
+-- love.graphics.draw( drawable, x, y, r, sx, sy, ox, oy, kx, ky )
+--
+-- Arguments
+--
+-- Drawable drawable
+--     A drawable object.
+-- number x (0)
+--     The position to draw the object (x-axis).
+-- number y (0)
+--     The position to draw the object (y-axis).
+-- number r (0)
+--     Orientation (radians).
+-- number sx (1)
+--     Scale factor (x-axis).
+-- number sy (sx)
+--     Scale factor (y-axis).
+-- number ox (0)
+--     Origin offset (x-axis).
+-- number oy (0)
+--     Origin offset (y-axis).
+
+--The origin is the upper left corner of the newImage
+-- The origin should be set to the center, that's why I'm struggeling with
+-- hit detection
+
 function draw.background()
     love.graphics.draw(background.image,
         background.x,
@@ -30,7 +58,9 @@ function draw.projectile()
             player_laser.y,
             3 * math.pi / 2,
             PROJECTILE_SIZE_CF,
-            PROJECTILE_SIZE_CF
+            PROJECTILE_SIZE_CF,
+            player_laser.image:getWidth()/2,
+            player_laser.image:getHeight()/2
         )
     end
 end
@@ -42,7 +72,9 @@ function draw.ufos()
             ufo.y,
             0,
             UFO_SIZE_CF,
-            UFO_SIZE_CF
+            UFO_SIZE_CF,
+            ufo.image:getWidth()/2,
+            ufo.image:getHeight()/2
         )
     end
 end
@@ -59,7 +91,9 @@ function draw.ufo_projectiles()
             ufo_laser.y,
             3 * math.pi / 2,
             PROJECTILE_SIZE_CF,
-            PROJECTILE_SIZE_CF
+            PROJECTILE_SIZE_CF,
+            ufo_laser.image:getWidth()/2,
+            ufo_laser.image:getHeight()/2
         )
     end
 end

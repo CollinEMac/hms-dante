@@ -49,8 +49,8 @@ end
 
 function update.ufo(dt)
     for i, ufo in ipairs(ufos) do
-        if 0 < ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()) and
-            0 < ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) and
+        if ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()) > 0 and
+            ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) > 0 and
             ufo.y < love.graphics.getHeight() - (UFO_SIZE_CF * ufo.image:getHeight()) then
 
                 ufo.x = ufo.x + ufo.speed
@@ -60,6 +60,8 @@ function update.ufo(dt)
                     ufo.y = ufo.y + 0.4 * math.sin(ufo_time)
                 end
 
+                -- kill player on contact with ufo
+                object_hit(false, ufo, 0)
                 create_ufo_projectiles(ufo)
         else
             table.remove(ufos, i)
@@ -68,6 +70,7 @@ function update.ufo(dt)
 end
 
 function update.trigger_timed_events()
+    -- TODO: break these out into thier own functions, this is terrible
     -- call time based events like spawning enemies or initiating bosses
     time = love.timer.getTime() - start
     -- spawn just the first ufo in the
@@ -88,13 +91,18 @@ end
 
 function spawn_ufo(movement_pattern, y_percent)
     -- add a new ufo to the list
-    ufos[#ufos + 1] = {image = love.graphics.newImage("sprites/ufo.jpg"),
-        x = love.graphics.getWidth(), --spawn offscreen and move in
+    -- new_ufo = ()
+    new_ufo = {image = love.graphics.newImage("sprites/ufo.jpg"),
+        x = 0, --TODO: spawn offscreen and move in
         y = y_percent * love.graphics.getHeight(),
         speed = -1,
         movement_pattern = movement_pattern,
         create_time = love.timer.getTime() -- for timed events like firing projectiles
     }
+
+    new_ufo.x = love.graphics.getWidth() + (UFO_SIZE_CF * new_ufo.image:getWidth()/2)
+
+    ufos[#ufos + 1] = new_ufo
 
     ufo_counter = ufo_counter + 1
 end
@@ -161,15 +169,19 @@ function object_hit(player_friendly, projectile, projectile_i)
         end
     else
         -- if it's an enemy projectile then check player
-        if projectile.x > (player.x - (PROJECTILE_SIZE_CF * player.image:getWidth())/2) and -- might want to make edges of player their own attributes
+        if projectile.x > (player.x - (PROJECTILE_SIZE_CF * player.image:getWidth()/2)) and -- might want to make edges of player their own attributes
             projectile.x < (player.x + (PROJECTILE_SIZE_CF * player.image:getWidth())) and
-            projectile.y > (player.y - (PROJECTILE_SIZE_CF * player.image:getHeight())/2) and
+            projectile.y > (player.y - (PROJECTILE_SIZE_CF * player.image:getHeight()/2)) and
             projectile.y < (player.y + (PROJECTILE_SIZE_CF * player.image:getHeight())) then
-                -- if player projectile overlapping player then destroy it
-                -- this is a little funky, not sure what's going on
-                player.alive = false
+                -- if projectile overlapping player then destroy it
+                game_over()
         end
     end
+end
+
+function game_over()
+    -- Stop Drawing all objects except game over text
+    player.alive = false
 end
 
 return update
