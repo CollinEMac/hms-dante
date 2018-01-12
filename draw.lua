@@ -98,4 +98,9 @@ function draw.ufo_projectiles()
     end
 end
 
+function draw.game_over_text()
+    align = AlignMode
+    love.graphics.printf('Game Over', 0, 0.5 * love.graphics.getHeight(), love.graphics.getWidth(), "center")
+end
+
 return draw

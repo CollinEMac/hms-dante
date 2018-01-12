@@ -73,10 +73,14 @@ function love.update(dt)
 end
 
 function love.draw()
-    draw.background()
-    draw.player()
-    draw.projectile()
-    draw.ufos()
-    draw.ufo_projectiles()
-    draw.text()
+    if player.alive then
+        draw.background()
+        draw.player()
+        draw.projectile()
+        draw.ufos()
+        draw.ufo_projectiles()
+        draw.text()
+    else
+        draw.game_over_text()
+    end
 end
