@@ -4,7 +4,7 @@ update = {}
 
 function update.background()
     -- move the background Flintstones style
-    if background.x > - background.image:getWidth() + love.graphics.getWidth() then
+    if background.x > - background.image:getWidth() + window_width then
         background.x = background.x - 3
     else
         background.x = 0
@@ -22,10 +22,10 @@ function update.player()
     if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and player.x > 0 then
         player.x = player.x - player.speed
     end
-    if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and player.y < love.graphics.getHeight() then
+    if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and player.y < window_height then
         player.y = player.y + player.speed
     end
-    if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x < love.graphics.getWidth() then
+    if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x < window_width then
         player.x = player.x + player.speed
     end
 end
@@ -34,8 +34,8 @@ function update.player_projectiles()
     for i, player_laser in ipairs(player_lasers) do
         if 0 < player_laser.x and
             0 < player_laser.y and
-            player_laser.x < love.graphics.getWidth() and
-            player_laser.y < love.graphics.getHeight() then
+            player_laser.x < window_width and
+            player_laser.y < window_height then
 
                 player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
                 player_laser.y = player_laser.y + player_laser.dy * PLAYER_PROJECTILE_SPEED
@@ -51,7 +51,7 @@ function update.ufo(dt)
     for i, ufo in ipairs(ufos) do
         if ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()) > 0 and
             ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) > 0 and
-            ufo.y < love.graphics.getHeight() - (UFO_SIZE_CF * ufo.image:getHeight()) then
+            ufo.y < window_height - (UFO_SIZE_CF * ufo.image:getHeight()) then
 
                 ufo.x = ufo.x + ufo.speed
 
@@ -94,13 +94,13 @@ function spawn_ufo(movement_pattern, y_percent)
     -- new_ufo = ()
     new_ufo = {image = love.graphics.newImage("sprites/ufo.jpg"),
         x = 0, --TODO: spawn offscreen and move in
-        y = y_percent * love.graphics.getHeight(),
+        y = y_percent * window_height,
         speed = -1,
         movement_pattern = movement_pattern,
         create_time = love.timer.getTime() -- for timed events like firing projectiles
     }
 
-    new_ufo.x = love.graphics.getWidth() + (UFO_SIZE_CF * new_ufo.image:getWidth()/2)
+    new_ufo.x = window_width + (UFO_SIZE_CF * new_ufo.image:getWidth()/2)
 
     ufos[#ufos + 1] = new_ufo
 
@@ -138,8 +138,8 @@ function update.ufo_projectiles()
         -- ufo_lasers are getting progressively faster for each one in the list?
         if 0 < ufo_laser.x and
             0 < ufo_laser.y and
-            ufo_laser.x < love.graphics.getWidth() and
-            ufo_laser.y < love.graphics.getHeight() then
+            ufo_laser.x < window_width and
+            ufo_laser.y < window_height then
                 ufo_laser.x = ufo_laser.x - ufo_laser.dx * PLAYER_PROJECTILE_SPEED
                 ufo_laser.y = ufo_laser.y - ufo_laser.dy * PLAYER_PROJECTILE_SPEED -- TODO: vary projectile speed
                 object_hit(false, ufo_laser, 0)

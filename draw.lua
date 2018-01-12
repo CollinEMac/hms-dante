@@ -80,8 +80,8 @@ function draw.ufos()
 end
 
 function draw.text()
-    love.graphics.print(player_score, 0.9 * love.graphics.getWidth(), 0.04 * love.graphics.getHeight())
-    love.graphics.print(story_text, 0.25 * love.graphics.getWidth(), 0.8 * love.graphics.getHeight())
+    love.graphics.print(player_score, 0.9 * window_width, 0.04 * window_height)
+    love.graphics.print(story_text, 0.25 * window_width, 0.8 * window_height)
 end
 
 function draw.ufo_projectiles()
@@ -100,7 +100,7 @@ end
 
 function draw.game_over_text()
     align = AlignMode
-    love.graphics.printf('Game Over', 0, 0.5 * love.graphics.getHeight(), love.graphics.getWidth(), "center")
+    love.graphics.printf('Game Over', 0, 0.5 * window_height, window_width, "center")
 end
 
 return draw

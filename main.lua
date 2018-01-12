@@ -16,7 +16,10 @@ function love.load()
     -- get screen dimensions for setting window size
     -- local _, _, flags = love.window.getMode()
     -- local width, height = love.window.getDesktopDimensions(flags.display)
-    love.window.setMode(600, 600)
+    window_width = 600
+    window_height = 600
+
+    love.window.setMode(window_width, window_height)
     love.window.setTitle('Starship Dante')
 
     background = {image = love.graphics.newImage("sprites/background.jpg"),
@@ -25,8 +28,8 @@ function love.load()
     }
 
     player = {image = love.graphics.newImage("sprites/spaceship.png"),
-        x = love.graphics.getWidth() / 2,
-        y = love.graphics.getHeight() / 2,
+        x = window_width / 2,
+        y = window_height / 2,
         speed = 5,
         alive = true
     }
