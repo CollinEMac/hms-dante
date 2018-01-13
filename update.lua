@@ -73,27 +73,32 @@ function update.trigger_timed_events()
     -- TODO: break these out into thier own functions, this is terrible
     -- call time based events like spawning enemies or initiating bosses
     time = love.timer.getTime() - start
+
+    --Write story text
+    if time > 1.0 and continue_story == true then
+        story_text = "Story Text"
+        if time > 2.0 then
+            continue_story = false -- TODO: finish this
+        end
+    end
+
     -- spawn just the first ufo in the
-    if time > 3.0 and ufo_counter == 0 then
+    if time > 10.0 and ufo_counter == 0 then
         spawn_ufo('sin', 0.167)
     end
 
     -- spawn a second ufo
-    if time > 5.0 and ufo_counter == 1 then
+    if time > 13.0 and ufo_counter == 1 then
         spawn_ufo('straight', 0.833)
     end
 
-    --Write story text
-    if time > 6.0 then
-        story_text = "Story Text"
-    end
 end
 
 function spawn_ufo(movement_pattern, y_percent)
     -- add a new ufo to the list
     -- new_ufo = ()
     new_ufo = {image = love.graphics.newImage("sprites/ufo.jpg"),
-        x = 0, --TODO: spawn offscreen and move in
+        x = 0,
         y = y_percent * window_height,
         speed = -1,
         movement_pattern = movement_pattern,
@@ -155,7 +160,6 @@ function object_hit(player_friendly, projectile, projectile_i)
     if player_friendly == true then
         -- if it's a friendly projectile then check enemies
         for i, ufo in ipairs(ufos) do
-            -- TODO: Tighten up hitboxes: Actually not a big deal until I have final sprites
             if projectile.x > (ufo.x - (UFO_SIZE_CF * ufo.image:getWidth()/2)) and
                 projectile.x < (ufo.x + (UFO_SIZE_CF * ufo.image:getWidth())) and
                 projectile.y > (ufo.y - (UFO_SIZE_CF * ufo.image:getHeight()/2)) and

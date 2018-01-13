@@ -14,10 +14,12 @@ function love.load()
     -- Initial setup
 
     -- get screen dimensions for setting window size
-    -- local _, _, flags = love.window.getMode()
-    -- local width, height = love.window.getDesktopDimensions(flags.display)
-    window_width = 600
-    window_height = 600
+    local _, _, flags = love.window.getMode()
+    local desktop_width, desktop_height = love.window.getDesktopDimensions(flags.display)
+
+    -- TODO: perhaps images should be stretched by the ratio of window to screen
+    window_width = desktop_width / 3
+    window_height = window_width
 
     love.window.setMode(window_width, window_height)
     love.window.setTitle('Starship Dante')
@@ -42,6 +44,7 @@ function love.load()
     player_score = 0
     ufo_counter = 0 -- this is the best I can come up with for now
     story_text = ""
+    continue_story = true
 
     start = love.timer.getTime()
 end
@@ -63,6 +66,9 @@ function love.keypressed(key)
     end
     if key == "q" and player.speed > 2 then
         player.speed = player.speed - 1
+    end
+    if key == "space" or key == "return" or key == "kpenter" and story_text ~= "" then
+        continue_story = true
     end
 end
 
