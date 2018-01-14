@@ -81,7 +81,11 @@ end
 
 function draw.text()
     love.graphics.print(player_score, 0.9 * window_width, 0.04 * window_height)
-    love.graphics.print(story_text, 0.25 * window_width, 0.8 * window_height)
+
+    -- show story text during story moments
+    if start_action == false then
+        love.graphics.print(story_text, 0.25 * window_width, 0.8 * window_height)
+    end
 end
 
 function draw.ufo_projectiles()

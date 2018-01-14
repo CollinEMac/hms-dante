@@ -44,6 +44,7 @@ function love.load()
     player_score = 0
     ufo_counter = 0 -- this is the best I can come up with for now
     story_text = ""
+    start_action = false
     continue_story = true
 
     start = love.timer.getTime()
@@ -67,7 +68,8 @@ function love.keypressed(key)
     if key == "q" and player.speed > 2 then
         player.speed = player.speed - 1
     end
-    if key == "space" or key == "return" or key == "kpenter" and story_text ~= "" then
+    if key == "space" or key == "return" or key == "kpenter" and continue_story == false and start_action == false then
+        -- remove story text on enter or space
         continue_story = true
     end
 end
@@ -76,9 +78,9 @@ function love.update(dt)
     update.background()
     update.player()
     update.player_projectiles()
-    update.trigger_timed_events()
     update.ufo(dt)
     update.ufo_projectiles()
+    update.story()
 end
 
 function love.draw()

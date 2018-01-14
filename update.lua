@@ -69,27 +69,22 @@ function update.ufo(dt)
     end
 end
 
-function update.trigger_timed_events()
-    -- TODO: break these out into thier own functions, this is terrible
-    -- call time based events like spawning enemies or initiating bosses
-    time = love.timer.getTime() - start
-
-    --Write story text
-    if time > 1.0 and continue_story == true then
-        story_text = "Story Text"
-        if time > 2.0 then
-            continue_story = false -- TODO: finish this
-        end
-    end
+function action()
+    -- call events like spawning enemies
 
     -- spawn just the first ufo in the
-    if time > 10.0 and ufo_counter == 0 then
+    if ufo_counter == 0 then
         spawn_ufo('sin', 0.167)
+        last_ufo_spawn = love.timer.getTime()
     end
 
     -- spawn a second ufo
-    if time > 13.0 and ufo_counter == 1 then
-        spawn_ufo('straight', 0.833)
+    if ufo_counter == 1 then
+        now = love.timer.getTime()
+
+        if now > last_ufo_spawn + 2 then
+            spawn_ufo('straight', 0.833)
+        end
     end
 
 end
@@ -151,6 +146,36 @@ function update.ufo_projectiles()
         else
             table.remove(ufo_lasers, i)
         end
+    end
+end
+
+function update.story()
+    --Write story text if time is correct and last_story text cleared (enter or space)
+    -- later this will depend on time/level
+    -- TODO: make this into it's own function bro
+
+    advance_text()
+
+    if start_action == true then
+        action()
+    end
+end
+
+function advance_text()
+    if continue_story == true and story_text == "" then
+        story_text = "Story Text"
+        continue_story = false
+    end
+
+    if continue_story == true and story_text == "Story Text" then
+        story_text = "More Story Text"
+        continue_story = false
+    end
+
+    if continue_story == true and story_text == "More Story Text" then
+        story_text = ""
+        start_action = true
+        continue_story = false
     end
 end
 
