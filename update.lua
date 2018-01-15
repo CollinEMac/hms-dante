@@ -2,6 +2,20 @@
 
 update = {}
 
+function update.main_menu()
+    mouse_y = love.mouse.getY()
+    if mouse_y < 0.33 * window_height then
+        -- first menu selection is selected
+        menu_selection = 1
+    elseif (0.33 * window_height) < mouse_y and mouse_y < (0.67 * window_height) then
+        -- second menu selection is selected
+        menu_selection = 2
+    else
+        -- third menu selection is selected
+        menu_selection = 3
+    end
+end
+
 function update.background()
     -- move the background Flintstones style
     if background.x > - background.image:getWidth() + window_width then
@@ -152,7 +166,6 @@ end
 function update.story()
     --Write story text if time is correct and last_story text cleared (enter or space)
     -- later this will depend on time/level
-    -- TODO: make this into it's own function bro
 
     advance_text()
 

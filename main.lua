@@ -24,6 +24,9 @@ function love.load()
     love.window.setMode(window_width, window_height)
     love.window.setTitle('Starship Dante')
 
+    level = 0
+    menu_selection = 1
+
     background = {image = love.graphics.newImage("sprites/background.jpg"),
         x = 0,
         y = 0
@@ -42,7 +45,7 @@ function love.load()
     ufos = {}
     ufo_time = 0
     player_score = 0
-    ufo_counter = 0 -- this is the best I can come up with for now
+    ufo_counter = 0
     story_text = ""
     start_action = false
     continue_story = true
@@ -51,8 +54,9 @@ function love.load()
 end
 
 function love.mousereleased(x, y, button)
+    --TODO: Make this work for the main menu
     -- Create a laser if player is alive
-    if player.alive then
+    if level ~= 0 and player.alive then
         -- If there are already player_lasers then wait some milliseconds before creating another
         if #player_lasers == 0 or (love.timer.getTime() > last_player_laser_create + 0.3) then
             update.create_player_projectiles()
@@ -68,30 +72,59 @@ function love.keypressed(key)
     if key == "q" and player.speed > 2 then
         player.speed = player.speed - 1
     end
-    if key == "space" or key == "return" or key == "kpenter" and continue_story == false and start_action == false then
-        -- remove story text on enter or space
-        continue_story = true
+    if key == "space" or key == "return" or key == "kpenter" then
+        --TODO: basically the mouse should be able to do all of this too
+        -- AKA make this a function that both mouse and these keys call
+        if start_action == false then
+            if continue_story == true then
+                -- Handle main menu selection
+                if menu_selection == 1 then
+                    level = 1
+                elseif menu_selection == 2 then
+                    -- TODO: add settings and options
+                    print('options')
+                elseif menu_selection == 3 then
+                    love.event.quit()
+                end
+            elseif continue_story == false then
+                -- remove story text on enter or space
+                continue_story = true
+            end
+        end
+
+        if player.alive == false then
+            -- Handle game over screen (navigate back to main menu)
+            level = 0
+            player.alive = true
+        end
     end
 end
 
 function love.update(dt)
-    update.background()
-    update.player()
-    update.player_projectiles()
-    update.ufo(dt)
-    update.ufo_projectiles()
-    update.story()
+    if level == 0 then
+        update.main_menu()
+    else
+        update.background()
+        update.player()
+        update.player_projectiles()
+        update.ufo(dt)
+        update.ufo_projectiles()
+        update.story()
+    end
 end
 
 function love.draw()
-    if player.alive then
-        draw.background()
+    draw.background()
+    if level == 0 then
+        draw.main_menu()
+    elseif player.alive then
         draw.player()
         draw.projectile()
         draw.ufos()
         draw.ufo_projectiles()
         draw.text()
     else
+        --TODO: Make this navigate back to main menu
         draw.game_over_text()
     end
 end

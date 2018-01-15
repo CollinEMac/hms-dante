@@ -26,9 +26,22 @@ draw = {}
 -- number oy (0)
 --     Origin offset (y-axis).
 
---The origin is the upper left corner of the newImage
--- The origin should be set to the center, that's why I'm struggeling with
--- hit detection
+function draw.main_menu()
+    menu_selection_x = 0.25 * window_width
+    if menu_selection == 1 then
+        menu_selection_y = 0.25 * window_height
+    elseif menu_selection == 2 then
+        menu_selection_y = 0.50 * window_height
+    elseif menu_selection == 3 then
+        menu_selection_y = 0.75 * window_height
+    end
+
+    love.graphics.rectangle('fill', menu_selection_x, menu_selection_y, 10, 10)
+    love.graphics.printf('Start Game', 0, 0.25 * window_height, window_width, "center")
+    love.graphics.printf('Options', 0, 0.50 * window_height, window_width, "center")
+    love.graphics.printf('Quit Game', 0, 0.75 * window_height, window_width, "center")
+
+end
 
 function draw.background()
     love.graphics.draw(background.image,
@@ -103,7 +116,6 @@ function draw.ufo_projectiles()
 end
 
 function draw.game_over_text()
-    align = AlignMode
     love.graphics.printf('Game Over', 0, 0.5 * window_height, window_width, "center")
 end
 
