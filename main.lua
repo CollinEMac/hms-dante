@@ -53,14 +53,17 @@ function love.load()
     start = love.timer.getTime()
 end
 
+--TODO: Create pause menu
+
 function love.mousereleased(x, y, button)
-    --TODO: Make this work for the main menu
     -- Create a laser if player is alive
-    if level ~= 0 and player.alive then
+    if start_action == false then
+        update.select_menu_item()
+    end
+
+    if level ~= 0 and player.alive and start_action == true and (love.timer.getTime() > last_player_laser_create + 0.3 ) then
         -- If there are already player_lasers then wait some milliseconds before creating another
-        if #player_lasers == 0 or (love.timer.getTime() > last_player_laser_create + 0.3) then
-            update.create_player_projectiles()
-        end
+        update.create_player_projectiles()
     end
 end
 
@@ -73,30 +76,7 @@ function love.keypressed(key)
         player.speed = player.speed - 1
     end
     if key == "space" or key == "return" or key == "kpenter" then
-        --TODO: basically the mouse should be able to do all of this too
-        -- AKA make this a function that both mouse and these keys call
-        if start_action == false then
-            if continue_story == true then
-                -- Handle main menu selection
-                if menu_selection == 1 then
-                    level = 1
-                elseif menu_selection == 2 then
-                    -- TODO: add settings and options
-                    print('options')
-                elseif menu_selection == 3 then
-                    love.event.quit()
-                end
-            elseif continue_story == false then
-                -- remove story text on enter or space
-                continue_story = true
-            end
-        end
-
-        if player.alive == false then
-            -- Handle game over screen (navigate back to main menu)
-            level = 0
-            player.alive = true
-        end
+        update.select_menu_item()
     end
 end
 

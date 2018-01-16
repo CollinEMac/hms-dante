@@ -16,6 +16,33 @@ function update.main_menu()
     end
 end
 
+function update.select_menu_item()
+    -- Handle menu button selections
+    if start_action == false then
+        if continue_story == true then
+            -- Handle main menu selection
+            if menu_selection == 1 then
+                level = 1
+            elseif menu_selection == 2 then
+                -- TODO: add settings and options
+                print('options')
+            elseif menu_selection == 3 then
+                love.event.quit()
+            end
+        elseif continue_story == false then
+            -- remove story text on enter or space
+            continue_story = true
+        end
+    end
+
+    if player.alive == false then
+        -- Handle game over screen (navigate back to main menu)
+        level = 0
+        player.alive = true
+    end
+
+end
+
 function update.background()
     -- move the background Flintstones style
     if background.x > - background.image:getWidth() + window_width then
