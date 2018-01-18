@@ -2,7 +2,8 @@
 
 update = {}
 
-function update.main_menu()
+function update.menu()
+    -- Handles menu stuff
     mouse_y = love.mouse.getY()
     if mouse_y < 0.33 * window_height then
         -- first menu selection is selected
@@ -17,6 +18,7 @@ function update.main_menu()
 end
 
 function update.select_menu_item()
+    --TODO: pause menu is funky
     -- Handle menu button selections
     if start_action == false then
         if continue_story == true then

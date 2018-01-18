@@ -2,7 +2,6 @@
 
 draw = {}
 
-
 -- Synopsis
 --
 -- love.graphics.draw( drawable, x, y, r, sx, sy, ox, oy, kx, ky )
@@ -26,7 +25,8 @@ draw = {}
 -- number oy (0)
 --     Origin offset (y-axis).
 
-function draw.main_menu()
+function draw.menu(type)
+    -- Draws a menu, takes a string defining if 'main' menu or 'pause' menu
     menu_selection_x = 0.25 * window_width
     if menu_selection == 1 then
         menu_selection_y = 0.25 * window_height
@@ -36,8 +36,14 @@ function draw.main_menu()
         menu_selection_y = 0.75 * window_height
     end
 
+    if type == 'main' then
+        game_text = 'Start Game'
+    elseif type == 'pause' then
+        game_text = 'Resume'
+    end
+
     love.graphics.rectangle('fill', menu_selection_x, menu_selection_y, 10, 10)
-    love.graphics.printf('Start Game', 0, 0.25 * window_height, window_width, "center")
+    love.graphics.printf(game_text, 0, 0.25 * window_height, window_width, "center")
     love.graphics.printf('Options', 0, 0.50 * window_height, window_width, "center")
     love.graphics.printf('Quit Game', 0, 0.75 * window_height, window_width, "center")
 

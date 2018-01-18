@@ -24,9 +24,6 @@ function love.load()
     love.window.setMode(window_width, window_height)
     love.window.setTitle('Starship Dante')
 
-    level = 0
-    menu_selection = 1
-
     background = {image = love.graphics.newImage("sprites/background.jpg"),
         x = 0,
         y = 0
@@ -39,6 +36,15 @@ function love.load()
         alive = true
     }
 
+    restart_game()
+end
+
+--TODO: Create pause menu
+
+function restart_game()
+    -- Runs when the game launches and when the game restarts after a game over
+    level = 0
+    menu_selection = 1
     player_lasers = {}
     last_player_laser_create = 0
     ufo_lasers = {}
@@ -53,8 +59,6 @@ function love.load()
     start = love.timer.getTime()
 end
 
---TODO: Create pause menu
-
 function love.mousereleased(x, y, button)
     -- Create a laser if player is alive
     if start_action == false then
@@ -64,6 +68,10 @@ function love.mousereleased(x, y, button)
     if level ~= 0 and player.alive and start_action == true and (love.timer.getTime() > last_player_laser_create + 0.3 ) then
         -- If there are already player_lasers then wait some milliseconds before creating another
         update.create_player_projectiles()
+    end
+
+    if player_alive == false then
+        restart_game()
     end
 end
 
@@ -77,12 +85,20 @@ function love.keypressed(key)
     end
     if key == "space" or key == "return" or key == "kpenter" then
         update.select_menu_item()
+        if player_alive == false then
+            restart_game()
+        end
+    end
+    if key == "escape" then
+        -- level 100 is 'pause' state
+        level = 100
     end
 end
 
 function love.update(dt)
-    if level == 0 then
-        update.main_menu()
+    if level == 0 or level == 100 then
+    -- if level == 0 then
+        update.menu()
     else
         update.background()
         update.player()
@@ -96,7 +112,9 @@ end
 function love.draw()
     draw.background()
     if level == 0 then
-        draw.main_menu()
+        draw.menu('main')
+    elseif level == 100 then
+        draw.menu('pause')
     elseif player.alive then
         draw.player()
         draw.projectile()
@@ -104,7 +122,6 @@ function love.draw()
         draw.ufo_projectiles()
         draw.text()
     else
-        --TODO: Make this navigate back to main menu
         draw.game_over_text()
     end
 end
