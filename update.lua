@@ -18,23 +18,22 @@ function update.menu()
 end
 
 function update.select_menu_item()
-    --TODO: pause menu is funky
-    -- Handle menu button selections
-    if start_action == false then
-        if continue_story == true then
-            -- Handle main menu selection
-            if menu_selection == 1 then
-                level = 1
-            elseif menu_selection == 2 then
-                -- TODO: add settings and options
-                print('options')
-            elseif menu_selection == 3 then
-                love.event.quit()
-            end
-        elseif continue_story == false then
-            -- remove story text on enter or space
-            continue_story = true
+    -- Handle menu button selections and story continue but only one or the other
+    if level ~= 0 and level ~= 100 and start_action == false and continue_story == false then
+        -- advance story text on enter or space or click
+        continue_story = true
+    elseif menu_selection == 1 then
+        if level == 100 and story_text == "" then
+            start_action = true
         end
+
+        level = 1
+
+    elseif menu_selection == 2 then
+        -- TODO: add settings and options
+        print('options')
+    elseif menu_selection == 3 then
+        love.event.quit()
     end
 
     if player.alive == false then
@@ -204,17 +203,17 @@ function update.story()
 end
 
 function advance_text()
-    if continue_story == true and story_text == "" then
+    if start_action == false and continue_story == true and story_text == "" then
         story_text = "Story Text"
         continue_story = false
     end
 
-    if continue_story == true and story_text == "Story Text" then
+    if start_action == false and continue_story == true and story_text == "Story Text" then
         story_text = "More Story Text"
         continue_story = false
     end
 
-    if continue_story == true and story_text == "More Story Text" then
+    if start_action == false and continue_story == true and story_text == "More Story Text" then
         story_text = ""
         start_action = true
         continue_story = false

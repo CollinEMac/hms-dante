@@ -61,16 +61,15 @@ end
 
 function love.mousereleased(x, y, button)
     -- Create a laser if player is alive
-    if start_action == false then
+    if start_action == false or level == 100 then
         update.select_menu_item()
-    end
 
-    if level ~= 0 and player.alive and start_action == true and (love.timer.getTime() > last_player_laser_create + 0.3 ) then
+    elseif player.alive and start_action == true and (love.timer.getTime() > last_player_laser_create + 0.3 ) then
         -- If there are already player_lasers then wait some milliseconds before creating another
         update.create_player_projectiles()
     end
 
-    if player_alive == false then
+    if player.alive == false then
         restart_game()
     end
 end
@@ -85,13 +84,14 @@ function love.keypressed(key)
     end
     if key == "space" or key == "return" or key == "kpenter" then
         update.select_menu_item()
-        if player_alive == false then
+        if player.alive == false then
             restart_game()
         end
     end
-    if key == "escape" then
+    if key == "escape" anlayer.alive then
         -- level 100 is 'pause' state
         level = 100
+        start_action = false
     end
 end
 
