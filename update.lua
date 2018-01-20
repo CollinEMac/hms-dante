@@ -205,7 +205,7 @@ end
 function advance_text()
     if level == 1 then
         if start_action == false and continue_story == true and story_text == "" then
-            story_text = "Story Text"
+            story_text = "Lost. Hopelessly lost..."
             continue_story = false
             story_count = 1
         end
