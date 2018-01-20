@@ -88,7 +88,7 @@ function love.keypressed(key)
             restart_game()
         end
     end
-    if key == "escape" anlayer.alive then
+    if key == "escape" and player.alive then
         -- level 100 is 'pause' state
         level = 100
         start_action = false
