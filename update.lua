@@ -203,20 +203,31 @@ function update.story()
 end
 
 function advance_text()
-    if start_action == false and continue_story == true and story_text == "" then
-        story_text = "Story Text"
-        continue_story = false
-    end
+    if level == 1 then
+        if start_action == false and continue_story == true and story_text == "" then
+            story_text = "Story Text"
+            continue_story = false
+            story_count = 1
+        end
 
-    if start_action == false and continue_story == true and story_text == "Story Text" then
-        story_text = "More Story Text"
-        continue_story = false
-    end
+        if start_action == false and continue_story == true and story_count == 1 then
+            story_text = "More Story Text"
+            continue_story = false
+            story_count = 2
+        end
 
-    if start_action == false and continue_story == true and story_text == "More Story Text" then
-        story_text = ""
-        start_action = true
-        continue_story = false
+        if start_action == false and continue_story == true and story_count == 2 then
+            character = "Dante"
+            story_text = "Character Text"
+            continue_story = false
+            story_count = 3
+        end
+
+        if start_action == false and continue_story == true and story_count == 3 then
+            story_text = ""
+            start_action = true
+            continue_story = false
+        end
     end
 end
 

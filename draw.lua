@@ -101,10 +101,10 @@ end
 function draw.text()
     if story_text ~= "" then
         text_box_vertex = {
-            { 0.20 * window_width, 0.75 * window_height, 0, 0, 190, 190, 190, 100 }, -- top left vertex
-            { 0.80 * window_width, 0.75 * window_height, 0, 0, 190, 190, 190, 100 }, -- top right vertex
-            { 0.80 * window_width, 0.90 * window_height, 0, 0, 190, 190, 190, 100 }, -- bottom right vertex
-            { 0.20 * window_width, 0.90 * window_height, 0, 0, 190, 190, 190, 100 } -- bottom left vertex
+            { 0.05 * window_width, 0.75 * window_height, 0, 0, 190, 190, 190, 100 }, -- top left vertex
+            { 0.95 * window_width, 0.75 * window_height, 0, 0, 190, 190, 190, 100 }, -- top right vertex
+            { 0.95 * window_width, 0.95 * window_height, 0, 0, 190, 190, 190, 100 }, -- bottom right vertex
+            { 0.05 * window_width, 0.95 * window_height, 0, 0, 190, 190, 190, 100 } -- bottom left vertex
         }
 
         text_box = love.graphics.newMesh(text_box_vertex, "fan", "static")
@@ -117,7 +117,14 @@ function draw.text()
 
     -- show story text during story moments
     if start_action == false then
-        love.graphics.printf(story_text, 0.25 * window_width, 0.8 * window_height, 0.5 * window_width)
+        if character then
+            text = character .. ': ' .. story_text
+        else
+            text = story_text
+        end
+
+        love.graphics.printf(text, 0.15 * window_width, 0.80 * window_height, 0.50 * window_width)
+
     end
 end
 
