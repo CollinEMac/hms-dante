@@ -125,12 +125,12 @@ function draw.text()
 
         -- Trying to find a way to print this in a typewriter style
         -- Using a timer makes the game run like total crap
-        for i = 1, #story_text do
-            local c = story_text:sub(1,i)
-            love.graphics.printf(c, 0.15 * window_width, 0.80 * window_height, 0.50 * window_width)
-        end
+        -- for i = 1, #story_text do
+        --     local c = story_text:sub(1,i)
+        --     love.graphics.printf(c, 0.15 * window_width, 0.80 * window_height, 0.50 * window_width)
+        -- end
 
-        -- love.graphics.printf(text, 0.15 * window_width, 0.80 * window_height, 0.50 * window_width)
+        love.graphics.printf(type_writer_c, 0.15 * window_width, 0.80 * window_height, 0.50 * window_width)
 
     end
 end

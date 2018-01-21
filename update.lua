@@ -19,7 +19,7 @@ end
 
 function update.select_menu_item()
     -- Handle menu button selections and story continue but only one or the other
-    if level ~= 0 and level ~= 100 and start_action == false and continue_story == false then
+    if level ~= 0 and level ~= 100 and start_action == false and continue_story == false and #type_writer_c == #story_text then
         -- advance story text on enter or space or click
         continue_story = true
     elseif menu_selection == 1 then
@@ -194,7 +194,6 @@ end
 function update.story()
     --Write story text if time is correct and last_story text cleared (enter or space)
     -- later this will depend on time/level
-
     advance_text()
 
     if start_action == true then
@@ -204,19 +203,23 @@ end
 
 function advance_text()
     if level == 1 then
+        now = love.timer.getTime()
         if start_action == false and continue_story == true and story_text == "" then
+            type_writer_c = ""
             story_text = "Lost. Hopelessly lost..."
             continue_story = false
             story_count = 1
         end
 
         if start_action == false and continue_story == true and story_count == 1 then
+            type_writer_c = ""
             story_text = "More Story Text"
             continue_story = false
             story_count = 2
         end
 
         if start_action == false and continue_story == true and story_count == 2 then
+            type_writer_c = ""
             character = "Dante"
             story_text = "Character Text"
             continue_story = false
@@ -224,10 +227,17 @@ function advance_text()
         end
 
         if start_action == false and continue_story == true and story_count == 3 then
+            type_writer_c = ""
             story_text = ""
             start_action = true
             continue_story = false
         end
+
+        if (now > type_writer_time + 0.25) and #type_writer_c < #story_text then
+            type_writer_c = story_text:sub(1, #type_writer_c + 1)
+            type_writer_time = now
+        end
+
     end
 end
 

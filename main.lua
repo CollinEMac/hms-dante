@@ -53,6 +53,8 @@ function restart_game()
     player_score = 0
     ufo_counter = 0
     story_text = ""
+    type_writer_c = ""
+    type_writer_time = 0
     start_action = false
     continue_story = true
 
@@ -72,6 +74,10 @@ function love.mousereleased(x, y, button)
     if player.alive == false then
         restart_game()
     end
+
+    if #type_writer_c < #story_text then
+        type_writer_c = story_text
+    end
 end
 
 function love.keypressed(key)
@@ -86,6 +92,10 @@ function love.keypressed(key)
         update.select_menu_item()
         if player.alive == false then
             restart_game()
+        end
+
+        if #type_writer_c < #story_text then
+            type_writer_c = story_text
         end
     end
     if key == "escape" and player.alive then
