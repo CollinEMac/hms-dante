@@ -210,20 +210,20 @@ function advance_text()
             continue_story = false
         end
 
-        if start_action == false and continue_story == true and STORY_TEXTS[2] then
+        if start_action == false and continue_story == true and story_text == STORY_TEXTS[2] then
             type_writer_c = ""
             story_text = STORY_TEXTS[3]
             continue_story = false
         end
 
-        if start_action == false and continue_story == true and STORY_TEXTS[3] then
+        if start_action == false and continue_story == true and story_text == STORY_TEXTS[3] then
             type_writer_c = ""
             character = CHARACTERS['dante']
             story_text = STORY_TEXTS[4]
             continue_story = false
         end
 
-        if start_action == false and continue_story == true and STORY_TEXTS[4] then
+        if start_action == false and continue_story == true and story_text == STORY_TEXTS[4] then
             type_writer_c = ""
             character = ""
             story_text = STORY_TEXTS[1]
