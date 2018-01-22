@@ -204,36 +204,35 @@ end
 function advance_text()
     if level == 1 then
         now = love.timer.getTime()
-        if start_action == false and continue_story == true and story_text == "" then
+        if start_action == false and continue_story == true and story_text == STORY_TEXTS[1] then
             type_writer_c = ""
-            story_text = "Lost. Hopelessly lost..."
+            story_text = STORY_TEXTS[2]
             continue_story = false
-            story_count = 1
         end
 
-        if start_action == false and continue_story == true and story_count == 1 then
+        if start_action == false and continue_story == true and STORY_TEXTS[2] then
             type_writer_c = ""
-            story_text = "More Story Text"
+            story_text = STORY_TEXTS[3]
             continue_story = false
-            story_count = 2
         end
 
-        if start_action == false and continue_story == true and story_count == 2 then
+        if start_action == false and continue_story == true and STORY_TEXTS[3] then
             type_writer_c = ""
-            character = "Dante"
-            story_text = "Character Text"
+            character = CHARACTERS['dante']
+            story_text = STORY_TEXTS[4]
             continue_story = false
-            story_count = 3
         end
 
-        if start_action == false and continue_story == true and story_count == 3 then
+        if start_action == false and continue_story == true and STORY_TEXTS[4] then
             type_writer_c = ""
-            story_text = ""
+            character = ""
+            story_text = STORY_TEXTS[1]
             start_action = true
             continue_story = false
         end
 
-        if (now > type_writer_time + 0.25) and #type_writer_c < #story_text then
+        if (now > type_writer_time + 0.05) and #type_writer_c < #story_text then
+            -- TODO: Allow for changing this speed in options menu
             type_writer_c = story_text:sub(1, #type_writer_c + 1)
             type_writer_time = now
         end

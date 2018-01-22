@@ -10,6 +10,16 @@ UFO_SIZE_CF = 0.15
 PROJECTILE_SIZE_CF = 0.1
 PLAYER_PROJECTILE_SPEED = 7
 
+
+CHARACTERS = {["dante"] = "Dante"}
+
+STORY_TEXTS = {[1] = "",
+    [2] = "Lost. Hopelessly lost...",
+    [3] = "More Story Text",
+    [4] = "Character Text"
+}
+
+
 function love.load()
     -- Initial setup
 
@@ -52,10 +62,11 @@ function restart_game()
     ufo_time = 0
     player_score = 0
     ufo_counter = 0
-    story_text = ""
+    story_text = STORY_TEXTS[1]
     type_writer_c = ""
     type_writer_time = 0
     start_action = false
+
     continue_story = true
 
     start = love.timer.getTime()
