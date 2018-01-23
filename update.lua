@@ -117,7 +117,6 @@ end
 
 function action()
     -- call events like spawning enemies
-
     -- spawn just the first ufo in the
     if ufo_counter == 0 then
         spawn_ufo('sin', 0.167)

@@ -2,29 +2,6 @@
 
 draw = {}
 
--- Synopsis
---
--- love.graphics.draw( drawable, x, y, r, sx, sy, ox, oy, kx, ky )
---
--- Arguments
---
--- Drawable drawable
---     A drawable object.
--- number x (0)
---     The position to draw the object (x-axis).
--- number y (0)
---     The position to draw the object (y-axis).
--- number r (0)
---     Orientation (radians).
--- number sx (1)
---     Scale factor (x-axis).
--- number sy (sx)
---     Scale factor (y-axis).
--- number ox (0)
---     Origin offset (x-axis).
--- number oy (0)
---     Origin offset (y-axis).
-
 function draw.menu(type)
     -- Draws a menu, takes a string defining if 'main' menu or 'pause' menu
     menu_selection_x = 0.25 * window_width

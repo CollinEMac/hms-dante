@@ -22,7 +22,6 @@ STORY_TEXTS = {[1] = "",
 
 function love.load()
     -- Initial setup
-
     -- get screen dimensions for setting window size
     local _, _, flags = love.window.getMode()
     local desktop_width, desktop_height = love.window.getDesktopDimensions(flags.display)
@@ -68,7 +67,6 @@ function restart_game()
     start_action = false
 
     continue_story = true
-
     start = love.timer.getTime()
 end
 
