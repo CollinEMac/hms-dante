@@ -15,8 +15,8 @@ CHARACTERS = {["dante"] = "Dante"}
 
 STORY_TEXTS = {[1] = "",
     [2] = "Lost. Hopelessly lost...",
-    [3] = "More Story Text",
-    [4] = "Character Text"
+    [3] = "I don't know how long it's been but I'm running low on fuel and food",
+    [4] = "My name is Dante."
 }
 
 

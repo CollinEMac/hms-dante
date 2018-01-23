@@ -123,7 +123,7 @@ function draw.text()
             text = type_writer_c
         end
 
-        love.graphics.printf(text, 0.15 * window_width, 0.80 * window_height, 0.50 * window_width)
+        love.graphics.printf(text, 0.15 * window_width, 0.80 * window_height, 0.75 * window_width)
 
     end
 end
