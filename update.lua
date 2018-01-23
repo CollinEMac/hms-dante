@@ -45,11 +45,15 @@ function update.select_menu_item()
 end
 
 function update.background()
-    -- move the background Flintstones style
-    if background.x > - background.image:getWidth() + window_width then
-        background.x = background.x - 3
-    else
-        background.x = 0
+    if level == 1 then
+        -- move the background Flintstones style
+        if background.x > - background.image:getWidth() + window_width then
+            background.x = background.x - 3
+        else
+            background.x = 0
+        end
+    -- else
+        -- change the background
     end
 end
 
@@ -128,12 +132,10 @@ function action()
             spawn_ufo('straight', 0.833)
         end
     end
-
 end
 
 function spawn_ufo(movement_pattern, y_percent)
     -- add a new ufo to the list
-    -- new_ufo = ()
     new_ufo = {image = love.graphics.newImage("sprites/ufo.jpg"),
         x = 0,
         y = y_percent * window_height,
@@ -241,7 +243,7 @@ function advance_text()
 end
 
 function object_hit(player_friendly, projectile, projectile_i)
-    -- Checks if projecile is overlapping an object an destroys it
+    -- Checks if projecile is overlapping an object and destroys it
 
     if player_friendly == true then
         -- if it's a friendly projectile then check enemies

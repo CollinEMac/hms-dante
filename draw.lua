@@ -112,7 +112,6 @@ function draw.text()
         love.graphics.draw(text_box)
     end
 
-
     love.graphics.print(player_score, 0.9 * window_width, 0.04 * window_height)
 
     -- show story text during story moments

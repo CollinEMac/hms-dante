@@ -120,6 +120,8 @@ function love.update(dt)
     if level == 0 or level == 100 then
     -- if level == 0 then
         update.menu()
+    elseif level == 1 and ufo_counter == 2 and #ufos == 0 then
+        -- the level is cleared
     else
         update.background()
         update.player()
@@ -131,18 +133,25 @@ function love.update(dt)
 end
 
 function love.draw()
-    draw.background()
-    if level == 0 then
-        draw.menu('main')
-    elseif level == 100 then
-        draw.menu('pause')
-    elseif player.alive then
-        draw.player()
-        draw.projectile()
-        draw.ufos()
-        draw.ufo_projectiles()
-        draw.text()
+    -- check if the level is cleared
+    if level == 1 and ufo_counter == 2 and #ufos == 0 then
+        love.graphics.clear()
+        draw.background() -- we'll want to draw a different one
+        -- go to rpg section
     else
-        draw.game_over_text()
+        draw.background()
+        if level == 0 then
+            draw.menu('main')
+        elseif level == 100 then
+            draw.menu('pause')
+        elseif player.alive then
+            draw.player()
+            draw.projectile()
+            draw.ufos()
+            draw.ufo_projectiles()
+            draw.text()
+        else
+            draw.game_over_text()
+        end
     end
 end
