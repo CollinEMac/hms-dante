@@ -44,16 +44,21 @@ function update.select_menu_item()
 
 end
 
-function update.background()
+function update.background(stage)
     if level == 1 then
-        -- move the background Flintstones style
-        if background.x > - background.image:getWidth() + window_width then
-            background.x = background.x - 3
-        else
+        if stage == 'action' then
+            background.image = SPACE_BACKGROUND
+            -- move the background Flintstones style
+            if background.x > - background.image:getWidth() + window_width then
+                background.x = background.x - 3
+            else
+                background.x = 0
+            end
+        elseif stage == 'rpg' then
+            background.image = SHIP_BACKGROUND
             background.x = 0
+            background.y = 0
         end
-    -- else
-        -- change the background
     end
 end
 

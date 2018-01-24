@@ -10,6 +10,8 @@ UFO_SIZE_CF = 0.15
 PROJECTILE_SIZE_CF = 0.1
 PLAYER_PROJECTILE_SPEED = 7
 
+SPACE_BACKGROUND = love.graphics.newImage("sprites/background.jpg")
+SHIP_BACKGROUND = love.graphics.newImage("sprites/brown.jpg")
 
 CHARACTERS = {["dante"] = "Dante"}
 
@@ -33,7 +35,7 @@ function love.load()
     love.window.setMode(window_width, window_height)
     love.window.setTitle('Starship Dante')
 
-    background = {image = love.graphics.newImage("sprites/background.jpg"),
+    background = {image = SPACE_BACKGROUND,
         x = 0,
         y = 0
     }
@@ -115,13 +117,16 @@ function love.keypressed(key)
 end
 
 function love.update(dt)
+    -- TODO: Maybe I should destroy everything in teh action sequences
+    -- and have completely separate rgp sections built all over?
     if level == 0 or level == 100 then
     -- if level == 0 then
         update.menu()
     elseif level == 1 and ufo_counter == 2 and #ufos == 0 then
+        update.background('rpg')
         -- the level is cleared
     else
-        update.background()
+        update.background('action')
         update.player()
         update.player_projectiles()
         update.ufo(dt)
@@ -134,10 +139,9 @@ function love.draw()
     -- check if the level is cleared
     if level == 1 and ufo_counter == 2 and #ufos == 0 then
         love.graphics.clear()
-        draw.background() -- we'll want to draw a different one
-        -- go to rpg section
+        draw.background('rpg')
     else
-        draw.background()
+        draw.background('action')
         if level == 0 then
             draw.menu('main')
         elseif level == 100 then

@@ -23,7 +23,6 @@ function draw.menu(type)
     love.graphics.printf(game_text, 0, 0.25 * window_height, window_width, "center")
     love.graphics.printf('Options', 0, 0.50 * window_height, window_width, "center")
     love.graphics.printf('Quit Game', 0, 0.75 * window_height, window_width, "center")
-
 end
 
 function draw.background()
