@@ -13,6 +13,9 @@ PLAYER_PROJECTILE_SPEED = 7
 SPACE_BACKGROUND = love.graphics.newImage("sprites/background.jpg")
 SHIP_BACKGROUND = love.graphics.newImage("sprites/brown.jpg")
 
+SHIP_PLAYER = love.graphics.newImage("sprites/spaceship.png")
+CHARACTER_PLAYER = love.graphics.newImage("sprites/dante.jpg")
+
 CHARACTERS = {["dante"] = "Dante"}
 
 STORY_TEXTS = {[1] = "",
@@ -40,7 +43,7 @@ function love.load()
         y = 0
     }
 
-    player = {image = love.graphics.newImage("sprites/spaceship.png"),
+    player = {image = SHIP_PLAYER,
         x = window_width / 2,
         y = window_height / 2,
         speed = 5,
@@ -122,11 +125,8 @@ function love.update(dt)
     if level == 0 or level == 100 then
     -- if level == 0 then
         update.menu()
-    elseif level == 1 and ufo_counter == 2 and #ufos == 0 then
-        update.background('rpg')
-        -- the level is cleared
     else
-        update.background('action')
+        update.background()
         update.player()
         update.player_projectiles()
         update.ufo(dt)
@@ -139,21 +139,22 @@ function love.draw()
     -- check if the level is cleared
     if level == 1 and ufo_counter == 2 and #ufos == 0 then
         love.graphics.clear()
-        draw.background('rpg')
+        level = 2
+    end
+
+    draw.background()
+
+    if level == 0 then
+        draw.menu('main')
+    elseif level == 100 then
+        draw.menu('pause')
+    elseif player.alive then
+        draw.player()
+        draw.projectile()
+        draw.ufos()
+        draw.ufo_projectiles()
+        draw.text()
     else
-        draw.background('action')
-        if level == 0 then
-            draw.menu('main')
-        elseif level == 100 then
-            draw.menu('pause')
-        elseif player.alive then
-            draw.player()
-            draw.projectile()
-            draw.ufos()
-            draw.ufo_projectiles()
-            draw.text()
-        else
-            draw.game_over_text()
-        end
+        draw.game_over_text()
     end
 end

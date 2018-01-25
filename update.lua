@@ -46,38 +46,45 @@ end
 
 function update.background(stage)
     if level == 1 then
-        if stage == 'action' then
-            background.image = SPACE_BACKGROUND
-            -- move the background Flintstones style
-            if background.x > - background.image:getWidth() + window_width then
-                background.x = background.x - 3
-            else
-                background.x = 0
-            end
-        elseif stage == 'rpg' then
-            background.image = SHIP_BACKGROUND
+        background.image = SPACE_BACKGROUND
+        -- move the background Flintstones style
+        if background.x > - background.image:getWidth() + window_width then
+            background.x = background.x - 3
+        else
             background.x = 0
-            background.y = 0
         end
+    -- I'm just going to handle the rpg segments as a separate level
+    elseif level == 2 then
+        background.image = SHIP_BACKGROUND
+        background.x = 0
+        background.y = 0
     end
 end
 
 function update.player()
     -- Handle player movement
-    mouse_x, mouse_y = love.mouse.getPosition()
-    utils.get_player_rotation()
+    if level == 1 then
+        mouse_x, mouse_y = love.mouse.getPosition()
+        utils.get_player_rotation()
 
-    if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and player.y > 0 then
-        player.y = player.y - player.speed
-    end
-    if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and player.x > 0 then
-        player.x = player.x - player.speed
-    end
-    if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and player.y < window_height then
-        player.y = player.y + player.speed
-    end
-    if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x < window_width then
-        player.x = player.x + player.speed
+        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and player.y > 0 then
+            player.y = player.y - player.speed
+        end
+        if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and player.x > 0 then
+            player.x = player.x - player.speed
+        end
+        if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and player.y < window_height then
+            player.y = player.y + player.speed
+        end
+        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x < window_width then
+            player.x = player.x + player.speed
+        end
+    elseif level == 2 then
+        -- TODO: Rotation factor is messed up, maybe this should be it's own object
+        -- TODO: actually we should probably have a 'reset' function for every object
+        player.image = CHARACTER_PLAYER
+        player.x = window_width / 2
+        player.y = window_height / 2
     end
 end
 
