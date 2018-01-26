@@ -55,9 +55,18 @@ function update.background(stage)
         end
     -- I'm just going to handle the rpg segments as a separate level
     elseif level == 2 then
-        background.image = SHIP_BACKGROUND
-        background.x = 0
-        background.y = 0
+        -- handle rpg player movement
+        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x > 0.7 * window_width then
+            background.x = background.x - player.speed
+        elseif (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and player.x < 0.3 * window_width then
+            background.x = background.x + player.speed
+        end
+
+        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and player.y < 0.3 * window_height then
+            background.y = background.y + player.speed
+        elseif (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and player.y > 0.7 * window_height then
+            background.y = background.y - player.speed
+        end
     end
 end
 
@@ -66,7 +75,14 @@ function update.player()
     if level == 1 then
         mouse_x, mouse_y = love.mouse.getPosition()
         utils.get_player_rotation()
+    elseif level == 2 then
+        -- TODO: actually we should probably have a 'reset' function for every object
+        -- TODO: Make camera follow the player in rpg sections
+        player.image = CHARACTER_PLAYER
+        player.rotation = 0
+    end
 
+    if level == 1 then
         if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and player.y > 0 then
             player.y = player.y - player.speed
         end
@@ -80,27 +96,37 @@ function update.player()
             player.x = player.x + player.speed
         end
     elseif level == 2 then
-        -- TODO: Rotation factor is messed up, maybe this should be it's own object
-        -- TODO: actually we should probably have a 'reset' function for every object
-        player.image = CHARACTER_PLAYER
-        player.x = window_width / 2
-        player.y = window_height / 2
+        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and player.y > 0.3 * window_height then
+            player.y = player.y - player.speed
+        end
+        if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and player.x > 0.3 * window_width then
+            player.x = player.x - player.speed
+        end
+        if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and player.y < 0.7 * window_height then
+            player.y = player.y + player.speed
+        end
+        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x < 0.7 * window_width then
+            player.x = player.x + player.speed
+        end
     end
+
 end
 
 function update.player_projectiles()
-    for i, player_laser in ipairs(player_lasers) do
-        if 0 < player_laser.x and
-            0 < player_laser.y and
-            player_laser.x < window_width and
-            player_laser.y < window_height then
+    if level == 1 then
+        for i, player_laser in ipairs(player_lasers) do
+            if 0 < player_laser.x and
+                0 < player_laser.y and
+                player_laser.x < window_width and
+                player_laser.y < window_height then
 
-                player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
-                player_laser.y = player_laser.y + player_laser.dy * PLAYER_PROJECTILE_SPEED
+                    player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
+                    player_laser.y = player_laser.y + player_laser.dy * PLAYER_PROJECTILE_SPEED
 
-                object_hit(true, player_laser, i)
-        else
-            table.remove(player_lasers, i)
+                    object_hit(true, player_laser, i)
+            else
+                table.remove(player_lasers, i)
+            end
         end
     end
 end
@@ -163,14 +189,16 @@ function spawn_ufo(movement_pattern, y_percent)
 end
 
 function update.create_player_projectiles()
-    player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
-        x = player.x,
-        y = player.y,
-        dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
-        dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)
-    }
+    if level == 1 then
+        player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
+            x = player.x,
+            y = player.y,
+            dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
+            dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)
+        }
 
-    last_player_laser_create = love.timer.getTime()
+        last_player_laser_create = love.timer.getTime()
+    end
 end
 
 function create_ufo_projectiles(ufo)

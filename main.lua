@@ -136,10 +136,17 @@ function love.update(dt)
 end
 
 function love.draw()
+    -- Maybe I should make this a method called level_setup or something?
     -- check if the level is cleared
     if level == 1 and ufo_counter == 2 and #ufos == 0 then
+        --TODO: This is kind of becoming a mess here
         love.graphics.clear()
         level = 2
+        player.x = window_width / 2
+        player.y = window_height / 2
+        background.image = SHIP_BACKGROUND
+        background.x = 0
+        background.y = 0
     end
 
     draw.background()
