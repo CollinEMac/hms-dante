@@ -55,6 +55,7 @@ function update.background(stage)
         end
     -- I'm just going to handle the rpg segments as a separate level
     elseif level == 2 then
+        --TODO: remove this and us love.graphics.translate
         -- handle rpg player movement
         if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x > 0.7 * window_width then
             background.x = background.x - player.speed
@@ -76,8 +77,6 @@ function update.player()
         mouse_x, mouse_y = love.mouse.getPosition()
         utils.get_player_rotation()
     elseif level == 2 then
-        -- TODO: actually we should probably have a 'reset' function for every object
-        -- TODO: Make camera follow the player in rpg sections
         player.image = CHARACTER_PLAYER
         player.rotation = 0
     end
@@ -229,6 +228,19 @@ function update.ufo_projectiles()
         else
             table.remove(ufo_lasers, i)
         end
+    end
+end
+
+function update.npcs()
+    if level == 2 and #npcs == 0 then
+        -- create npc
+        -- TODO: draw off screen npc
+        npc1 = {image = CHARACTER_PLAYER,
+            x = window_width / 2,
+            y = window_height + 10,
+        }
+
+        npcs[#npcs+1] = npc1
     end
 end
 

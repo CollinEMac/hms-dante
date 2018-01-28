@@ -24,7 +24,6 @@ STORY_TEXTS = {[1] = "",
     [4] = "My name is Dante."
 }
 
-
 function love.load()
     -- Initial setup
     -- get screen dimensions for setting window size
@@ -53,8 +52,6 @@ function love.load()
     restart_game()
 end
 
---TODO: Create pause menu
-
 function restart_game()
     -- Runs when the game launches and when the game restarts after a game over
     level = 0
@@ -66,6 +63,7 @@ function restart_game()
     ufo_time = 0
     player_score = 0
     ufo_counter = 0
+    npcs = {}
     story_text = STORY_TEXTS[1]
     type_writer_c = ""
     type_writer_time = 0
@@ -114,41 +112,48 @@ function love.keypressed(key)
     end
     if key == "escape" and player.alive then
         -- level 100 is 'pause' state
-        level = 100
-        start_action = false
+        if level ~= 100 and start_action == true then
+            level = 100
+            start_action = false
+        elseif level == 100 and start_action == false then
+            -- TODO: Probably need to keep this in a buffer or something
+            level = 1 -- or 2
+            start_action = true
+        end
     end
 end
 
 function love.update(dt)
-    -- TODO: Maybe I should destroy everything in teh action sequences
-    -- and have completely separate rgp sections built all over?
     if level == 0 or level == 100 then
-    -- if level == 0 then
         update.menu()
     else
         update.background()
         update.player()
-        update.player_projectiles()
-        update.ufo(dt)
-        update.ufo_projectiles()
+
+        -- TODO: This should ultimately become one function that is called every time level changes
+        if level == 1 and ufo_counter == 2 and #ufos == 0 then
+            ufos = {}
+            ufo_projectiles = {}
+            player_projectiles = {}
+            love.graphics.clear()
+            level = level + 1
+            player.x = window_width / 2
+            player.y = window_height / 2
+            background.image = SHIP_BACKGROUND
+            background.x = 0
+            background.y = 0
+        else
+            update.player_projectiles()
+            update.ufo(dt)
+            update.ufo_projectiles()
+        end
+
+        update.npcs()
         update.story()
     end
 end
 
 function love.draw()
-    -- Maybe I should make this a method called level_setup or something?
-    -- check if the level is cleared
-    if level == 1 and ufo_counter == 2 and #ufos == 0 then
-        --TODO: This is kind of becoming a mess here
-        love.graphics.clear()
-        level = 2
-        player.x = window_width / 2
-        player.y = window_height / 2
-        background.image = SHIP_BACKGROUND
-        background.x = 0
-        background.y = 0
-    end
-
     draw.background()
 
     if level == 0 then
@@ -160,6 +165,7 @@ function love.draw()
         draw.projectile()
         draw.ufos()
         draw.ufo_projectiles()
+        draw.npcs()
         draw.text()
     else
         draw.game_over_text()

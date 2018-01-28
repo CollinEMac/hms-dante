@@ -74,6 +74,22 @@ function draw.ufos()
     end
 end
 
+function draw.npcs()
+    if level == 2 then
+        for i, npc in ipairs(npcs) do
+            love.graphics.draw(npc.image,
+                npc.x,
+                npc.y,
+                0,
+                PROJECTILE_SIZE_CF,
+                PROJECTILE_SIZE_CF,
+                player.image:getWidth()/2,
+                player.image:getHeight()/2
+            )
+        end
+    end
+end
+
 function draw.text()
     if story_text ~= "" then
         text_box_vertex = {
