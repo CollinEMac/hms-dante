@@ -54,20 +54,38 @@ function update.background(stage)
             background.x = 0
         end
     -- I'm just going to handle the rpg segments as a separate level
-    elseif level == 2 then
-        --TODO: remove this and us love.graphics.translate
-        -- handle rpg player movement
-        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x > 0.7 * window_width then
-            background.x = background.x - player.speed
-        elseif (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and player.x < 0.3 * window_width then
-            background.x = background.x + player.speed
-        end
+    -- elseif level == 2 then
+    --     --TODO: remove this and us love.graphics.translate
+    --     -- handle rpg player movement
+    --     if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) then
+    --         background.x = background.x - player.speed
+    --         love.graphics.translate(-player.x, 0)
+    --     elseif (love.keyboard.isDown("left") or love.keyboard.isDown("a")) then
+    --         background.x = background.x + player.speed
+    --     end
+    --
+    --     if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
+    --         background.y = background.y + player.speed
+    --     elseif (love.keyboard.isDown("down") or love.keyboard.isDown("s")) then
+    --         background.y = background.y - player.speed
+    --     end
+    end
+end
 
-        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and player.y < 0.3 * window_height then
-            background.y = background.y + player.speed
-        elseif (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and player.y > 0.7 * window_height then
-            background.y = background.y - player.speed
-        end
+function update.cam()
+    --TODO: remove this and us love.graphics.translate
+    -- handle rpg player movement
+    if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) then
+        cam.x = cam.x - player.speed
+        love.graphics.translate(-player.x, 0)
+    elseif (love.keyboard.isDown("left") or love.keyboard.isDown("a")) then
+        cam.x = cam.x + player.speed
+    end
+
+    if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
+        cam.y = cam.y + player.speed
+    elseif (love.keyboard.isDown("down") or love.keyboard.isDown("s")) then
+        cam.y = cam.y - player.speed
     end
 end
 
@@ -95,20 +113,19 @@ function update.player()
             player.x = player.x + player.speed
         end
     elseif level == 2 then
-        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and player.y > 0.3 * window_height then
-            player.y = player.y - player.speed
-        end
-        if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and player.x > 0.3 * window_width then
+        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) then
             player.x = player.x - player.speed
-        end
-        if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and player.y < 0.7 * window_height then
-            player.y = player.y + player.speed
-        end
-        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x < 0.7 * window_width then
+            love.graphics.translate(-player.x, 0)
+        elseif (love.keyboard.isDown("left") or love.keyboard.isDown("a")) then
             player.x = player.x + player.speed
         end
-    end
 
+        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
+            player.y = player.y + player.speed
+        elseif (love.keyboard.isDown("down") or love.keyboard.isDown("s")) then
+            player.y = player.y - player.speed
+        end
+    end
 end
 
 function update.player_projectiles()

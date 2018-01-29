@@ -69,6 +69,10 @@ function restart_game()
     type_writer_time = 0
     start_action = false
 
+    cam = {x = 0,
+        y = 0
+    }
+
     continue_story = true
     start = love.timer.getTime()
 end
@@ -139,6 +143,7 @@ function love.update(dt)
             level = level + 1
             player.x = window_width / 2
             player.y = window_height / 2
+            -- messing with translate
             background.image = SHIP_BACKGROUND
             background.x = 0
             background.y = 0
@@ -150,10 +155,19 @@ function love.update(dt)
 
         update.npcs()
         update.story()
+
+        update.cam()
+
     end
 end
 
 function love.draw()
+
+    if level == 2 then
+        love.graphics.push()
+        love.graphics.translate(cam.x, cam.y)
+    end
+
     draw.background()
 
     if level == 0 then
@@ -170,4 +184,9 @@ function love.draw()
     else
         draw.game_over_text()
     end
+
+    if level == 2 then
+        love.graphics.pop()
+    end
+
 end
