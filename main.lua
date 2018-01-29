@@ -143,7 +143,6 @@ function love.update(dt)
             level = level + 1
             player.x = window_width / 2
             player.y = window_height / 2
-            -- messing with translate
             background.image = SHIP_BACKGROUND
             background.x = 0
             background.y = 0
@@ -156,8 +155,14 @@ function love.update(dt)
         update.npcs()
         update.story()
 
-        update.cam()
+        if level == 2 then
+            -- handle rpg camera movement
 
+            --TODO: will do this for level 1 too,
+            -- scroll everything to the left at a constant Create
+            -- that'll make things easier for changing speed too
+            update.cam()
+        end
     end
 end
 
