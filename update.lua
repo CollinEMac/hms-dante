@@ -56,25 +56,6 @@ function update.background(stage)
     end
 end
 
-function update.cam()
-    -- handle rpg player movement
-
-    --TODO: set bounds on background to limit movement
-    -- The player should be able to go to the edge of the background but the cam should stop
-    if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and cam.x <= 0 then
-        cam.x = cam.x - player.speed
-        love.graphics.translate(-player.x, 0)
-    elseif (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and cam.x >= window_width then
-        cam.x = cam.x + player.speed
-    end
-
-    if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and cam.y >= window_height then
-        cam.y = cam.y + player.speed
-    elseif (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and cam.y <= 0 then
-        cam.y = cam.y - player.speed
-    end
-end
-
 function update.player()
     -- Handle player movement
     if level == 1 then
@@ -98,19 +79,29 @@ function update.player()
         if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x < window_width then
             player.x = player.x + player.speed
         end
-    elseif level == 2 then
-        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) then
-            player.x = player.x + player.speed
-            love.graphics.translate(-player.x, 0)
-        elseif (love.keyboard.isDown("left") or love.keyboard.isDown("a")) then
-            player.x = player.x - player.speed
-        end
 
-        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
+    --TODO: will do this for level 1 too,
+    -- scroll everything to the left at a constant rate
+    -- that'll make things easier for changing speed too
+    -- let the player move to the edge of the background
+    elseif level == 2 then
+        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and cam.y < 0 then
             player.y = player.y - player.speed
-        elseif (love.keyboard.isDown("down") or love.keyboard.isDown("s")) then
-            player.y = player.y + player.speed
+            cam.y = cam.y + player.speed
         end
+        if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and cam.x < 0 then
+            player.x = player.x - player.speed
+            cam.x = cam.x + player.speed
+        end
+        if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and cam.y - window_height > -(background.image:getHeight()) then
+            player.y = player.y + player.speed
+            cam.y = cam.y - player.speed
+        end
+        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and cam.x - window_width > -(background.image:getWidth()) then
+            player.x = player.x + player.speed
+            cam.x = cam.x - player.speed
+        end
+        print(cam.x)
     end
 end
 

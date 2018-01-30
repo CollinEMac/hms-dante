@@ -69,8 +69,8 @@ function restart_game()
     type_writer_time = 0
     start_action = false
 
-    cam = {x = 0,
-        y = 0
+    cam = {x = -5,
+        y = -5
     }
 
     continue_story = true
@@ -134,8 +134,8 @@ function love.update(dt)
         update.background()
         update.player()
 
-        -- TODO: This should ultimately become one function that is called every time level changes
         if level == 1 and ufo_counter == 2 and #ufos == 0 then
+            -- action level stuff
             ufos = {}
             ufo_projectiles = {}
             player_projectiles = {}
@@ -154,15 +154,6 @@ function love.update(dt)
 
         update.npcs()
         update.story()
-
-        if level == 2 then
-            -- handle rpg camera movement
-
-            --TODO: will do this for level 1 too,
-            -- scroll everything to the left at a constant Create
-            -- that'll make things easier for changing speed too
-            update.cam()
-        end
     end
 end
 
@@ -181,9 +172,11 @@ function love.draw()
         draw.menu('pause')
     elseif player.alive then
         draw.player()
-        draw.projectile()
         draw.ufos()
-        draw.ufo_projectiles()
+        if level == 1 then
+            draw.projectile()
+            draw.ufo_projectiles()
+        end
         draw.npcs()
         draw.text()
     else
