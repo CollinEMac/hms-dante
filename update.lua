@@ -53,21 +53,6 @@ function update.background(stage)
         else
             background.x = 0
         end
-    -- I'm just going to handle the rpg segments as a separate level
-    elseif level == 2 then
-        --TODO: remove this and us love.graphics.translate
-        -- handle rpg player movement
-        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x > 0.7 * window_width then
-            background.x = background.x - player.speed
-        elseif (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and player.x < 0.3 * window_width then
-            background.x = background.x + player.speed
-        end
-
-        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and player.y < 0.3 * window_height then
-            background.y = background.y + player.speed
-        elseif (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and player.y > 0.7 * window_height then
-            background.y = background.y - player.speed
-        end
     end
 end
 
@@ -94,21 +79,30 @@ function update.player()
         if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x < window_width then
             player.x = player.x + player.speed
         end
-    elseif level == 2 then
-        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and player.y > 0.3 * window_height then
-            player.y = player.y - player.speed
-        end
-        if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and player.x > 0.3 * window_width then
-            player.x = player.x - player.speed
-        end
-        if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and player.y < 0.7 * window_height then
-            player.y = player.y + player.speed
-        end
-        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x < 0.7 * window_width then
-            player.x = player.x + player.speed
-        end
-    end
 
+    --TODO: will do this for level 1 too,
+    -- scroll everything to the left at a constant rate
+    -- that'll make things easier for changing speed too
+    -- let the player move to the edge of the background
+    elseif level == 2 then
+        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and cam.y < 0 then
+            player.y = player.y - player.speed
+            cam.y = cam.y + player.speed
+        end
+        if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and cam.x < 0 then
+            player.x = player.x - player.speed
+            cam.x = cam.x + player.speed
+        end
+        if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and cam.y - window_height > -(background.image:getHeight()) then
+            player.y = player.y + player.speed
+            cam.y = cam.y - player.speed
+        end
+        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and cam.x - window_width > -(background.image:getWidth()) then
+            player.x = player.x + player.speed
+            cam.x = cam.x - player.speed
+        end
+        print(cam.x)
+    end
 end
 
 function update.player_projectiles()

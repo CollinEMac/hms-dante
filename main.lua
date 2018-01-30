@@ -69,6 +69,10 @@ function restart_game()
     type_writer_time = 0
     start_action = false
 
+    cam = {x = -5,
+        y = -5
+    }
+
     continue_story = true
     start = love.timer.getTime()
 end
@@ -130,8 +134,8 @@ function love.update(dt)
         update.background()
         update.player()
 
-        -- TODO: This should ultimately become one function that is called every time level changes
         if level == 1 and ufo_counter == 2 and #ufos == 0 then
+            -- action level stuff
             ufos = {}
             ufo_projectiles = {}
             player_projectiles = {}
@@ -154,6 +158,12 @@ function love.update(dt)
 end
 
 function love.draw()
+
+    if level == 2 then
+        love.graphics.push()
+        love.graphics.translate(cam.x, cam.y)
+    end
+
     draw.background()
 
     if level == 0 then
@@ -162,12 +172,19 @@ function love.draw()
         draw.menu('pause')
     elseif player.alive then
         draw.player()
-        draw.projectile()
         draw.ufos()
-        draw.ufo_projectiles()
+        if level == 1 then
+            draw.projectile()
+            draw.ufo_projectiles()
+        end
         draw.npcs()
         draw.text()
     else
         draw.game_over_text()
     end
+
+    if level == 2 then
+        love.graphics.pop()
+    end
+
 end
