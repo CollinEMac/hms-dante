@@ -309,27 +309,18 @@ function object_hit(player_friendly, projectile, projectile_i)
     -- Checks if projecile is overlapping an object and destroys it
 
     if player_friendly == true then
-        -- if it's a friendly projectile then check enemies
         for i, ufo in ipairs(ufos) do
-            if projectile.x > (ufo.x - (UFO_SIZE_CF * ufo.image:getWidth()/2)) and
-                projectile.x < (ufo.x + (UFO_SIZE_CF * ufo.image:getWidth())) and
-                projectile.y > (ufo.y - (UFO_SIZE_CF * ufo.image:getHeight()/2)) and
-                projectile.y < (ufo.y + (UFO_SIZE_CF * ufo.image:getHeight())) then
-
-                    -- if player projectile overlapping enemy then destroy it
-                    table.remove(ufos, i)
-                    table.remove(player_lasers, projectile_i)
-                    player_score = player_score + 10
+            if utils.overlap(projectile, ufo, UFO_SIZE_CF) then
+            -- if player projectile overlapping enemy then destroy it
+                table.remove(ufos, i)
+                table.remove(player_lasers, projectile_i)
+                player_score = player_score + 10
             end
         end
     else
-        -- if it's an enemy projectile then check player
-        if projectile.x > (player.x - (PROJECTILE_SIZE_CF * player.image:getWidth()/2)) and -- might want to make edges of player their own attributes
-            projectile.x < (player.x + (PROJECTILE_SIZE_CF * player.image:getWidth())) and
-            projectile.y > (player.y - (PROJECTILE_SIZE_CF * player.image:getHeight()/2)) and
-            projectile.y < (player.y + (PROJECTILE_SIZE_CF * player.image:getHeight())) then
-                -- if projectile overlapping player then destroy it
-                game_over()
+        if utils.overlap(projectile, player, PROJECTILE_SIZE_CF) then
+            -- if projectile overlapping player then YOU DEAD!
+            game_over()
         end
     end
 end

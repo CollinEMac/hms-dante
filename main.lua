@@ -98,11 +98,24 @@ end
 
 function love.keypressed(key)
     -- adjust player speed
-    if key == "e" and player.speed < 8 then
-        player.speed = player.speed + 1
+    if key == "e" then
+        if level == 1 and player.speed < 8 then
+            player.speed = player.speed + 1
+        elseif level == 2 then
+            for i, npc in ipairs(npcs) do
+            -- if player on npc, interact with them
+                if utils.overlap(npc, player, PROJECTILE_SIZE_CF) then
+                    -- TODO
+                    -- initiate dilaogue or whatever
+                    -- probably want to put this action on the npc object itself
+                end
+            end
+        end
     end
-    if key == "q" and player.speed > 2 then
-        player.speed = player.speed - 1
+    if key == "q" then
+        if level == 1 and player.speed > 2 then
+            player.speed = player.speed - 1
+        end
     end
     if key == "space" or key == "return" or key == "kpenter" then
         update.select_menu_item()

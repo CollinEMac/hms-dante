@@ -13,4 +13,16 @@ function utils.round(num, numDecimalPlaces)
     return math.floor(num * mult + 0.5) / mult
 end
 
+function utils.overlap(first_sprite, second_sprite, CF)
+    -- checks to see if two sprites are overlapping each other
+    if first_sprite.x > (second_sprite.x - (CF * second_sprite.image:getWidth()/2)) and
+        first_sprite.x < (second_sprite.x + (CF * second_sprite.image:getWidth())) and
+        first_sprite.y > (second_sprite.y - (CF * second_sprite.image:getHeight()/2)) and
+        first_sprite.y < (second_sprite.y + (CF * second_sprite.image:getHeight())) then
+            return true
+    end
+
+    return false
+end
+
 return utils
