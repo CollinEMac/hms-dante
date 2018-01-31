@@ -177,6 +177,7 @@ function love.draw()
             draw.projectile()
             draw.ufo_projectiles()
         end
+        --TODO: interact with npcs
         draw.npcs()
         draw.text()
     else

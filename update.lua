@@ -85,21 +85,40 @@ function update.player()
     -- that'll make things easier for changing speed too
     -- let the player move to the edge of the background
     elseif level == 2 then
-        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and cam.y < 0 then
-            player.y = player.y - player.speed
-            cam.y = cam.y + player.speed
+        vert_mid_of_cam = -cam.y + (window_height/2)
+        hor_mid_of_cam = -cam.x + (window_width/2)
+
+        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
+            if cam.y < 0 and (player.y <= vert_mid_of_cam) then
+                cam.y = cam.y + player.speed
+            end
+            if player.y > 0 then
+                player.y = player.y - player.speed
+            end
         end
-        if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and cam.x < 0 then
-            player.x = player.x - player.speed
-            cam.x = cam.x + player.speed
+        if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) then
+            if cam.x < 0 and (player.x <= hor_mid_of_cam) then
+                cam.x = cam.x + player.speed
+            end
+            if player.x > 0 then
+                player.x = player.x - player.speed
+            end
         end
-        if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and cam.y - window_height > -(background.image:getHeight()) then
-            player.y = player.y + player.speed
-            cam.y = cam.y - player.speed
+        if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) then
+            if cam.y - window_height > -(background.image:getHeight()) and (player.y >= vert_mid_of_cam) then
+                cam.y = cam.y - player.speed
+            end
+            if player.y < window_height + (-cam.y) then -- this is confusing as heck because cam.y is negative
+                player.y = player.y + player.speed
+            end
         end
-        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and cam.x - window_width > -(background.image:getWidth()) then
-            player.x = player.x + player.speed
-            cam.x = cam.x - player.speed
+        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) then
+            if cam.x - window_width > -(background.image:getWidth()) and (player.x >= hor_mid_of_cam) then
+                cam.x = cam.x - player.speed
+            end
+            if player.x < window_width + (-cam.x) then -- this is confusing as heck because cam.x is negative
+                player.x = player.x + player.speed
+            end
         end
     end
 end
