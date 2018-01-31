@@ -101,7 +101,6 @@ function update.player()
             player.x = player.x + player.speed
             cam.x = cam.x - player.speed
         end
-        print(cam.x)
     end
 end
 
