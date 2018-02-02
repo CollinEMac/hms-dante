@@ -27,7 +27,9 @@ function update.select_menu_item()
             start_action = true
         end
 
-        level = 1
+        if level == 0 or level == 100 then
+            level = 1
+        end
 
     elseif menu_selection == 2 then
         -- TODO: add settings and options
@@ -248,25 +250,29 @@ function update.npcs()
         -- create npc
         -- TODO: draw off screen npc
         npc1 = {image = CHARACTER_PLAYER,
+            name = 'npc1',
             x = window_width / 2,
             y = window_height + 10,
+            speech = {[1] = 'Hey, I\'m an NPC!'
+            }
         }
 
         npcs[#npcs+1] = npc1
     end
 end
 
-function update.story()
+function update.story(char)
     --Write story text if time is correct and last_story text cleared (enter or space)
     -- later this will depend on time/level
-    advance_text()
+    advance_text(char)
 
     if start_action == true then
         action()
     end
 end
 
-function advance_text()
+function advance_text(char)
+    now = love.timer.getTime()
     if level == 1 then
         now = love.timer.getTime()
         if start_action == false and continue_story == true and story_text == STORY_TEXTS[1] then
@@ -283,7 +289,7 @@ function advance_text()
 
         if start_action == false and continue_story == true and story_text == STORY_TEXTS[3] then
             type_writer_c = ""
-            character = CHARACTERS['dante']
+            character = char.name
             story_text = STORY_TEXTS[4]
             continue_story = false
         end
@@ -295,13 +301,18 @@ function advance_text()
             start_action = true
             continue_story = false
         end
-
-        if (now > type_writer_time + 0.05) and #type_writer_c < #story_text then
-            -- TODO: Allow for changing this speed in options menu
-            type_writer_c = story_text:sub(1, #type_writer_c + 1)
-            type_writer_time = now
+    elseif level == 2 then
+        if continue_story == true then
+            character = char.name
+            story_text = char.speech[1]
+            continue_story = false
         end
+    end
 
+    if (now > type_writer_time + 0.05) and #type_writer_c < #story_text then
+        -- TODO: Allow for changing this speed in options menu
+        type_writer_c = story_text:sub(1, #type_writer_c + 1)
+        type_writer_time = now
     end
 end
 

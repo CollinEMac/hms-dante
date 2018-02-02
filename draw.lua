@@ -91,7 +91,7 @@ function draw.npcs()
 end
 
 function draw.text()
-    if story_text ~= "" then
+    if story_text ~= STORY_TEXTS[1] then
         text_box_vertex = {
             { 0.05 * window_width, 0.75 * window_height, 0, 0, 190, 190, 190, 100 }, -- top left vertex
             { 0.95 * window_width, 0.75 * window_height, 0, 0, 190, 190, 190, 100 }, -- top right vertex
@@ -102,15 +102,10 @@ function draw.text()
         text_box = love.graphics.newMesh(text_box_vertex, "fan", "static")
 
         love.graphics.draw(text_box)
-    end
 
-    if level == 1 then
-        love.graphics.print(player_score, 0.9 * window_width, 0.04 * window_height)
-    end
-
-    -- show story text during story moments
-    if start_action == false then
-        if character then
+        -- show story text during story moments
+        -- if start_action == false then
+        if character ~= '' then
             text = character .. ': ' .. type_writer_c
         else
             text = type_writer_c
@@ -118,6 +113,12 @@ function draw.text()
 
         love.graphics.printf(text, 0.15 * window_width, 0.80 * window_height, 0.75 * window_width)
 
+        -- end
+
+    end
+
+    if level == 1 then
+        love.graphics.print(player_score, 0.9 * window_width, 0.04 * window_height)
     end
 end
 

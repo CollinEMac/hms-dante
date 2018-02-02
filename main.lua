@@ -16,8 +16,6 @@ SHIP_BACKGROUND = love.graphics.newImage("sprites/brown.jpg")
 SHIP_PLAYER = love.graphics.newImage("sprites/spaceship.png")
 CHARACTER_PLAYER = love.graphics.newImage("sprites/dante.jpg")
 
-CHARACTERS = {["dante"] = "Dante"}
-
 STORY_TEXTS = {[1] = "",
     [2] = "Lost. Hopelessly lost...",
     [3] = "I don't know how long it's been but I'm running low on fuel and food",
@@ -43,6 +41,7 @@ function love.load()
     }
 
     player = {image = SHIP_PLAYER,
+        name = 'Dante',
         x = window_width / 2,
         y = window_height / 2,
         speed = 5,
@@ -64,6 +63,7 @@ function restart_game()
     player_score = 0
     ufo_counter = 0
     npcs = {}
+    character = 'narrator'
     story_text = STORY_TEXTS[1]
     type_writer_c = ""
     type_writer_time = 0
@@ -105,6 +105,8 @@ function love.keypressed(key)
             for i, npc in ipairs(npcs) do
             -- if player on npc, interact with them
                 if utils.overlap(npc, player, PROJECTILE_SIZE_CF) then
+                    continue_story = true
+                    speaking_char = npc
                     -- TODO
                     -- initiate dilaogue or whatever
                     -- probably want to put this action on the npc object itself
@@ -112,11 +114,13 @@ function love.keypressed(key)
             end
         end
     end
+
     if key == "q" then
         if level == 1 and player.speed > 2 then
             player.speed = player.speed - 1
         end
     end
+
     if key == "space" or key == "return" or key == "kpenter" then
         update.select_menu_item()
         if player.alive == false then
@@ -127,6 +131,7 @@ function love.keypressed(key)
             type_writer_c = story_text
         end
     end
+
     if key == "escape" and player.alive then
         -- level 100 is 'pause' state
         if level ~= 100 and start_action == true then
@@ -159,14 +164,15 @@ function love.update(dt)
             background.image = SHIP_BACKGROUND
             background.x = 0
             background.y = 0
-        else
+        elseif level == 1 then
             update.player_projectiles()
             update.ufo(dt)
             update.ufo_projectiles()
+            update.story(player)
+        elseif level == 2 then
+            update.npcs()
+            update.story(speaking_char)
         end
-
-        update.npcs()
-        update.story()
     end
 end
 
@@ -190,7 +196,7 @@ function love.draw()
             draw.projectile()
             draw.ufo_projectiles()
         end
-        --TODO: interact with npcs
+
         draw.npcs()
         draw.text()
     else
@@ -200,5 +206,4 @@ function love.draw()
     if level == 2 then
         love.graphics.pop()
     end
-
 end
