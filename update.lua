@@ -87,9 +87,7 @@ function update.player()
     -- that'll make things easier for changing speed too
     -- let the player move to the edge of the background
     elseif level == 2 then
-        vert_mid_of_cam = -cam.y + (window_height/2)
-        hor_mid_of_cam = -cam.x + (window_width/2)
-
+        --TODO: this is still a little wonky
         if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then
             if cam.y < 0 and (player.y <= vert_mid_of_cam) then
                 cam.y = cam.y + player.speed

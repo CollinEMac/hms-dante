@@ -69,9 +69,14 @@ function restart_game()
     type_writer_time = 0
     start_action = false
 
+    -- might want to move these
     cam = {x = -5,
         y = -5
     }
+
+    vert_mid_of_cam = -cam.y + (window_height/2)
+    hor_mid_of_cam = -cam.x + (window_width/2)
+    -- don't want these unless it's rpg stage
 
     continue_story = true
     start = love.timer.getTime()

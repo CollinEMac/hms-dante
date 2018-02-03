@@ -91,12 +91,20 @@ function draw.npcs()
 end
 
 function draw.text()
+    if level == 2 then
+        corrected_window_width = window_width - cam.x
+        corrected_window_height = window_height - cam.y
+    else
+        corrected_window_width = window_width
+        corrected_window_height = window_height
+    end
+
     if story_text ~= STORY_TEXTS[1] then
         text_box_vertex = {
-            { 0.05 * window_width, 0.75 * window_height, 0, 0, 190, 190, 190, 100 }, -- top left vertex
-            { 0.95 * window_width, 0.75 * window_height, 0, 0, 190, 190, 190, 100 }, -- top right vertex
-            { 0.95 * window_width, 0.95 * window_height, 0, 0, 190, 190, 190, 100 }, -- bottom right vertex
-            { 0.05 * window_width, 0.95 * window_height, 0, 0, 190, 190, 190, 100 } -- bottom left vertex
+            { 0.05 * corrected_window_width, 0.75 * corrected_window_height, 0, 0, 190, 190, 190, 100 }, -- top left vertex
+            { 0.95 * corrected_window_width, 0.75 * corrected_window_height, 0, 0, 190, 190, 190, 100 }, -- top right vertex
+            { 0.95 * corrected_window_width, 0.95 * corrected_window_height, 0, 0, 190, 190, 190, 100 }, -- bottom right vertex
+            { 0.05 * corrected_window_width, 0.95 * corrected_window_height, 0, 0, 190, 190, 190, 100 } -- bottom left vertex
         }
 
         text_box = love.graphics.newMesh(text_box_vertex, "fan", "static")
@@ -104,16 +112,14 @@ function draw.text()
         love.graphics.draw(text_box)
 
         -- show story text during story moments
-        -- if start_action == false then
         if character ~= '' then
             text = character .. ': ' .. type_writer_c
         else
             text = type_writer_c
         end
 
-        love.graphics.printf(text, 0.15 * window_width, 0.80 * window_height, 0.75 * window_width)
-
-        -- end
+        -- make these positions dependent on teh box, not the window
+        love.graphics.printf(text, 0.15 * corrected_window_width, 0.80 * corrected_window_height, 0.75 * window_width)
 
     end
 
