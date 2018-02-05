@@ -112,7 +112,7 @@ function draw.text()
         love.graphics.draw(text_box)
 
         -- show story text during story moments
-        if character ~= '' then
+        if character ~= 'narrator' then
             text = character .. ': ' .. type_writer_c
         else
             text = type_writer_c

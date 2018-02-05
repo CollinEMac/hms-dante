@@ -296,7 +296,7 @@ function advance_text(char)
 
         if start_action == false and continue_story == true and story_text == STORY_TEXTS[4] then
             type_writer_c = ""
-            character = ""
+            character = "narrator"
             story_text = STORY_TEXTS[1]
             start_action = true
             continue_story = false
