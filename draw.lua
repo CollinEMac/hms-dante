@@ -91,20 +91,25 @@ function draw.npcs()
 end
 
 function draw.text()
-    if level == 2 then
-        corrected_window_width = window_width - cam.x
-        corrected_window_height = window_height - cam.y
-    else
-        corrected_window_width = window_width
-        corrected_window_height = window_height
-    end
-
     if story_text ~= STORY_TEXTS[1] then
+        -- I don't need to recreate this every time. I could just update teh vertices each frame
+        -- TODO: misc performance issues
+
+        -- get the values sides of the text box
+        left_most_text_box = (0.05 * window_width) - cam.x
+        right_most_text_box = (0.95 * window_width) - cam.x
+        bottom_of_text_box = (0.95 * window_height) - cam.y
+        top_of_text_box = (0.75 * window_height) - cam.y
+
+        text_box_width = right_most_text_box - left_most_text_box
+        text_box_height = bottom_of_text_box - top_of_text_box
+
+        -- define the text box
         text_box_vertex = {
-            { 0.05 * corrected_window_width, 0.75 * corrected_window_height, 0, 0, 190, 190, 190, 100 }, -- top left vertex
-            { 0.95 * corrected_window_width, 0.75 * corrected_window_height, 0, 0, 190, 190, 190, 100 }, -- top right vertex
-            { 0.95 * corrected_window_width, 0.95 * corrected_window_height, 0, 0, 190, 190, 190, 100 }, -- bottom right vertex
-            { 0.05 * corrected_window_width, 0.95 * corrected_window_height, 0, 0, 190, 190, 190, 100 } -- bottom left vertex
+            { left_most_text_box, bottom_of_text_box, 0, 0, 190, 190, 190, 100 }, -- top left vertex
+            { right_most_text_box, bottom_of_text_box, 0, 0, 190, 190, 190, 100 }, -- top right vertex
+            { right_most_text_box, top_of_text_box, 0, 0, 190, 190, 190, 100 }, -- bottom right vertex
+            { left_most_text_box,top_of_text_box, 0, 0, 190, 190, 190, 100 } -- bottom left vertex
         }
 
         text_box = love.graphics.newMesh(text_box_vertex, "fan", "static")
@@ -118,9 +123,8 @@ function draw.text()
             text = type_writer_c
         end
 
-        -- make these positions dependent on teh box, not the window
-        love.graphics.printf(text, 0.15 * corrected_window_width, 0.80 * corrected_window_height, 0.75 * window_width)
-
+        -- TODO: if i use cam for level 1 too then we won't have to check here I guess
+        love.graphics.printf(text, left_most_text_box + (0.05 * text_box_width), top_of_text_box + (0.10 * text_box_height),  right_most_text_box - (0.05 * text_box_width))
     end
 
     if level == 1 then
