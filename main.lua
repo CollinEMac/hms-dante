@@ -107,6 +107,7 @@ function love.keypressed(key)
             -- if player on npc, interact with them
                 if utils.overlap(npc, player, PROJECTILE_SIZE_CF) then
                     continue_story = true
+                    start_action = false
                     speaking_char = npc
                 end
             end

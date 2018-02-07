@@ -314,7 +314,7 @@ function advance_text(char)
             character = "narrator"
             story_text = STORY_TEXTS[1]
             continue_story = false
-            start_action = false
+            start_action = true
         end
     end
 
