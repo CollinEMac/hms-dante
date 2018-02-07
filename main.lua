@@ -134,11 +134,12 @@ function love.keypressed(key)
     if key == "escape" and player.alive then
         -- level 100 is 'pause' state
         if level ~= 100 and start_action == true then
+            unpause_level = level
             level = 100
             start_action = false
         elseif level == 100 and start_action == false then
-            -- TODO: Probably need to keep this in a buffer or something
-            level = 1 -- or 2
+            -- TODO: Fix the pause menu in level 2
+            level = unpause_level
             start_action = true
         end
     end

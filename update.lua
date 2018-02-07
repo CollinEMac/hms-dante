@@ -248,7 +248,6 @@ end
 function update.npcs()
     if level == 2 and #npcs == 0 then
         -- create npc
-        -- TODO: draw off screen npc
         npc1 = {image = CHARACTER_PLAYER,
             name = 'npc1',
             x = window_width / 2,

@@ -92,9 +92,6 @@ end
 
 function draw.text()
     if story_text ~= STORY_TEXTS[1] then
-        -- I don't need to recreate this every time. I could just update teh vertices each frame
-        -- TODO: misc performance issues
-
         -- get the values sides of the text box
         left_most_text_box = (0.05 * window_width) - cam.x
         right_most_text_box = (0.95 * window_width) - cam.x
@@ -112,7 +109,12 @@ function draw.text()
             { left_most_text_box,top_of_text_box, 0, 0, 190, 190, 190, 100 } -- bottom left vertex
         }
 
-        text_box = love.graphics.newMesh(text_box_vertex, "fan", "static")
+
+        if text_box == nil then
+            text_box = love.graphics.newMesh(text_box_vertex, "fan", "static")
+        else
+            text_box:setVertices(text_box_vertex, 1)
+        end
 
         love.graphics.draw(text_box)
 
@@ -123,7 +125,6 @@ function draw.text()
             text = type_writer_c
         end
 
-        -- TODO: if i use cam for level 1 too then we won't have to check here I guess
         love.graphics.printf(text, left_most_text_box + (0.05 * text_box_width), top_of_text_box + (0.10 * text_box_height),  right_most_text_box - (0.05 * text_box_width))
     end
 
