@@ -302,10 +302,19 @@ function advance_text(char)
             continue_story = false
         end
     elseif level == 2 then
-        if continue_story == true then
+        if continue_story == true and story_text == STORY_TEXTS[1] then
+            type_writer_c = ""
             character = char.name
             story_text = char.speech[1]
             continue_story = false
+        end
+
+        if continue_story == true and story_text == char.speech[1] then
+            type_writer_c = ""
+            character = "narrator"
+            story_text = STORY_TEXTS[1]
+            continue_story = false
+            start_action = false
         end
     end
 

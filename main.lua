@@ -108,9 +108,6 @@ function love.keypressed(key)
                 if utils.overlap(npc, player, PROJECTILE_SIZE_CF) then
                     continue_story = true
                     speaking_char = npc
-                    -- TODO
-                    -- initiate dilaogue or whatever
-                    -- probably want to put this action on the npc object itself
                 end
             end
         end
@@ -165,6 +162,9 @@ function love.update(dt)
             background.image = SHIP_BACKGROUND
             background.x = 0
             background.y = 0
+
+            -- Might need to rename this, can't continue story unless this if false
+            start_action = false
         elseif level == 1 then
             update.player_projectiles()
             update.ufo(dt)
