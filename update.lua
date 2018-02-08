@@ -27,8 +27,12 @@ function update.select_menu_item()
             start_action = true
         end
 
-        if level == 0 or level == 100 then
+        if level == 0 then
             level = 1
+        end
+
+        if level == 100 then
+            level = unpause_level
         end
 
     elseif menu_selection == 2 then
