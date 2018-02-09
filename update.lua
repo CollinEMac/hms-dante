@@ -90,7 +90,7 @@ function update.player()
     -- scroll everything to the left at a constant rate
     -- that'll make things easier for changing speed too
     -- let the player move to the edge of the background
-    elseif level == 2 then
+    elseif level == 2 and story_text == "" then
         vert_mid_of_cam = -cam.y + (window_height/2)
         hor_mid_of_cam = -cam.x + (window_width/2)
 
@@ -155,6 +155,14 @@ function update.ufo(dt)
             ufo.y < window_height - (UFO_SIZE_CF * ufo.image:getHeight()) then
 
                 ufo.x = ufo.x + ufo.speed
+
+                -- make ufos go backwards at some point?
+                -- if ufo.x > player.x - 50 then -- let's mess around with enemy movement
+                --     ufo.x = ufo.x + ufo.speed
+                -- else
+                --     ufo.speed = 1
+                --     ufo.x = ufo.x - ufo.speed
+                -- end
 
                 if ufo.movement_pattern == 'sin' then
                     ufo_time = ufo_time + dt
@@ -228,7 +236,8 @@ function create_ufo_projectiles(ufo)
             x = ufo.x,
             y = ufo.y,
             dx = math.cos(direction),
-            dy = math.sin(direction)
+            dy = math.sin(direction),
+            speed = 3
         }
     end
 end
@@ -240,8 +249,8 @@ function update.ufo_projectiles()
             0 < ufo_laser.y and
             ufo_laser.x < window_width and
             ufo_laser.y < window_height then
-                ufo_laser.x = ufo_laser.x - ufo_laser.dx * PLAYER_PROJECTILE_SPEED
-                ufo_laser.y = ufo_laser.y - ufo_laser.dy * PLAYER_PROJECTILE_SPEED -- TODO: vary projectile speed
+                ufo_laser.x = ufo_laser.x - ufo_laser.dx * ufo_laser.speed
+                ufo_laser.y = ufo_laser.y - ufo_laser.dy * ufo_laser.speed
                 object_hit(false, ufo_laser, 0)
         else
             table.remove(ufo_lasers, i)

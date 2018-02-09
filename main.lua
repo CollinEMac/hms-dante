@@ -18,7 +18,7 @@ CHARACTER_PLAYER = love.graphics.newImage("sprites/dante.jpg")
 
 STORY_TEXTS = {[1] = "",
     [2] = "Lost. Hopelessly lost...",
-    [3] = "I don't know how long it's been but I'm running low on fuel and food",
+    [3] = "I don't know how long it's been but I'm running low on fuel and food.",
     [4] = "My name is Dante."
 }
 
@@ -54,6 +54,8 @@ end
 function restart_game()
     -- Runs when the game launches and when the game restarts after a game over
     level = 0
+    player.x = window_width / 2
+    player.y = window_height / 2
     menu_selection = 1
     player_lasers = {}
     last_player_laser_create = 0
@@ -160,6 +162,15 @@ function love.update(dt)
             player_projectiles = {}
             love.graphics.clear()
             level = level + 1
+
+            -- Design notes
+            -- I'm thinking about maybe not doing this whole "rpg stage" things
+            -- and instead just doing a visual novel type of approach where
+            -- discussion happens and the player is always in the ship
+            -- On the other hand, the rpg hub section will probably do a lot to
+            -- make the game feel bigger. Either way I need to focus on gameplay
+            -- for now
+
             player.x = window_width / 2
             player.y = window_height / 2
             background.image = SHIP_BACKGROUND
