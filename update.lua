@@ -350,7 +350,7 @@ function object_hit(player_friendly, projectile, projectile_i)
             end
         end
     else
-        if utils.overlap(projectile, player, PROJECTILE_SIZE_CF) then
+        if utils.overlap(projectile, player, ENEMY_PROJECTILE_SIZE_CF) then
             -- if projectile overlapping player then YOU DEAD!
             game_over()
         end

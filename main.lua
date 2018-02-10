@@ -7,7 +7,8 @@ draw = require("draw")
 -- Correction for the image, it's tilted to the side
 PLAYER_IMG_ROTATION_CF = 0.75 * math.pi
 UFO_SIZE_CF = 0.15
-PROJECTILE_SIZE_CF = 0.1
+PLAYER_PROJECTILE_SIZE_CF = 0.1
+ENEMY_PROJECTILE_SIZE_CF = 0.05
 PLAYER_PROJECTILE_SPEED = 7
 
 SPACE_BACKGROUND = love.graphics.newImage("sprites/background.jpg")
@@ -107,7 +108,7 @@ function love.keypressed(key)
         elseif level == 2 then
             for i, npc in ipairs(npcs) do
             -- if player on npc, interact with them
-                if utils.overlap(npc, player, PROJECTILE_SIZE_CF) then
+                if utils.overlap(npc, player, PLAYER_PROJECTILE_SIZE_CF) then
                     continue_story = true
                     start_action = false
                     speaking_char = npc
