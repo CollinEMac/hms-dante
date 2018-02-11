@@ -154,15 +154,19 @@ function update.ufo(dt)
             ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) > 0 and
             ufo.y < window_height - (UFO_SIZE_CF * ufo.image:getHeight()) then
 
-                ufo.x = ufo.x + ufo.speed
+                if ufo.toward_player == true then
+                    ufo.x = ufo.x - ufo.speed -- move to the left
 
-                -- make ufos go backwards at some point?
-                -- if ufo.x > player.x - 50 then -- let's mess around with enemy movement
-                --     ufo.x = ufo.x + ufo.speed
-                -- else
-                --     ufo.speed = 1
-                --     ufo.x = ufo.x - ufo.speed
-                -- end
+                    if ufo.x < player.x - 50 then
+                        ufo.toward_player = false
+                    end
+                else
+                    ufo.x = ufo.x + ufo.speed -- move to the right
+
+                    if ufo.x > window_width - 50 then
+                        ufo.toward_player = true
+                    end
+                end
 
                 if ufo.movement_pattern == 'sin' then
                     ufo_time = ufo_time + dt
@@ -201,11 +205,13 @@ function spawn_ufo(movement_pattern, y_percent)
     new_ufo = {image = love.graphics.newImage("sprites/ufo.jpg"),
         x = 0,
         y = y_percent * window_height,
-        speed = -1,
+        speed = 1,
         movement_pattern = movement_pattern,
+        toward_player = true,
         create_time = love.timer.getTime() -- for timed events like firing projectiles
     }
 
+    -- Have to do this later because it references the object image
     new_ufo.x = window_width + (UFO_SIZE_CF * new_ufo.image:getWidth()/2)
 
     ufos[#ufos + 1] = new_ufo
