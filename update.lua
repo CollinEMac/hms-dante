@@ -173,6 +173,23 @@ function update.ufo(dt)
                     ufo.y = ufo.y + 0.4 * math.sin(ufo_time)
                 end
 
+                if ufo.movement_pattern == 'random' then
+                    -- random y axis movement
+                    if ufo.y <= UFO_SIZE_CF * (ufo.image:getHeight()/2) then
+                        ufo.y = ufo.y + 1
+                    elseif ufo.y >= then
+                        ufo.y = ufo.y - 1
+                    else
+                        math.randomseed(os.time())
+
+                        if math.random(2) == 1 then
+                            ufo.y = ufo.y - 1
+                        else
+                            ufo.y = ufo.y + 1
+                        end
+                    end
+                end
+
                 -- kill player on contact with ufo
                 object_hit(false, ufo, 0)
                 create_ufo_projectiles(ufo)
@@ -186,7 +203,7 @@ function action()
     -- call events like spawning enemies
     -- spawn just the first ufo in the
     if ufo_counter == 0 then
-        spawn_ufo('sin', 0.167)
+        spawn_ufo('random', 0.167)
         last_ufo_spawn = love.timer.getTime()
     end
 
