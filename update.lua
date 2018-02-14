@@ -152,7 +152,7 @@ function update.ufo(dt)
     for i, ufo in ipairs(ufos) do
         if ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()) > 0 and
             ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) > 0 and
-            ufo.y < window_height - (UFO_SIZE_CF * ufo.image:getHeight()) then
+            ufo.y < window_height - (UFO_SIZE_CF * ufo.image:getHeight()) then -- change this so they just won't go off screen?
 
                 if ufo.toward_player == true then
                     ufo.x = ufo.x - ufo.speed -- move to the left
@@ -178,6 +178,7 @@ function update.ufo(dt)
                     if ufo.y <= UFO_SIZE_CF * (ufo.image:getHeight()/2) then
                         ufo.y = ufo.y + 1
                     elseif ufo.y >= then
+                    -- elseif ufo.y >= window_height - (UFO_SIZE_CF * ufo.image:getHeight() - 10) then
                         ufo.y = ufo.y - 1
                     else
                         math.randomseed(os.time())
@@ -215,6 +216,8 @@ function action()
             spawn_ufo('straight', 0.833)
         end
     end
+
+
 end
 
 function spawn_ufo(movement_pattern, y_percent)
@@ -250,9 +253,13 @@ function update.create_player_projectiles()
 end
 
 function create_ufo_projectiles(ufo)
+    -- create a projectile every div seconds for variation
+    math.randomseed(os.time())
+
+    div = math.random(3, 5)
     time = utils.round((love.timer.getTime() - ufo.create_time), 0)
 
-    if time % 5 == 0 and #ufo_lasers < 1 then
+    if time % div == 0 and #ufo_lasers < 1 then
         local direction = math.atan2((ufo.y - player.y), (ufo.x - player.x))
 
         ufo_lasers[#ufo_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
