@@ -151,8 +151,9 @@ end
 function update.ufo(dt)
     for i, ufo in ipairs(ufos) do
         if ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()) > 0 and
-            ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) > 0 and
-            ufo.y < window_height - (UFO_SIZE_CF * ufo.image:getHeight()) then -- change this so they just won't go off screen?
+            ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) > 0 then
+            -- so they just won't go off screen?
+            -- ufo.y < window_height - (UFO_SIZE_CF * ufo.image:getHeight()) then
 
                 if ufo.toward_player == true then
                     ufo.x = ufo.x - ufo.speed -- move to the left
@@ -168,19 +169,20 @@ function update.ufo(dt)
                     end
                 end
 
-                if ufo.movement_pattern == 'sin' then
-                    ufo_time = ufo_time + dt
-                    ufo.y = ufo.y + 0.4 * math.sin(ufo_time)
-                end
+                -- don't allow ufos to go off screen (destroy ones that do manually)
+                if ufo.y <= UFO_SIZE_CF * (ufo.image:getHeight()/2) then
+                    ufo.y = ufo.y + 1
+                elseif ufo.y >= window_height - (UFO_SIZE_CF * ufo.image:getHeight()) then
+                    ufo.y = ufo.y - 1
+                else
+                    -- handle vertical movement patterns
+                    if ufo.movement_pattern == 'sin' then
+                        ufo_time = ufo_time + dt
+                        ufo.y = ufo.y + 0.4 * math.sin(ufo_time)
+                    end
 
-                if ufo.movement_pattern == 'random' then
-                    -- random y axis movement
-                    if ufo.y <= UFO_SIZE_CF * (ufo.image:getHeight()/2) then
-                        ufo.y = ufo.y + 1
-                    elseif ufo.y >= then
-                    -- elseif ufo.y >= window_height - (UFO_SIZE_CF * ufo.image:getHeight() - 10) then
-                        ufo.y = ufo.y - 1
-                    else
+                    if ufo.movement_pattern == 'random' then
+                        -- random y axis movement
                         math.randomseed(os.time())
 
                         if math.random(2) == 1 then
