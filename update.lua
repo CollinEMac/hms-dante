@@ -215,11 +215,18 @@ function action()
         now = love.timer.getTime()
 
         if now > last_ufo_spawn + 2 then
-            spawn_ufo('straight', 0.833)
+            spawn_ufo('random', 0.833)
+            last_ufo_spawn = now
         end
     end
 
+    if #ufos <= 2 and ufo_counter == 2 then
+        now = love.timer.getTime()
 
+        if now > ready_for_spawn_time + 2 then
+            spawn_ufo('random', 0.555)
+        end
+    end
 end
 
 function spawn_ufo(movement_pattern, y_percent)
@@ -255,6 +262,7 @@ function update.create_player_projectiles()
 end
 
 function create_ufo_projectiles(ufo)
+    -- TODO: Create some variation in attack patterns (weapons)
     -- create a projectile every div seconds for variation
     math.randomseed(os.time())
 
@@ -376,6 +384,11 @@ function object_hit(player_friendly, projectile, projectile_i)
         for i, ufo in ipairs(ufos) do
             if utils.overlap(projectile, ufo, UFO_SIZE_CF) then
             -- if player projectile overlapping enemy then destroy it
+
+                if #ufos <= 2 and ufo_counter == 2 then
+                    ready_for_spawn_time = love.timer.getTime()
+                end
+
                 table.remove(ufos, i)
                 table.remove(player_lasers, projectile_i)
                 player_score = player_score + 10
