@@ -72,7 +72,6 @@ function restart_game()
     type_writer_time = 0
     start_action = false
     ready_for_spawn_time = 99999
-    math.randomseed(os.time())
 
     -- might want to move these
     cam = {x = -5,

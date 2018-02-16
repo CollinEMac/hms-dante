@@ -184,7 +184,7 @@ function update.ufo(dt)
                     if ufo.movement_pattern == 'random' then
                         -- random y axis movement
 
-                        if math.random(2) == 1 then
+                        if love.math.random(2) == 1 then
                             ufo.y = ufo.y - 1
                         else
                             ufo.y = ufo.y + 1
@@ -265,7 +265,7 @@ end
 function create_ufo_projectiles(ufo)
     -- TODO: Create some variation in attack patterns (weapons)
     -- create a projectile every div seconds for variation
-    div = math.random(3, 5)
+    div = love.math.random(3, 5)
     time = utils.round((love.timer.getTime() - ufo.create_time), 0)
 
     if time % div == 0 and #ufo_lasers < 1 then
