@@ -183,7 +183,6 @@ function update.ufo(dt)
 
                     if ufo.movement_pattern == 'random' then
                         -- random y axis movement
-                        math.randomseed(os.time())
 
                         if math.random(2) == 1 then
                             ufo.y = ufo.y - 1
@@ -205,26 +204,28 @@ end
 function action()
     -- call events like spawning enemies
     -- spawn just the first ufo in the
-    if ufo_counter == 0 then
-        spawn_ufo('random', 0.167)
-        last_ufo_spawn = love.timer.getTime()
-    end
-
-    -- spawn a second ufo
-    if ufo_counter == 1 then
-        now = love.timer.getTime()
-
-        if now > last_ufo_spawn + 2 then
-            spawn_ufo('random', 0.833)
-            last_ufo_spawn = now
+    if level == 1 then
+        if ufo_counter == 0 then
+            spawn_ufo('random', 0.167)
+            last_ufo_spawn = love.timer.getTime()
         end
-    end
 
-    if #ufos <= 2 and ufo_counter == 2 then
-        now = love.timer.getTime()
+        -- spawn a second ufo
+        if ufo_counter == 1 then
+            now = love.timer.getTime()
 
-        if now > ready_for_spawn_time + 2 then
-            spawn_ufo('random', 0.555)
+            if now > last_ufo_spawn + 2 then
+                spawn_ufo('random', 0.833)
+                last_ufo_spawn = now
+            end
+        end
+
+        if #ufos <= 2 and ufo_counter == 2 then
+            now = love.timer.getTime()
+
+            if now > ready_for_spawn_time + 2 then
+                spawn_ufo('random', 0.555)
+            end
         end
     end
 end
@@ -264,8 +265,6 @@ end
 function create_ufo_projectiles(ufo)
     -- TODO: Create some variation in attack patterns (weapons)
     -- create a projectile every div seconds for variation
-    math.randomseed(os.time())
-
     div = math.random(3, 5)
     time = utils.round((love.timer.getTime() - ufo.create_time), 0)
 
