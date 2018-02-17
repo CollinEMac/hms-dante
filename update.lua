@@ -129,7 +129,7 @@ function update.player()
     end
 end
 
-function update.player_projectiles()
+function update.player_projectiles(dt)
     if level == 1 then
         for i, player_laser in ipairs(player_lasers) do
             if 0 < player_laser.x and
@@ -137,8 +137,16 @@ function update.player_projectiles()
                 player_laser.x < window_width and
                 player_laser.y < window_height then
 
-                    player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
-                    player_laser.y = player_laser.y + player_laser.dy * PLAYER_PROJECTILE_SPEED
+                    if player_laser.weapon == 'sin' then
+                        -- TODO: this isn't workign right
+                        player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
+                        -- player_laser.y = player_laser.y + player_laser.dy * PLAYER_PROJECTILE_SPEED
+                        player_laser.time = player_laser.time + dt
+                        player_laser.y = player_laser.y + (player_laser.dy * PLAYER_PROJECTILE_SPEED) + (20 * math.sin(player_laser.time)) --(player_laser.y + 0.4 * math.sin(player_laser_time)) * PLAYER_PROJECTILE_SPEED
+                    else
+                        player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
+                        player_laser.y = player_laser.y + player_laser.dy * PLAYER_PROJECTILE_SPEED
+                    end
 
                     object_hit(true, player_laser, i)
             else
@@ -175,14 +183,13 @@ function update.ufo(dt)
                 else
                     -- handle vertical movement patterns
                     if ufo.movement_pattern == 'sin' then
-                        ufo_time = ufo_time + dt
-                        ufo.y = ufo.y + 0.4 * math.sin(ufo_time)
+                        -- THIS IS CAUSING HUGE PERFORMANCE ISSUES AND FREEZES THE GAME UP!
+                        ufo.time = ufo.time + dt
+                        ufo.y = ufo.y + 0.4 * math.sin(ufo.time)
                     end
 
                     if ufo.movement_pattern == 'random' then
                         -- random y axis movement
-                        --TODO: make this movement fluid
-
                         if love.math.random(50) == 1 then
                             -- Randomly change y movement direction (up/down)
                             ufo.y_delta = -ufo.y_delta
@@ -208,6 +215,7 @@ function action()
         if ufo_counter == 0 then
             spawn_ufo('random', 0.167)
             last_ufo_spawn = love.timer.getTime()
+            --TODO: look at how we can integrate this with ufo.time
         end
 
         -- spawn a second ufo
@@ -236,6 +244,7 @@ function spawn_ufo(movement_pattern, y_percent)
         x = 0,
         y = y_percent * window_height,
         speed = 1,
+        time = 0,
         movement_pattern = movement_pattern,
         toward_player = true,
         y_delta = 1, -- Move up or down on y axis? default down
@@ -255,6 +264,8 @@ function update.create_player_projectiles()
         player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
             x = player.x,
             y = player.y,
+            weapon = '', -- set to sin to test sin pattern
+            time = 0,
             dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
             dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)
         }
@@ -264,7 +275,6 @@ function update.create_player_projectiles()
 end
 
 function create_ufo_projectiles(ufo)
-    -- TODO: Create some variation in attack patterns (weapons)
     -- create a projectile every div seconds for variation
     div = love.math.random(3, 5)
     time = utils.round((love.timer.getTime() - ufo.create_time), 0)

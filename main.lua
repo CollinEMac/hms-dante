@@ -62,7 +62,6 @@ function restart_game()
     last_player_laser_create = 0
     ufo_lasers = {}
     ufos = {}
-    ufo_time = 0
     player_score = 0
     ufo_counter = 0
     npcs = {}
@@ -182,7 +181,7 @@ function love.update(dt)
             -- Might need to rename this, can't continue story unless this if false
             start_action = false
         elseif level == 1 then
-            update.player_projectiles()
+            update.player_projectiles(dt)
             update.ufo(dt)
             update.ufo_projectiles()
             update.story(player)
