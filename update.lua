@@ -183,11 +183,12 @@ function update.ufo(dt)
                         -- random y axis movement
                         --TODO: make this movement fluid
 
-                        if love.math.random(2) == 1 then
-                            ufo.y = ufo.y - 1
-                        else
-                            ufo.y = ufo.y + 1
+                        if love.math.random(50) == 1 then
+                            -- Randomly change y movement direction (up/down)
+                            ufo.y_delta = -ufo.y_delta
                         end
+
+                        ufo.y = ufo.y + ufo.y_delta
                     end
                 end
 
@@ -237,6 +238,7 @@ function spawn_ufo(movement_pattern, y_percent)
         speed = 1,
         movement_pattern = movement_pattern,
         toward_player = true,
+        y_delta = 1, -- Move up or down on y axis? default down
         create_time = love.timer.getTime() -- for timed events like firing projectiles
     }
 
