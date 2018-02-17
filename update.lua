@@ -152,8 +152,6 @@ function update.ufo(dt)
     for i, ufo in ipairs(ufos) do
         if ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()) > 0 and
             ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) > 0 then
-            -- so they just won't go off screen?
-            -- ufo.y < window_height - (UFO_SIZE_CF * ufo.image:getHeight()) then
 
                 if ufo.toward_player == true then
                     ufo.x = ufo.x - ufo.speed -- move to the left
@@ -183,6 +181,7 @@ function update.ufo(dt)
 
                     if ufo.movement_pattern == 'random' then
                         -- random y axis movement
+                        --TODO: make this movement fluid
 
                         if love.math.random(2) == 1 then
                             ufo.y = ufo.y - 1
