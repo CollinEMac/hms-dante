@@ -19,9 +19,10 @@ end
 
 function update.select_menu_item()
     -- Handle menu button selections and story continue but only one or the other
-    if level ~= 0 and level ~= 100 and start_action == false and continue_story == false and #type_writer_c == #story_text then
-        -- advance story text on enter or space or click
-        continue_story = true
+    if level ~= 0 and level ~= 100 and start_action == false and
+        continue_story == false and #type_writer_c == #story_text then
+            -- advance story text on enter or space or click
+            continue_story = true
     elseif menu_selection == 1 then
         if level == 100 and story_text == "" then
             start_action = true
@@ -73,17 +74,21 @@ function update.player()
     end
 
     if level == 1 then
-        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and player.y > 0 then
-            player.y = player.y - player.speed
+        if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and
+            player.y > 0 then
+                player.y = player.y - player.speed
         end
-        if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and player.x > 0 then
-            player.x = player.x - player.speed
+        if (love.keyboard.isDown("left") or love.keyboard.isDown("a")) and
+            player.x > 0 then
+                player.x = player.x - player.speed
         end
-        if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and player.y < window_height then
-            player.y = player.y + player.speed
+        if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and
+            player.y < window_height then
+                player.y = player.y + player.speed
         end
-        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and player.x < window_width then
-            player.x = player.x + player.speed
+        if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) and
+            player.x < window_width then
+                player.x = player.x + player.speed
         end
 
     --TODO: will do this for level 1 too,
@@ -111,16 +116,18 @@ function update.player()
             end
         end
         if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) then
-            if cam.y - window_height > -(background.image:getHeight()) and (player.y >= vert_mid_of_cam) then
-                cam.y = cam.y - player.speed
+            if cam.y - window_height > -(background.image:getHeight()) and
+                (player.y >= vert_mid_of_cam) then
+                    cam.y = cam.y - player.speed
             end
             if player.y < window_height + (-cam.y) then -- this is confusing as heck because cam.y is negative
                 player.y = player.y + player.speed
             end
         end
         if (love.keyboard.isDown("right") or love.keyboard.isDown("d")) then
-            if cam.x - window_width > -(background.image:getWidth()) and (player.x >= hor_mid_of_cam) then
-                cam.x = cam.x - player.speed
+            if cam.x - window_width > -(background.image:getWidth()) and
+                (player.x >= hor_mid_of_cam) then
+                    cam.x = cam.x - player.speed
             end
             if player.x < window_width + (-cam.x) then -- this is confusing as heck because cam.x is negative
                 player.x = player.x + player.speed
@@ -138,9 +145,12 @@ function update.player_projectiles(dt)
                 player_laser.y < window_height then
 
                     if player_laser.weapon == 'sin' then
-                        player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
+                        player_laser.x = player_laser.x +
+                                         player_laser.dx * PLAYER_PROJECTILE_SPEED
                         player_laser.time = player_laser.time + dt
-                        player_laser.y = player_laser.y + (player_laser.dy * PLAYER_PROJECTILE_SPEED) + ((window_height/60) * math.sin(2 * math.pi * player_laser.time))
+                        player_laser.y = player_laser.y +
+                                         (player_laser.dy * PLAYER_PROJECTILE_SPEED) +
+                                         ((window_height/60) * math.sin(2 * math.pi * player_laser.time))
                     else
                         player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
                         player_laser.y = player_laser.y + player_laser.dy * PLAYER_PROJECTILE_SPEED
@@ -262,7 +272,7 @@ function update.create_player_projectiles()
         player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
             x = player.x,
             y = player.y,
-            weapon = '', -- set to sin to test sin pattern
+            weapon = 'sin', -- set to sin to test sin pattern
             time = 0,
             dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
             dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)

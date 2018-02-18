@@ -125,7 +125,12 @@ function draw.text()
             text = type_writer_c
         end
 
-        love.graphics.printf(text, left_most_text_box + (0.05 * text_box_width), top_of_text_box + (0.10 * text_box_height),  right_most_text_box - (0.05 * text_box_width))
+        love.graphics.printf(
+            text,
+            left_most_text_box + (0.05 * text_box_width),
+            top_of_text_box + (0.10 * text_box_height),
+            right_most_text_box - (0.05 * text_box_width)
+        )
     end
 
     if level == 1 then
