@@ -138,11 +138,9 @@ function update.player_projectiles(dt)
                 player_laser.y < window_height then
 
                     if player_laser.weapon == 'sin' then
-                        -- TODO: this isn't workign right
                         player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
-                        -- player_laser.y = player_laser.y + player_laser.dy * PLAYER_PROJECTILE_SPEED
                         player_laser.time = player_laser.time + dt
-                        player_laser.y = player_laser.y + (player_laser.dy * PLAYER_PROJECTILE_SPEED) + (20 * math.sin(player_laser.time)) --(player_laser.y + 0.4 * math.sin(player_laser_time)) * PLAYER_PROJECTILE_SPEED
+                        player_laser.y = player_laser.y + (player_laser.dy * PLAYER_PROJECTILE_SPEED) + ((window_height/60) * math.sin(2 * math.pi * player_laser.time))
                     else
                         player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
                         player_laser.y = player_laser.y + player_laser.dy * PLAYER_PROJECTILE_SPEED
