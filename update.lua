@@ -144,15 +144,14 @@ function update.player_projectiles(dt)
                 player_laser.x < window_width and
                 player_laser.y < window_height then
 
+                    player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
+
                     if player_laser.weapon == 'sin' then
-                        player_laser.x = player_laser.x +
-                                         player_laser.dx * PLAYER_PROJECTILE_SPEED
                         player_laser.time = player_laser.time + dt
                         player_laser.y = player_laser.y +
                                          (player_laser.dy * PLAYER_PROJECTILE_SPEED) +
                                          ((window_height/60) * math.sin(2 * math.pi * player_laser.time))
                     else
-                        player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
                         player_laser.y = player_laser.y + player_laser.dy * PLAYER_PROJECTILE_SPEED
                     end
 
@@ -272,7 +271,7 @@ function update.create_player_projectiles()
         player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
             x = player.x,
             y = player.y,
-            weapon = 'sin', -- set to sin to test sin pattern
+            weapon = '', -- set to sin to test sin pattern
             time = 0,
             dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
             dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)
@@ -293,6 +292,8 @@ function create_ufo_projectiles(ufo)
         ufo_lasers[#ufo_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
             x = ufo.x,
             y = ufo.y,
+            weapon = 'sin',
+            time = 0,
             dx = math.cos(direction),
             dy = math.sin(direction),
             speed = 3
@@ -300,15 +301,24 @@ function create_ufo_projectiles(ufo)
     end
 end
 
-function update.ufo_projectiles()
+function update.ufo_projectiles(dt)
     for i, ufo_laser in ipairs(ufo_lasers) do
         -- ufo_lasers are getting progressively faster for each one in the list?
         if 0 < ufo_laser.x and
             0 < ufo_laser.y and
             ufo_laser.x < window_width and
             ufo_laser.y < window_height then
+                -- TODO: Functionize this?
+                if ufo_laser.weapon == 'sin' then
+                        ufo_laser.time = ufo_laser.time + dt
+                        ufo_laser.y = ufo_laser.y +
+                                         (-ufo_laser.dy * ufo_laser.speed) +
+                                         ((window_height/60) * math.sin(2 * math.pi * ufo_laser.time))
+                else
+                    ufo_laser.y = ufo_laser.y - ufo_laser.dy * ufo_laser.speed
+                end
+
                 ufo_laser.x = ufo_laser.x - ufo_laser.dx * ufo_laser.speed
-                ufo_laser.y = ufo_laser.y - ufo_laser.dy * ufo_laser.speed
                 object_hit(false, ufo_laser, 0)
         else
             table.remove(ufo_lasers, i)

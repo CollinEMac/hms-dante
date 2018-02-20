@@ -1,5 +1,17 @@
 -- A little side scrolling shooter
 
+--
+-- TODO / ideas
+-- 1. make enemies shoot sin waves
+-- 2. make their vertical spawn Random
+-- 3. weapons/powerups
+-- 4. death animations
+-- 5.options menu
+-- 6. obstacles
+-- 7. sprites
+-- 8. asteroids
+--
+
 utils = require("utils")
 update = require("update")
 draw = require("draw")
@@ -184,7 +196,7 @@ function love.update(dt)
         elseif level == 1 then
             update.player_projectiles(dt)
             update.ufo(dt)
-            update.ufo_projectiles()
+            update.ufo_projectiles(dt)
             update.story(player)
         elseif level == 2 then
             update.npcs()
