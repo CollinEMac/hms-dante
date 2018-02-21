@@ -220,7 +220,7 @@ function action()
     -- spawn just the first ufo in the
     if level == 1 then
         if ufo_counter == 0 then
-            spawn_ufo('random', 0.167)
+            spawn_ufo('random')
             last_ufo_spawn = love.timer.getTime()
             --TODO: look at how we can integrate this with ufo.time
         end
@@ -230,7 +230,7 @@ function action()
             now = love.timer.getTime()
 
             if now > last_ufo_spawn + 2 then
-                spawn_ufo('random', 0.833)
+                spawn_ufo('random')
                 last_ufo_spawn = now
             end
         end
@@ -239,13 +239,16 @@ function action()
             now = love.timer.getTime()
 
             if now > ready_for_spawn_time + 2 then
-                spawn_ufo('random', 0.555)
+                spawn_ufo('random')
             end
         end
     end
 end
 
-function spawn_ufo(movement_pattern, y_percent)
+function spawn_ufo(movement_pattern)
+    -- Percent of y axis the ufo will appear on
+    y_percent = love.math.random(1, 9) * 0.1
+
     -- add a new ufo to the list
     new_ufo = {image = love.graphics.newImage("sprites/ufo.jpg"),
         x = 0,

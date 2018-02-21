@@ -10,6 +10,7 @@
 -- 7. sprites
 -- 8. asteroids
 -- 9. RPG stages
+-- Make sprites smaller with respect to screen size
 --
 
 -- Design notes
