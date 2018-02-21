@@ -2,15 +2,13 @@
 
 --
 -- TODO / ideas
--- 2. make enemy vertical spawn Random
--- 3. weapons/powerups
--- 4. death animations
--- 5. options menu
--- 6. obstacles
--- 7. sprites
--- 8. asteroids
--- 9. RPG stages
 -- Make sprites smaller with respect to screen size
+-- weapons/powerups
+-- obstacles / asteroids
+-- RPG stages
+-- options menu
+-- sprites
+-- Death animations
 --
 
 -- Design notes
