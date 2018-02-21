@@ -363,7 +363,7 @@ function advance_text(char)
             start_action = true
             continue_story = false
         end
-    elseif level == 2 then
+    elseif level == 2 and char then
         if continue_story == true and story_text == STORY_TEXTS[1] then
             type_writer_c = ""
             character = char.name
