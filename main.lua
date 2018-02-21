@@ -2,15 +2,23 @@
 
 --
 -- TODO / ideas
--- 1. make enemies shoot sin waves
--- 2. make their vertical spawn Random
+-- 2. make enemy vertical spawn Random
 -- 3. weapons/powerups
 -- 4. death animations
--- 5.options menu
+-- 5. options menu
 -- 6. obstacles
 -- 7. sprites
 -- 8. asteroids
+-- 9. RPG stages
 --
+
+-- Design notes
+-- I'm thinking about maybe not doing this whole "rpg stage" things
+-- and instead just doing a visual novel type of approach where
+-- discussion happens and the player is always in the ship
+-- On the other hand, the rpg hub section will probably do a lot to
+-- make the game feel bigger. Either way I need to focus on gameplay
+-- for now
 
 utils = require("utils")
 update = require("update")
@@ -21,7 +29,6 @@ PLAYER_IMG_ROTATION_CF = 0.75 * math.pi
 UFO_SIZE_CF = 0.15
 PLAYER_PROJECTILE_SIZE_CF = 0.1
 ENEMY_PROJECTILE_SIZE_CF = 0.05
-PLAYER_PROJECTILE_SPEED = 7
 
 SPACE_BACKGROUND = love.graphics.newImage("sprites/background.jpg")
 SHIP_BACKGROUND = love.graphics.newImage("sprites/brown.jpg")
@@ -172,18 +179,10 @@ function love.update(dt)
         if level == 1 and ufo_counter == 3 and #ufos == 0 then
             -- action level stuff
             ufos = {}
-            ufo_projectiles = {}
-            player_projectiles = {}
+            -- ufo_projectiles = {}
+            -- player_projectiles = {}
             love.graphics.clear()
             level = level + 1
-
-            -- Design notes
-            -- I'm thinking about maybe not doing this whole "rpg stage" things
-            -- and instead just doing a visual novel type of approach where
-            -- discussion happens and the player is always in the ship
-            -- On the other hand, the rpg hub section will probably do a lot to
-            -- make the game feel bigger. Either way I need to focus on gameplay
-            -- for now
 
             player.x = window_width / 2
             player.y = window_height / 2
@@ -194,9 +193,9 @@ function love.update(dt)
             -- Might need to rename this, can't continue story unless this if false
             start_action = false
         elseif level == 1 then
-            update.player_projectiles(dt)
+            update.projectiles(player_lasers, dt)
             update.ufo(dt)
-            update.ufo_projectiles(dt)
+            update.projectiles(ufo_lasers, dt)
             update.story(player)
         elseif level == 2 then
             update.npcs()

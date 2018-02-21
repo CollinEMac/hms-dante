@@ -136,28 +136,28 @@ function update.player()
     end
 end
 
-function update.player_projectiles(dt)
+function update.projectiles(projectiles, dt)
     if level == 1 then
-        for i, player_laser in ipairs(player_lasers) do
-            if 0 < player_laser.x and
-                0 < player_laser.y and
-                player_laser.x < window_width and
-                player_laser.y < window_height then
+        for i, projectile in ipairs(projectiles) do
+            if 0 < projectile.x and
+                0 < projectile.y and
+                projectile.x < window_width and
+                projectile.y < window_height then
 
-                    player_laser.x = player_laser.x + player_laser.dx * PLAYER_PROJECTILE_SPEED
+                    projectile.x = projectile.x + projectile.dx * projectile.speed
 
-                    if player_laser.weapon == 'sin' then
-                        player_laser.time = player_laser.time + dt
-                        player_laser.y = player_laser.y +
-                                         (player_laser.dy * PLAYER_PROJECTILE_SPEED) +
-                                         ((window_height/60) * math.sin(2 * math.pi * player_laser.time))
+                    if projectile.weapon == 'sin' then
+                        projectile.time = projectile.time + dt
+                        projectile.y = projectile.y +
+                                         (projectile.dy * projectile.speed) +
+                                         ((window_height/60) * math.sin(2 * math.pi * projectile.time))
                     else
-                        player_laser.y = player_laser.y + player_laser.dy * PLAYER_PROJECTILE_SPEED
+                        projectile.y = projectile.y + projectile.dy * projectile.speed
                     end
 
-                    object_hit(true, player_laser, i)
+                    object_hit(projectile, i)
             else
-                table.remove(player_lasers, i)
+                table.remove(projectiles, i)
             end
         end
     end
@@ -207,7 +207,7 @@ function update.ufo(dt)
                 end
 
                 -- kill player on contact with ufo
-                object_hit(false, ufo, 0)
+                object_hit(ufo, 0)
                 create_ufo_projectiles(ufo)
         else
             table.remove(ufos, i)
@@ -252,6 +252,7 @@ function spawn_ufo(movement_pattern, y_percent)
         y = y_percent * window_height,
         speed = 1,
         time = 0,
+        friendly = false,
         movement_pattern = movement_pattern,
         toward_player = true,
         y_delta = 1, -- Move up or down on y axis? default down
@@ -273,6 +274,8 @@ function update.create_player_projectiles()
             y = player.y,
             weapon = '', -- set to sin to test sin pattern
             time = 0,
+            speed = 7,
+            friendly = true,
             dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
             dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)
         }
@@ -294,35 +297,11 @@ function create_ufo_projectiles(ufo)
             y = ufo.y,
             weapon = 'sin',
             time = 0,
+            friendly = false,
             dx = math.cos(direction),
             dy = math.sin(direction),
-            speed = 3
+            speed = -3
         }
-    end
-end
-
-function update.ufo_projectiles(dt)
-    for i, ufo_laser in ipairs(ufo_lasers) do
-        -- ufo_lasers are getting progressively faster for each one in the list?
-        if 0 < ufo_laser.x and
-            0 < ufo_laser.y and
-            ufo_laser.x < window_width and
-            ufo_laser.y < window_height then
-                -- TODO: Functionize this?
-                if ufo_laser.weapon == 'sin' then
-                        ufo_laser.time = ufo_laser.time + dt
-                        ufo_laser.y = ufo_laser.y +
-                                         (-ufo_laser.dy * ufo_laser.speed) +
-                                         ((window_height/60) * math.sin(2 * math.pi * ufo_laser.time))
-                else
-                    ufo_laser.y = ufo_laser.y - ufo_laser.dy * ufo_laser.speed
-                end
-
-                ufo_laser.x = ufo_laser.x - ufo_laser.dx * ufo_laser.speed
-                object_hit(false, ufo_laser, 0)
-        else
-            table.remove(ufo_lasers, i)
-        end
     end
 end
 
@@ -405,10 +384,10 @@ function advance_text(char)
     end
 end
 
-function object_hit(player_friendly, projectile, projectile_i)
+function object_hit(projectile, projectile_i)
     -- Checks if projecile is overlapping an object and destroys it
 
-    if player_friendly == true then
+    if projectile.friendly == true then
         for i, ufo in ipairs(ufos) do
             if utils.overlap(projectile, ufo, UFO_SIZE_CF) then
             -- if player projectile overlapping enemy then destroy it
