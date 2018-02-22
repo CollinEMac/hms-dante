@@ -399,6 +399,7 @@ function object_hit(projectile, projectile_i)
                     ready_for_spawn_time = love.timer.getTime()
                 end
 
+                spawn_weapon(ufo.x, ufo.y)
                 table.remove(ufos, i)
                 table.remove(player_lasers, projectile_i)
                 player_score = player_score + 10
@@ -410,6 +411,23 @@ function object_hit(projectile, projectile_i)
             game_over()
         end
     end
+end
+
+function spawn_weapon(x, y)
+    -- spawn a weapon on enemy death sometimes
+    -- TODO: add weapon spawn probability to ufo
+    if random(10) == 1 then
+        -- spawn the weapon in a giant downward sine wave where it gets destroyed
+        weapons[#weapons + 1] = {image = love.graphics.newImage("sprites/gun.jpg"),
+            x = x,
+            y = y
+        }
+
+    end
+end
+
+function update.weapons()
+    -- TODO: call this in the main lua file
 end
 
 function game_over()

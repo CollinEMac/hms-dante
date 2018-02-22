@@ -18,6 +18,10 @@
 -- make the game feel bigger. Either way I need to focus on gameplay
 -- for now
 
+-- circle I: ghosts that can become translucent?
+-- circle II: giant tail monster defining which circle to go to?
+-- tough winds
+
 utils = require("utils")
 update = require("update")
 draw = require("draw")
@@ -79,6 +83,7 @@ function restart_game()
     last_player_laser_create = 0
     ufo_lasers = {}
     ufos = {}
+    weapons = {}
     player_score = 0
     ufo_counter = 0
     npcs = {}
