@@ -2,7 +2,6 @@
 
 --
 -- TODO / ideas
--- Make sprites smaller with respect to screen size
 -- weapons/powerups
 -- obstacles / asteroids
 -- RPG stages
@@ -25,8 +24,8 @@ draw = require("draw")
 
 -- Correction for the image, it's tilted to the side
 PLAYER_IMG_ROTATION_CF = 0.75 * math.pi
-UFO_SIZE_CF = 0.15
-PLAYER_PROJECTILE_SIZE_CF = 0.1
+UFO_SIZE_CF = 0.10
+PLAYER_PROJECTILE_SIZE_CF = 0.085
 ENEMY_PROJECTILE_SIZE_CF = 0.05
 
 SPACE_BACKGROUND = love.graphics.newImage("sprites/background.jpg")
