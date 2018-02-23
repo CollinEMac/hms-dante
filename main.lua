@@ -199,6 +199,7 @@ function love.update(dt)
             update.projectiles(player_lasers, dt)
             update.ufo(dt)
             update.projectiles(ufo_lasers, dt)
+            update.weapons(dt)
             update.story(player)
         elseif level == 2 then
             update.npcs()
@@ -226,6 +227,7 @@ function love.draw()
         if level == 1 then
             draw.projectile()
             draw.ufo_projectiles()
+            draw.weapons()
         end
 
         draw.npcs()

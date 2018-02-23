@@ -152,6 +152,20 @@ function draw.ufo_projectiles()
     end
 end
 
+function draw.weapons()
+    for i, weapon in ipairs(weapons) do
+        love.graphics.draw(weapon.image,
+            weapon.x,
+            weapon.y,
+            0,
+            ENEMY_PROJECTILE_SIZE_CF,
+            ENEMY_PROJECTILE_SIZE_CF,
+            weapon.image:getWidth()/2,
+            weapon.image:getHeight()/2
+        )
+    end
+end
+
 function draw.game_over_text()
     love.graphics.printf('Game Over', 0, 0.5 * window_height, window_width, "center")
 end

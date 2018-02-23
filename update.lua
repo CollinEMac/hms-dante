@@ -416,18 +416,40 @@ end
 function spawn_weapon(x, y)
     -- spawn a weapon on enemy death sometimes
     -- TODO: add weapon spawn probability to ufo
-    if random(10) == 1 then
+    if love.math.random(1) == 1 then -- make this random(10) or something, just testing for now
         -- spawn the weapon in a giant downward sine wave where it gets destroyed
         weapons[#weapons + 1] = {image = love.graphics.newImage("sprites/gun.jpg"),
             x = x,
-            y = y
+            y = y,
+            time = 0
         }
 
     end
 end
 
-function update.weapons()
+function update.weapons(dt)
     -- TODO: call this in the main lua file
+    -- remove weapons after a few seconds
+
+    -- TODO: Pick up weapons using overlap function
+
+    if level == 1 then
+        for i, weapon in ipairs(weapons) do
+            if 0 < weapon.x and
+                0 < weapon.y and
+                weapon.x < window_width and
+                weapon.y < window_height then
+
+                    weapon.x = weapon.x - 5
+
+                    weapon.time = weapon.time + dt
+                    -- TODO: tweak this
+                    weapon.y = weapon.y + (window_height/30) * math.sin(weapon.time)
+            else
+                table.remove(weapons, i)
+            end
+        end
+    end
 end
 
 function game_over()
