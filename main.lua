@@ -67,6 +67,8 @@ function love.load()
         x = window_width / 2,
         y = window_height / 2,
         speed = 5,
+        weapon = '',
+        weapon_time = love.timer.getTime(),
         alive = true
     }
 

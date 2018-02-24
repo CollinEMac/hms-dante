@@ -91,6 +91,11 @@ function update.player()
                 player.x = player.x + player.speed
         end
 
+        -- Expire the weapon after some time
+        if love.timer.getTime() - player.weapon_time > 5 then
+            player.weapon = ''
+        end
+
     --TODO: will do this for level 1 too,
     -- scroll everything to the left at a constant rate
     -- that'll make things easier for changing speed too
@@ -275,7 +280,7 @@ function update.create_player_projectiles()
         player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
             x = player.x,
             y = player.y,
-            weapon = '', -- set to sin to test sin pattern
+            weapon = player.weapon, -- set to sin to test sin pattern
             time = 0,
             speed = 7,
             friendly = true,
@@ -313,19 +318,19 @@ function update.npcs()
         -- create npc
         npc1 = {image = CHARACTER_PLAYER,
             name = 'npc1',
-            x = window_width / 2,
-            y = window_height + 10,
-            speech = {[1] = 'Hey, I\'m an NPC!'
+                x = window_width / 2,
+                y = window_height + 10,
+                speech = {[1] = 'Hey, I\'m an NPC!'
+                }
             }
-        }
 
-        npcs[#npcs+1] = npc1
+            npcs[#npcs+1] = npc1
+        end
     end
-end
 
-function update.story(char)
-    --Write story text if time is correct and last_story text cleared (enter or space)
-    -- later this will depend on time/level
+    function update.story(char)
+        --Write story text if time is correct and last_story text cleared (enter or space)
+        -- later this will depend on time/level
     advance_text(char)
 
     if start_action == true then
@@ -393,7 +398,7 @@ function object_hit(projectile, projectile_i)
     if projectile.friendly == true then
         for i, ufo in ipairs(ufos) do
             if utils.overlap(projectile, ufo, UFO_SIZE_CF) then
-            -- if player projectile overlapping enemy then destroy it
+                -- if player projectile overlapping enemy then destroy it
 
                 if #ufos <= 2 and ufo_counter == 2 then
                     ready_for_spawn_time = love.timer.getTime()
@@ -416,11 +421,12 @@ end
 function spawn_weapon(x, y)
     -- spawn a weapon on enemy death sometimes
     -- TODO: add weapon spawn probability to ufo
-    if love.math.random(1) == 1 then -- make this random(10) or something, just testing for now
+    if love.math.random(10) == 1 then
         -- spawn the weapon in a giant downward sine wave where it gets destroyed
         weapons[#weapons + 1] = {image = love.graphics.newImage("sprites/gun.jpg"),
             x = x,
             y = y,
+            type = 'sin',
             time = 0
         }
 
@@ -428,11 +434,6 @@ function spawn_weapon(x, y)
 end
 
 function update.weapons(dt)
-    -- TODO: call this in the main lua file
-    -- remove weapons after a few seconds
-
-    -- TODO: Pick up weapons using overlap function
-
     if level == 1 then
         for i, weapon in ipairs(weapons) do
             if 0 < weapon.x and
@@ -443,9 +444,17 @@ function update.weapons(dt)
                     weapon.x = weapon.x - 5
 
                     weapon.time = weapon.time + dt
-                    -- TODO: tweak this
                     weapon.y = weapon.y + (window_height/30) * math.sin(weapon.time)
             else
+                table.remove(weapons, i)
+            end
+
+            -- check if player is picking up the weapon
+            if utils.overlap(player, weapon, 1) then
+                -- TODO: I think maybe the weapon is falling too fast so it
+                -- gets picked up before it displays on screen
+                player.weapon = weapon.type
+                player.weapon_time = love.timer.getTime()
                 table.remove(weapons, i)
             end
         end
