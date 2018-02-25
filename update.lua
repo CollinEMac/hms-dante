@@ -240,7 +240,7 @@ function action()
         if #ufos <= 2 and ufo_counter == 2 then
             now = love.timer.getTime()
 
-            if now > ready_for_spawn_time + 2 then
+            if now > ufo_destroyed + 2 then
                 spawn_ufo('random')
             end
         end
@@ -398,7 +398,7 @@ function object_hit(projectile, projectile_i)
                 -- if player projectile overlapping enemy then destroy it
 
                 if #ufos <= 2 and ufo_counter == 2 then
-                    ready_for_spawn_time = love.timer.getTime()
+                    ufo_destroyed = love.timer.getTime()
                 end
 
                 spawn_weapon(ufo.x, ufo.y)
