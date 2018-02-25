@@ -226,17 +226,14 @@ function action()
     if level == 1 then
         if ufo_counter == 0 then
             spawn_ufo('random')
-            last_ufo_spawn = love.timer.getTime()
-            --TODO: look at how we can integrate this with ufo.time
         end
 
         -- spawn a second ufo
         if ufo_counter == 1 then
             now = love.timer.getTime()
 
-            if now > last_ufo_spawn + 2 then
+            if now > ufos[#ufos].create_time + 2 then
                 spawn_ufo('random')
-                last_ufo_spawn = now
             end
         end
 
