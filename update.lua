@@ -147,7 +147,7 @@ function update.projectiles(projectiles, dt)
             if 0 < projectile.x and
                 0 < projectile.y and
                 projectile.x < window_width and
-                projectile.y < window_height then
+                projectile.y < window_height * (1/60) then -- 1/60 is the amplitude of sin
 
                     projectile.x = projectile.x + projectile.dx * projectile.speed
 
@@ -436,6 +436,8 @@ function spawn_weapon(ufo)
 end
 
 function update.weapons(dt)
+    -- TODO: Something wrong here, seems like I get the weaopn even if I don't
+    -- object hit it
     if level == 1 then
         for i, weapon in ipairs(weapons) do
             if 0 < weapon.x and
