@@ -232,7 +232,11 @@ function action()
         if ufo_counter == 1 then
             now = love.timer.getTime()
 
-            if now > ufos[#ufos].create_time + 2 then
+            if #ufos > 0 then
+                if now > ufos[#ufos].create_time + 2 then
+                    spawn_ufo('random')
+                end
+            else
                 spawn_ufo('random')
             end
         end
@@ -259,6 +263,7 @@ function spawn_ufo(movement_pattern)
         time = 0,
         friendly = false,
         movement_pattern = movement_pattern,
+        weapon_prob = 10,
         toward_player = true,
         y_delta = 1, -- Move up or down on y axis? default down
         create_time = love.timer.getTime() -- for timed events like firing projectiles
@@ -401,7 +406,7 @@ function object_hit(projectile, projectile_i)
                     ufo_destroyed = love.timer.getTime()
                 end
 
-                spawn_weapon(ufo.x, ufo.y)
+                spawn_weapon(ufo)
                 table.remove(ufos, i)
                 table.remove(player_lasers, projectile_i)
                 player_score = player_score + 10
@@ -415,14 +420,14 @@ function object_hit(projectile, projectile_i)
     end
 end
 
-function spawn_weapon(x, y)
+function spawn_weapon(ufo)
     -- spawn a weapon on enemy death sometimes
     -- TODO: add weapon spawn probability to ufo
-    if love.math.random(10) == 1 then
+    if love.math.random(ufo.weapon_prob) == 1 then
         -- spawn the weapon in a giant downward sine wave where it gets destroyed
         weapons[#weapons + 1] = {image = love.graphics.newImage("sprites/gun.jpg"),
-            x = x,
-            y = y,
+            x = ufo.x,
+            y = ufo.y,
             type = 'sin',
             time = 0
         }

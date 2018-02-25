@@ -50,7 +50,6 @@ function love.load()
     local _, _, flags = love.window.getMode()
     local desktop_width, desktop_height = love.window.getDesktopDimensions(flags.display)
 
-    -- TODO: perhaps images should be stretched by the ratio of window to screen
     window_width = desktop_width / 3
     window_height = window_width
 
@@ -94,7 +93,7 @@ function restart_game()
     type_writer_c = ""
     type_writer_time = 0
     start_action = false
-    ready_for_spawn_time = 99999
+    ufo_destroyed = 99999
 
     -- might want to move these
     cam = {x = -5,
@@ -167,7 +166,6 @@ function love.keypressed(key)
             level = 100
             start_action = false
         elseif level == 100 and start_action == false then
-            --TODO: Fix player position reset bug
             level = unpause_level
             start_action = unpause_start_action
         end
