@@ -145,9 +145,9 @@ function update.projectiles(projectiles, dt)
     if level == 1 then
         for i, projectile in ipairs(projectiles) do
             if 0 < projectile.x and
-                0 < projectile.y and
+                0 - (window_height/4) < projectile.y and
                 projectile.x < window_width and
-                projectile.y < window_height * (1/60) then -- 1/60 is the amplitude of sin
+                projectile.y < (window_height + (window_height/4)) then
 
                     projectile.x = projectile.x + projectile.dx * projectile.speed
 
