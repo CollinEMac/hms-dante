@@ -233,6 +233,7 @@ function action()
             now = love.timer.getTime()
 
             if #ufos > 0 then
+                -- Want to tweak this, won't spawn until 2 are defeated
                 if now > ufos[#ufos].create_time + 2 then
                     spawn_ufo('random')
                 end
@@ -422,7 +423,6 @@ end
 
 function spawn_weapon(ufo)
     -- spawn a weapon on enemy death sometimes
-    -- TODO: add weapon spawn probability to ufo
     if love.math.random(ufo.weapon_prob) == 1 then
         -- spawn the weapon in a giant downward sine wave where it gets destroyed
         weapons[#weapons + 1] = {image = love.graphics.newImage("sprites/gun.jpg"),
@@ -436,7 +436,7 @@ function spawn_weapon(ufo)
 end
 
 function update.weapons(dt)
-    -- TODO: Something wrong here, seems like I get the weaopn even if I don't
+    -- TODO: Something wrong here, seems like I get the weapon even if I don't
     -- object hit it
     if level == 1 then
         for i, weapon in ipairs(weapons) do
