@@ -423,8 +423,7 @@ end
 
 function spawn_weapon(ufo)
     -- spawn a weapon on enemy death sometimes
-    -- if love.math.random(ufo.weapon_prob) == 1 then
-    -- TESTING
+    if love.math.random(ufo.weapon_prob) == 1 then
         -- spawn the weapon in a giant downward sine wave where it gets destroyed
         weapons[#weapons + 1] = {image = love.graphics.newImage("sprites/gun.jpg"),
             x = ufo.x,
@@ -432,8 +431,7 @@ function spawn_weapon(ufo)
             type = 'sin',
             time = 0
         }
-
-    -- end
+    end
 end
 
 function update.weapons(dt)
