@@ -400,7 +400,7 @@ function object_hit(projectile, projectile_i)
 
     if projectile.friendly == true then
         for i, ufo in ipairs(ufos) do
-            if utils.overlap(projectile, ufo, UFO_SIZE_CF) then
+            if utils.overlap(projectile, ufo, PLAYER_PROJECTILE_SIZE_CF, UFO_SIZE_CF) then
                 -- if player projectile overlapping enemy then destroy it
 
                 if #ufos <= 2 and ufo_counter == 2 then
@@ -414,7 +414,7 @@ function object_hit(projectile, projectile_i)
             end
         end
     else
-        if utils.overlap(projectile, player, ENEMY_PROJECTILE_SIZE_CF) then
+        if utils.overlap(projectile, player, ENEMY_PROJECTILE_SIZE_CF, PLAYER_PROJECTILE_SIZE_CF) then
             -- if projectile overlapping player then YOU DEAD!
             game_over()
         end
@@ -454,8 +454,8 @@ function update.weapons(dt)
                 table.remove(weapons, i)
             end
 
-            -- check if player is picking up t weapon
-            if utils.overlap(weapon, player, PLAYER_PROJECTILE_SIZE_CF) then
+            -- check if player is picking up the weapon
+            if utils.overlap(weapon, player, ENEMY_PROJECTILE_SIZE_CF, PLAYER_PROJECTILE_SIZE_CF) then
                 -- TODO: Need to account for correction factor of both sprites!
                 player.weapon = weapon.type
                 player.weapon_time = love.timer.getTime()
