@@ -233,7 +233,7 @@ function action()
             now = love.timer.getTime()
 
             if #ufos > 0 then
-                -- Want to tweak this, won't spawn until 2 are defeated
+                -- TODO: Want to tweak this, won't spawn until 2 are defeated
                 if now > ufos[#ufos].create_time + 2 then
                     spawn_ufo('random')
                 end
@@ -400,7 +400,7 @@ function object_hit(projectile, projectile_i)
 
     if projectile.friendly == true then
         for i, ufo in ipairs(ufos) do
-            if utils.overlap(projectile, ufo, UFO_SIZE_CF) then
+            if utils.overlap(projectile, ufo, PLAYER_PROJECTILE_SIZE_CF, UFO_SIZE_CF) then
                 -- if player projectile overlapping enemy then destroy it
 
                 if #ufos <= 2 and ufo_counter == 2 then
@@ -414,7 +414,7 @@ function object_hit(projectile, projectile_i)
             end
         end
     else
-        if utils.overlap(projectile, player, ENEMY_PROJECTILE_SIZE_CF) then
+        if utils.overlap(projectile, player, ENEMY_PROJECTILE_SIZE_CF, PLAYER_PROJECTILE_SIZE_CF) then
             -- if projectile overlapping player then YOU DEAD!
             game_over()
         end
@@ -423,7 +423,8 @@ end
 
 function spawn_weapon(ufo)
     -- spawn a weapon on enemy death sometimes
-    if love.math.random(ufo.weapon_prob) == 1 then
+    -- if love.math.random(ufo.weapon_prob) == 1 then
+    -- TESTING
         -- spawn the weapon in a giant downward sine wave where it gets destroyed
         weapons[#weapons + 1] = {image = love.graphics.newImage("sprites/gun.jpg"),
             x = ufo.x,
@@ -432,12 +433,12 @@ function spawn_weapon(ufo)
             time = 0
         }
 
-    end
+    -- end
 end
 
 function update.weapons(dt)
     -- TODO: Something wrong here, seems like I get the weapon even if I don't
-    -- object hit it
+    -- object hit it (moving too fast?)
     if level == 1 then
         for i, weapon in ipairs(weapons) do
             if 0 < weapon.x and
@@ -445,7 +446,7 @@ function update.weapons(dt)
                 weapon.x < window_width and
                 weapon.y < window_height then
 
-                    weapon.x = weapon.x - 5
+                    weapon.x = weapon.x - 3
 
                     weapon.time = weapon.time + dt
                     weapon.y = weapon.y + (window_height/30) * math.sin(weapon.time)
@@ -454,9 +455,8 @@ function update.weapons(dt)
             end
 
             -- check if player is picking up the weapon
-            if utils.overlap(player, weapon, 1) then
-                -- TODO: I think maybe the weapon is falling too fast so it
-                -- gets picked up before it displays on screen
+            if utils.overlap(weapon, player, ENEMY_PROJECTILE_SIZE_CF, PLAYER_PROJECTILE_SIZE_CF) then
+                -- TODO: Need to account for correction factor of both sprites!
                 player.weapon = weapon.type
                 player.weapon_time = love.timer.getTime()
                 table.remove(weapons, i)

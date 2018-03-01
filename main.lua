@@ -2,7 +2,6 @@
 
 --
 -- TODO / ideas
--- weapons/powerups
 -- obstacles / asteroids
 -- RPG stages
 -- options menu
