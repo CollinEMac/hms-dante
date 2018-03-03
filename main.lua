@@ -43,6 +43,18 @@ STORY_TEXTS = {[1] = "",
     [4] = "My name is Dante."
 }
 
+-- Let's figure out how shaders work
+-- I think I'll use shaders for animations and warning of incoming obstacles
+red_shader = love.graphics.newShader[[
+
+    vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+        vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+        // if (texture_coords.y > 0.1 and texture_coords < 0.3){}
+        pixel.r = pixel.r + 0.60;
+        return pixel;
+    }
+]]
+
 function love.load()
     -- Initial setup
     -- get screen dimensions for setting window size
@@ -51,6 +63,11 @@ function love.load()
 
     window_width = desktop_width / 3
     window_height = window_width
+
+    -- TODO:
+    -- Okay so pass in the region of the window where the obstacle will appear
+    -- and do color stuff or something
+    -- red_shader:send("size",{window_width, window_height})
 
     love.window.setMode(window_width, window_height)
     love.window.setTitle('Starship Dante')

@@ -26,10 +26,12 @@ function draw.menu(type)
 end
 
 function draw.background()
+    love.graphics.setShader(red_shader)
     love.graphics.draw(background.image,
         background.x,
         background.y
     )
+    love.graphics.setShader()
 end
 
 function draw.player()
