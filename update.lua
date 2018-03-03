@@ -63,6 +63,22 @@ function update.background(stage)
     end
 end
 
+function update.obstacle()
+    if level == 1 then
+        --TODO: This should probably involve what enemies have been created/destroyed
+        -- Also, this shouldn't send to shader here, it should set a flag
+        -- and if the flag is true then send shaders or whatever
+        -- That way we can keep the shader active for a while
+        if love.math.random(300) == 1 then -- random like 100 or something?
+            red_shader:send("y_min", 0.3)
+            red_shader:send("y_max", 0.4)
+        else
+            red_shader:send("y_min", 0)
+            red_shader:send("y_max", 0)
+        end
+    end
+end
+
 function update.player()
     -- Handle player movement
     if level == 1 then

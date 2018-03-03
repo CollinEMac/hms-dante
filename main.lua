@@ -46,11 +46,16 @@ STORY_TEXTS = {[1] = "",
 -- Let's figure out how shaders work
 -- I think I'll use shaders for animations and warning of incoming obstacles
 red_shader = love.graphics.newShader[[
+    // Red shader code, makes screen red between y_min and y_max
+
+    extern number y_min;
+    extern number y_max;
 
     vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
         vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
-        // if (texture_coords.y > 0.1 and texture_coords < 0.3){}
-        pixel.r = pixel.r + 0.60;
+        if (texture_coords.y > y_min && texture_coords.y < y_max) {
+            pixel.r = pixel.r + 0.60;
+        }
         return pixel;
     }
 ]]
@@ -193,6 +198,7 @@ function love.update(dt)
         update.menu()
     else
         update.background()
+        update.obstacle()
         update.player()
 
         if level == 1 and ufo_counter == 3 and #ufos == 0 then
