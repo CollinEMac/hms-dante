@@ -34,6 +34,21 @@ function draw.background()
     love.graphics.setShader()
 end
 
+function draw.obstacles()
+    for i, incoming_obstacle in ipairs(incoming_obstacles) do
+        if love.timer.getTime() - incoming_obstacle.time < 3 then
+            -- TODO: Make (now - time)  into a util function maybe
+            red_shader:send("y_min", incoming_obstacle.y_min)
+            red_shader:send("y_max", incoming_obstacle.y_max)
+        else
+            print('exit red shader')
+            red_shader:send("y_min", 0)
+            red_shader:send("y_max", 0)
+            table.remove(incoming_obstacles, i)
+        end
+    end
+end
+
 function draw.player()
     if player.alive == true then
         love.graphics.draw(player.image,

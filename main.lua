@@ -106,6 +106,7 @@ function restart_game()
     ufo_lasers = {}
     ufos = {}
     weapons = {}
+    incoming_obstacles = {}
     player_score = 0
     ufo_counter = 0
     npcs = {}
@@ -244,6 +245,7 @@ function love.draw()
     elseif level == 100 then
         draw.menu('pause')
     elseif player.alive then
+        draw.obstacles()
         draw.player()
         draw.ufos()
         if level == 1 then
