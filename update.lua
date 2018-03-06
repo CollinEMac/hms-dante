@@ -69,10 +69,13 @@ function update.obstacle()
         -- Also, this shouldn't send to shader here, it should set a flag
         -- and if the flag is true then send shaders or whatever
         -- That way we can keep the shader active for a while
-        if love.math.random(500) == 1 then -- random like 100 or something?
+        if love.math.random(500) == 1 then
+            y_min = love.math.random(10)/100  -- random 0.1 float
+            y_max = y_min + 0.1
+
             incoming_obstacles[#incoming_obstacles + 1] = {
-                y_min = 0.3,
-                y_max = 0.4,
+                y_min = y_min,
+                y_max = y_max,
                 time = love.timer.getTime()
             }
         end
