@@ -64,7 +64,7 @@ function update.background(stage)
 end
 
 function update.obstacle()
-    if level == 1 then
+    if level == 3 then -- let's add this to a later level, not the first one
         --TODO: This should probably involve what enemies have been created/destroyed
         -- Also, this shouldn't send to shader here, it should set a flag
         -- and if the flag is true then send shaders or whatever

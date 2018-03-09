@@ -41,7 +41,6 @@ function draw.obstacles()
             red_shader:send("y_min", incoming_obstacle.y_min)
             red_shader:send("y_max", incoming_obstacle.y_max)
         else
-            print('exit red shader')
             red_shader:send("y_min", 0)
             red_shader:send("y_max", 0)
             table.remove(incoming_obstacles, i)

@@ -2,8 +2,8 @@
 
 --
 -- TODO / ideas
--- obstacles / asteroids
 -- RPG stages
+-- obstacles / asteroids
 -- options menu
 -- sprites
 -- Death animations
@@ -60,6 +60,15 @@ red_shader = love.graphics.newShader[[
     }
 ]]
 
+death_shader = love.graphics.newShader[[
+    // Red shader code, makes screen red between y_min and y_max
+    vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+        vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+        pixel.r = pixel.r + 0.80;
+        return pixel;
+    }
+]]
+
 function love.load()
     -- Initial setup
     -- get screen dimensions for setting window size
@@ -68,11 +77,6 @@ function love.load()
 
     window_width = desktop_width / 3
     window_height = window_width
-
-    -- TODO:
-    -- Okay so pass in the region of the window where the obstacle will appear
-    -- and do color stuff or something
-    -- red_shader:send("size",{window_width, window_height})
 
     love.window.setMode(window_width, window_height)
     love.window.setTitle('Starship Dante')
