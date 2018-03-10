@@ -43,8 +43,6 @@ STORY_TEXTS = {[1] = "",
     [4] = "My name is Dante."
 }
 
--- Let's figure out how shaders work
--- I think I'll use shaders for animations and warning of incoming obstacles
 red_shader = love.graphics.newShader[[
     // Red shader code, makes screen red between y_min and y_max
 
@@ -60,6 +58,7 @@ red_shader = love.graphics.newShader[[
     }
 ]]
 
+-- Add this to ufos when they die
 death_shader = love.graphics.newShader[[
     // Red shader code, makes screen red between y_min and y_max
     vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){

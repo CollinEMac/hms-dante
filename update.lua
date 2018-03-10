@@ -189,51 +189,56 @@ end
 
 function update.ufo(dt)
     for i, ufo in ipairs(ufos) do
-        if ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()) > 0 and
-            ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) > 0 then
+        if ufo.death_time == 0 then -- ufo alive
+            if ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()) > 0 and
+                ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) > 0 then
 
-                if ufo.toward_player == true then
-                    ufo.x = ufo.x - ufo.speed -- move to the left
+                    if ufo.toward_player == true then
+                        ufo.x = ufo.x - ufo.speed -- move to the left
 
-                    if ufo.x < player.x - 50 then
-                        ufo.toward_player = false
-                    end
-                else
-                    ufo.x = ufo.x + ufo.speed -- move to the right
+                        if ufo.x < player.x - 50 then
+                            ufo.toward_player = false
+                        end
+                    else
+                        ufo.x = ufo.x + ufo.speed -- move to the right
 
-                    if ufo.x > window_width - 50 then
-                        ufo.toward_player = true
-                    end
-                end
-
-                -- don't allow ufos to go off screen (destroy ones that do manually)
-                if ufo.y <= UFO_SIZE_CF * (ufo.image:getHeight()/2) then
-                    ufo.y = ufo.y + 1
-                elseif ufo.y >= window_height - (UFO_SIZE_CF * ufo.image:getHeight()) then
-                    ufo.y = ufo.y - 1
-                else
-                    -- handle vertical movement patterns
-                    if ufo.movement_pattern == 'sin' then
-                        -- THIS IS CAUSING HUGE PERFORMANCE ISSUES AND FREEZES THE GAME UP!
-                        ufo.time = ufo.time + dt
-                        ufo.y = ufo.y + 0.4 * math.sin(ufo.time)
+                        if ufo.x > window_width - 50 then
+                            ufo.toward_player = true
+                        end
                     end
 
-                    if ufo.movement_pattern == 'random' then
-                        -- random y axis movement
-                        if love.math.random(50) == 1 then
-                            -- Randomly change y movement direction (up/down)
-                            ufo.y_delta = -ufo.y_delta
+                    -- don't allow ufos to go off screen (destroy ones that do manually)
+                    if ufo.y <= UFO_SIZE_CF * (ufo.image:getHeight()/2) then
+                        ufo.y = ufo.y + 1
+                    elseif ufo.y >= window_height - (UFO_SIZE_CF * ufo.image:getHeight()) then
+                        ufo.y = ufo.y - 1
+                    else
+                        -- handle vertical movement patterns
+                        if ufo.movement_pattern == 'sin' then
+                            -- THIS IS CAUSING HUGE PERFORMANCE ISSUES AND FREEZES THE GAME UP!
+                            ufo.time = ufo.time + dt
+                            ufo.y = ufo.y + 0.4 * math.sin(ufo.time)
                         end
 
-                        ufo.y = ufo.y + ufo.y_delta
-                    end
-                end
+                        if ufo.movement_pattern == 'random' then
+                            -- random y axis movement
+                            if love.math.random(50) == 1 then
+                                -- Randomly change y movement direction (up/down)
+                                ufo.y_delta = -ufo.y_delta
+                            end
 
-                -- kill player on contact with ufo
-                object_hit(ufo, 0)
-                create_ufo_projectiles(ufo)
-        else
+                            ufo.y = ufo.y + ufo.y_delta
+                        end
+                    end
+
+                    -- kill player on contact with ufo
+                    object_hit(ufo, 0)
+                    create_ufo_projectiles(ufo)
+            else
+                table.remove(ufos, i)
+            end
+
+        elseif ufo.death_time > 0 and love.timer.getTime() > ufo.death_time + 2 then
             table.remove(ufos, i)
         end
     end
@@ -286,7 +291,8 @@ function spawn_ufo(movement_pattern)
         weapon_prob = 10,
         toward_player = true,
         y_delta = 1, -- Move up or down on y axis? default down
-        create_time = love.timer.getTime() -- for timed events like firing projectiles
+        create_time = love.timer.getTime(), -- for timed events like firing projectiles
+        death_time = 0
     }
 
     -- Have to do this later because it references the object image
@@ -427,7 +433,7 @@ function object_hit(projectile, projectile_i)
                 end
 
                 spawn_weapon(ufo)
-                table.remove(ufos, i)
+                ufo.death_time = love.timer.getTime()
                 table.remove(player_lasers, projectile_i)
                 player_score = player_score + 10
             end

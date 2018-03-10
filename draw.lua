@@ -78,6 +78,10 @@ end
 
 function draw.ufos()
     for i, ufo in ipairs(ufos) do
+        if ufo.death_time > 0 then
+            love.graphics.setShader(death_shader)
+        end
+
         love.graphics.draw(ufo.image,
             ufo.x,
             ufo.y,
@@ -87,6 +91,10 @@ function draw.ufos()
             ufo.image:getWidth()/2,
             ufo.image:getHeight()/2
         )
+
+        if ufo.death_time > 0 then
+            love.graphics.setShader()
+        end
     end
 end
 
