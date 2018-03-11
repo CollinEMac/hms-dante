@@ -2,6 +2,8 @@
 
 draw = {}
 
+shaders = require("shaders")
+
 function draw.menu(type)
     -- Draws a menu, takes a string defining if 'main' menu or 'pause' menu
     menu_selection_x = 0.25 * window_width
