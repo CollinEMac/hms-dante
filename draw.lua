@@ -80,6 +80,8 @@ function draw.ufos()
     for i, ufo in ipairs(ufos) do
         if ufo.death_time > 0 then
             love.graphics.setShader(death_shader)
+            saturation = love.timer.getTime() - ufo.death_time
+            death_shader:send("saturation", saturation)
         end
 
         love.graphics.draw(ufo.image,

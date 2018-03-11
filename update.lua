@@ -238,8 +238,9 @@ function update.ufo(dt)
                 table.remove(ufos, i)
             end
 
-        elseif ufo.death_time > 0 and love.timer.getTime() > ufo.death_time + 2 then
+        elseif ufo.death_time > 0 and love.timer.getTime() > ufo.death_time + 1 then
             table.remove(ufos, i)
+            spawn_weapon(ufo)
         end
     end
 end
@@ -432,7 +433,6 @@ function object_hit(projectile, projectile_i)
                     ufo_destroyed = love.timer.getTime()
                 end
 
-                spawn_weapon(ufo)
                 ufo.death_time = love.timer.getTime()
                 table.remove(player_lasers, projectile_i)
                 player_score = player_score + 10
