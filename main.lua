@@ -131,7 +131,7 @@ function love.keypressed(key)
         elseif level == 2 then
             for i, npc in ipairs(npcs) do
             -- if player on npc, interact with them
-                if utils.overlap(npc, player, PLAYER_PROJECTILE_SIZE_CF) then
+                if utils.overlap(npc, player, PLAYER_PROJECTILE_SIZE_CF, PLAYER_PROJECTILE_SIZE_CF) then
                     continue_story = true
                     start_action = false
                     speaking_char = npc
