@@ -433,9 +433,12 @@ function object_hit(projectile, projectile_i)
                     ufo_destroyed = love.timer.getTime()
                 end
 
-                ufo.death_time = love.timer.getTime()
+                if ufo.death_time == 0 then
+                    -- Only set death time and incremember player score once
+                    ufo.death_time = love.timer.getTime()
+                    player_score = player_score + 10
+                end
                 table.remove(player_lasers, projectile_i)
-                player_score = player_score + 10
             end
         end
     else
