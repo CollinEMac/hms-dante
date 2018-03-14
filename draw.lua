@@ -80,10 +80,19 @@ end
 
 function draw.ufos()
     for i, ufo in ipairs(ufos) do
+        now = love.timer.getTime()
+        if ufo.fade_time > 0 then
+            love.graphics.setShader(fade_shader)
+            fade_saturation = now - ufo.fade_time
+            if fade_saturation < 2 then
+                fade_shader:send("saturation", fade_saturation)
+            end
+        end
+
         if ufo.death_time > 0 then
             love.graphics.setShader(death_shader)
-            saturation = love.timer.getTime() - ufo.death_time
-            death_shader:send("saturation", saturation)
+            death_saturation = now - ufo.death_time
+            death_shader:send("saturation", death_saturation)
         end
 
         love.graphics.draw(ufo.image,
@@ -97,6 +106,10 @@ function draw.ufos()
         )
 
         if ufo.death_time > 0 then
+            love.graphics.setShader()
+        end
+
+        if ufo.fade_time > 0 then
             love.graphics.setShader()
         end
     end

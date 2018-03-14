@@ -238,6 +238,11 @@ function update.ufo(dt)
                 table.remove(ufos, i)
             end
 
+            -- Sometimes make ufos transparent in level 1
+            if level == 1 and love.math.random(50) == 1 and ((love.timer.getTime() - ufo.fade_time) > 2 or ufo.fade_time == 0) then
+                ufo.fade_time = love.timer.getTime()
+            end
+
         elseif ufo.death_time > 0 and love.timer.getTime() > ufo.death_time + 1 then
             table.remove(ufos, i)
             spawn_weapon(ufo)
@@ -293,7 +298,8 @@ function spawn_ufo(movement_pattern)
         toward_player = true,
         y_delta = 1, -- Move up or down on y axis? default down
         create_time = love.timer.getTime(), -- for timed events like firing projectiles
-        death_time = 0
+        death_time = 0,
+        fade_time = 0
     }
 
     -- Have to do this later because it references the object image
