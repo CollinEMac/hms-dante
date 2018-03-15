@@ -38,8 +38,7 @@ end
 
 function draw.obstacles()
     for i, incoming_obstacle in ipairs(incoming_obstacles) do
-        if love.timer.getTime() - incoming_obstacle.time < 3 then
-            -- TODO: Make (now - time)  into a util function maybe
+        if utils.time_check(incoming_obstacle.time, 3) then
             red_shader:send("y_min", incoming_obstacle.y_min)
             red_shader:send("y_max", incoming_obstacle.y_max)
         else

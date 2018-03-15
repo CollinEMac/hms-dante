@@ -109,7 +109,7 @@ function love.mousereleased(x, y, button)
         update.select_menu_item()
 
     elseif player.alive and start_action == true and
-        (love.timer.getTime() > last_player_laser_create + 0.3) then
+        utils.time_check(last_player_laser_create, 0.3) then
             -- If there are already player_lasers then wait some milliseconds before creating another
             update.create_player_projectiles()
     end

@@ -25,4 +25,13 @@ function utils.overlap(first_sprite, second_sprite, first_CF, second_CF)
     return false
 end
 
+function utils.time_check(event, wait_time)
+    -- Returns bool, true if enough time has passed since that event
+    if love.timer.getTime() > event + wait_time then
+        return true
+    else
+        return false
+    end
+end
+
 return utils

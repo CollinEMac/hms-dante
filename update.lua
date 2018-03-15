@@ -108,7 +108,7 @@ function update.player()
         end
 
         -- Expire the weapon after some time
-        if love.timer.getTime() - player.weapon_time > 5 then
+        if utils.time_check(player.weapon_time, 5) then
             player.weapon = ''
         end
 
@@ -236,11 +236,11 @@ function update.ufo(dt)
             end
 
             -- Sometimes make ufos transparent in level 1
-            if level == 1 and love.math.random(500) == 1 and ((love.timer.getTime() - ufo.fade_time) > 2 or ufo.fade_time == 0) then
+            if level == 1 and love.math.random(500) == 1 and (utils.time_check(ufo.fade_time, 2) or ufo.fade_time == 0) then
                 ufo.fade_time = love.timer.getTime()
             end
 
-        elseif ufo.death_time > 0 and love.timer.getTime() > ufo.death_time + 1 then
+        elseif ufo.death_time > 0 and utils.time_check(ufo.death_time, 1) then
             table.remove(ufos, i)
             spawn_weapon(ufo)
         end
@@ -257,10 +257,8 @@ function action()
 
         -- spawn a second ufo
         if ufo_counter == 1 then
-            now = love.timer.getTime()
-
             if #ufos > 0 then
-                if now > ufos[#ufos].create_time + 2 then
+                if utils.time_check(ufos[#ufos].create_time, 2) then
                     spawn_ufo('random')
                 end
             else
@@ -271,7 +269,7 @@ function action()
         if #ufos <= 2 and ufo_counter == 2 then
             now = love.timer.getTime()
 
-            if now > ufo_destroyed + 2 then
+            if utils.time_check(ufo_destroyed, 2) then
                 spawn_ufo('random')
             end
         end
@@ -319,6 +317,7 @@ function update.create_player_projectiles()
             dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)
         }
 
+         --TODO: This is dumb, let's just stamp the object itself
         last_player_laser_create = love.timer.getTime()
     end
 end
@@ -372,7 +371,6 @@ end
 function advance_text(char)
     now = love.timer.getTime()
     if level == 1 then
-        now = love.timer.getTime()
         if start_action == false and continue_story == true and story_text == STORY_TEXTS[1] then
             type_writer_c = ""
             story_text = STORY_TEXTS[2]
@@ -416,10 +414,10 @@ function advance_text(char)
         end
     end
 
-    if (now > type_writer_time + 0.05) and #type_writer_c < #story_text then
+    if (utils.time_check(type_writer_time, 0.05)) and #type_writer_c < #story_text then
         -- TODO: Allow for changing this speed in options menu
         type_writer_c = story_text:sub(1, #type_writer_c + 1)
-        type_writer_time = now
+        type_writer_time = love.timer.getTime()
     end
 end
 
