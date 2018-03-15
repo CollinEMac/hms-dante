@@ -79,7 +79,6 @@ function restart_game()
     player.y = window_height / 2
     menu_selection = 1
     player_lasers = {}
-    last_player_laser_create = 0
     ufo_lasers = {}
     ufos = {}
     weapons = {}
@@ -108,10 +107,12 @@ function love.mousereleased(x, y, button)
     if start_action == false or level == 100 then
         update.select_menu_item()
 
-    elseif player.alive and start_action == true and
-        utils.time_check(last_player_laser_create, 0.3) then
-            -- If there are already player_lasers then wait some milliseconds before creating another
-            update.create_player_projectiles()
+    elseif player.alive and
+        start_action == true and
+        (#player_lasers == 0 or
+            utils.time_check(player_lasers[#player_lasers].create_time, 0.3)) then
+                -- If there are already player_lasers then wait some milliseconds before creating another
+                update.create_player_projectiles()
     end
 
     if player.alive == false then

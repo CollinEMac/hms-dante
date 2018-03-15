@@ -314,11 +314,9 @@ function update.create_player_projectiles()
             speed = 7,
             friendly = true,
             dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
-            dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF)
+            dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF),
+            create_time = love.timer.getTime()
         }
-
-         --TODO: This is dumb, let's just stamp the object itself
-        last_player_laser_create = love.timer.getTime()
     end
 end
 
