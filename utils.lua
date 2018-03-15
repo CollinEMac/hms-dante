@@ -15,7 +15,6 @@ end
 
 function utils.overlap(first_sprite, second_sprite, first_CF, second_CF)
     -- checks to see if two sprites are overlapping each other
-    -- TODO: CHECK THIS, I THINK IT'S FUCKED UP
     if first_sprite.x + (first_CF * first_sprite.image:getWidth()/2) > (second_sprite.x - (second_CF * second_sprite.image:getWidth()/2)) and
         first_sprite.x - (first_CF * first_sprite.image:getWidth()/2) < (second_sprite.x + (second_CF * second_sprite.image:getWidth())) and
         first_sprite.y + (first_CF * first_sprite.image:getWidth()/2)  > (second_sprite.y - (second_CF * second_sprite.image:getHeight()/2)) and

@@ -66,9 +66,6 @@ end
 function update.obstacle()
     if level == 3 then -- let's add this to a later level, not the first one
         --TODO: This should probably involve what enemies have been created/destroyed
-        -- Also, this shouldn't send to shader here, it should set a flag
-        -- and if the flag is true then send shaders or whatever
-        -- That way we can keep the shader active for a while
         if love.math.random(500) == 1 then
             y_min = love.math.random(10)/100  -- random 0.1 float
             y_max = y_min + 0.1
@@ -239,7 +236,7 @@ function update.ufo(dt)
             end
 
             -- Sometimes make ufos transparent in level 1
-            if level == 1 and love.math.random(50) == 1 and ((love.timer.getTime() - ufo.fade_time) > 2 or ufo.fade_time == 0) then
+            if level == 1 and love.math.random(500) == 1 and ((love.timer.getTime() - ufo.fade_time) > 2 or ufo.fade_time == 0) then
                 ufo.fade_time = love.timer.getTime()
             end
 
@@ -263,7 +260,6 @@ function action()
             now = love.timer.getTime()
 
             if #ufos > 0 then
-                -- TODO: Want to tweak this, won't spawn until 2 are defeated
                 if now > ufos[#ufos].create_time + 2 then
                     spawn_ufo('random')
                 end
@@ -469,8 +465,6 @@ function spawn_weapon(ufo)
 end
 
 function update.weapons(dt)
-    -- TODO: Something wrong here, seems like I get the weapon even if I don't
-    -- object hit it (moving too fast?)
     if level == 1 then
         for i, weapon in ipairs(weapons) do
             if 0 < weapon.x and
@@ -488,7 +482,6 @@ function update.weapons(dt)
 
             -- check if player is picking up the weapon
             if utils.overlap(weapon, player, ENEMY_PROJECTILE_SIZE_CF, PLAYER_PROJECTILE_SIZE_CF) then
-                -- TODO: Need to account for correction factor of both sprites!
                 player.weapon = weapon.type
                 player.weapon_time = love.timer.getTime()
                 table.remove(weapons, i)
