@@ -34,4 +34,11 @@ function utils.time_check(event, wait_time)
     end
 end
 
+function utils.clear_all_shaders()
+    while (love.graphics.getShader() ~= nil)
+        do
+            love.graphics.setShader()
+        end
+end
+
 return utils
