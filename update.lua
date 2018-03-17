@@ -236,7 +236,7 @@ function update.ufo(dt)
             end
 
             -- Sometimes make ufos transparent in level 1
-            if level == 1 and love.math.random(500) == 1 and (utils.time_check(ufo.fade_time, 2) or ufo.fade_time == 0) then
+            if level == 1 and love.math.random(500) == 1 and (utils.time_check(ufo.fade_time, 3) or ufo.fade_time == 0) then
                 ufo.fade_time = love.timer.getTime()
             end
 

@@ -83,8 +83,10 @@ function draw.ufos()
         if ufo.fade_time > 0 then
             love.graphics.setShader(fade_shader)
             fade_saturation = now - ufo.fade_time
-            if fade_saturation < 1 then
+            if fade_saturation < 3 then
                 fade_shader:send("saturation", fade_saturation)
+            else
+                fade_shader:send("saturation", 0)
             end
         end
 
