@@ -116,7 +116,11 @@ function update.player()
     -- scroll everything to the left at a constant rate
     -- that'll make things easier for changing speed too
     -- let the player move to the edge of the background
-    elseif level == 2 and story_text == "" then
+    elseif level == 2 and story_text == "" and
+        not ((love.keyboard.isDown("left") or love.keyboard.isDown("a")) and (love.keyboard.isDown("right") or love.keyboard.isDown("d"))) and
+        not ((love.keyboard.isDown("up") or love.keyboard.isDown("w")) and (love.keyboard.isDown("down") or love.keyboard.isDown("s"))) then
+        -- Do nothing if contradicting keys are held
+
         vert_mid_of_cam = -cam.y + (window_height/2)
         hor_mid_of_cam = -cam.x + (window_width/2)
 
