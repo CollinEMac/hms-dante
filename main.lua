@@ -54,6 +54,12 @@ function love.load()
     love.window.setMode(window_width, window_height)
     love.window.setTitle('Starship Dante')
 
+    --TODO:
+    -- I could set the cursor invisible and put a sprite there.
+    love.mouse.setGrabbed( true )
+    -- this feels pretty good but I'm not sure about setting the cursor invisible
+    -- love.mouse.setRelativeMode( true )
+
     background = {image = SPACE_BACKGROUND,
         x = 0,
         y = 0
