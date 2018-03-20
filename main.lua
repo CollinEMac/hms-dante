@@ -98,6 +98,7 @@ function restart_game()
     type_writer_time = 0
     start_action = false
     ufo_destroyed = 99999
+    level_over = false
 
     -- might want to move these
     cam = {x = -5,
@@ -186,13 +187,14 @@ function love.update(dt)
         update.obstacle()
         update.player()
 
-        if level == 1 and ufo_counter == 3 and #ufos == 0 then
+        if level == 1 and level_over == true then
             -- action level stuff
             ufos = {}
             -- ufo_projectiles = {}
             -- player_projectiles = {}
             love.graphics.clear()
             level = level + 1
+            level_over = false
 
             player.x = window_width / 2
             player.y = window_height / 2

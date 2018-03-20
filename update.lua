@@ -277,6 +277,17 @@ function action()
                 spawn_ufo('random')
             end
         end
+
+        if #ufos <=2 and ufo_counter == 3 then
+
+            if utils.time_check(ufo_destroyed, 3) then
+                spawn_ufo('random')
+            end
+        end
+
+        if #ufos == 0 and ufo_counter == 4 then
+            level_over = true
+        end
     end
 end
 
