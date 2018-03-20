@@ -271,8 +271,6 @@ function action()
         end
 
         if #ufos <= 2 and ufo_counter == 2 then
-            now = love.timer.getTime()
-
             if utils.time_check(ufo_destroyed, 2) then
                 spawn_ufo('random')
             end
@@ -382,7 +380,6 @@ function update.npcs()
 end
 
 function advance_text(char)
-    now = love.timer.getTime()
     if level == 1 then
         if start_action == false and continue_story == true and story_text == STORY_TEXTS[1] then
             type_writer_c = ""
