@@ -279,7 +279,7 @@ function action()
         if #ufos <=2 and ufo_counter == 3 then
 
             if utils.time_check(ufo_destroyed, 3) then
-                spawn_ufo('random')
+                spawn_ufo('sin')
             end
         end
 
@@ -358,12 +358,12 @@ function update.npcs()
     if level == 2 and #npcs == 0 then
         -- create npc
         npc1 = {image = CHARACTER_PLAYER,
-            name = 'npc1',
+            name = 'Game master',
                 x = window_width / 2,
                 y = window_height + 10,
                 speech = {[1] =
-                    "Congrats! You've made it to the end of this demo. At some point there will be more" ..
-                    "characters here that you can talk to to advance the story. For now, you can close" ..
+                    "Congrats! You've made it to the end of this demo. At some point there will be more " ..
+                    "characters here that you can talk to to advance the story. For now, you can close " ..
                     "the game from the pause menu (escape key)."
                 }
             }
