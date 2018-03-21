@@ -165,7 +165,8 @@ function draw.text()
             text,
             left_most_text_box + (0.05 * text_box_width),
             top_of_text_box + (0.10 * text_box_height),
-            right_most_text_box - (0.05 * text_box_width)
+            right_most_text_box - (0.15 * text_box_width),
+            "left"
         )
     end
 

@@ -361,7 +361,10 @@ function update.npcs()
             name = 'npc1',
                 x = window_width / 2,
                 y = window_height + 10,
-                speech = {[1] = 'Hey, I\'m an NPC!'
+                speech = {[1] =
+                    "Congrats! You've made it to the end of this demo. At some point there will be more" ..
+                    "characters here that you can talk to to advance the story. For now, you can close" ..
+                    "the game from the pause menu (escape key)."
                 }
             }
 
