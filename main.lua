@@ -46,7 +46,7 @@ function love.load()
     -- Initial setup
     -- get screen dimensions for setting window size
     local _, _, flags = love.window.getMode()
-    local desktop_width, desktop_height = love.window.getDesktopDimensions(flags.display)
+    desktop_width, desktop_height = love.window.getDesktopDimensions(flags.display)
 
     window_width = desktop_width / 3
     window_height = window_width

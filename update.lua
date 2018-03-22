@@ -37,8 +37,15 @@ function update.select_menu_item()
         end
 
     elseif menu_selection == 2 then
-        -- TODO: add settings and options
-        print('options')
+        -- TODO: put fullscreen option in options menu
+        -- This fullscreen stuff mostly works
+        -- window_width = desktop_width
+        -- window_height = desktop_height
+        -- love.window.setMode(window_width, window_height, {fullscreen=true})
+        -- TODO: Add volume slider
+        -- TODO: add text speed controls?
+        -- TODO: add a save feature?
+
     elseif menu_selection == 3 then
         love.event.quit()
     end
