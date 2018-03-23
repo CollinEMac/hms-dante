@@ -26,15 +26,12 @@ draw = require("draw")
 
 -- Correction for the image, it's tilted to the side
 PLAYER_IMG_ROTATION_CF = 0.75 * math.pi
-UFO_SIZE_CF = 0.10
-PLAYER_PROJECTILE_SIZE_CF = 0.085
-ENEMY_PROJECTILE_SIZE_CF = 0.05
 
 SPACE_BACKGROUND = love.graphics.newImage("sprites/background.jpg")
 SHIP_BACKGROUND = love.graphics.newImage("sprites/brown.jpg")
 
 SHIP_PLAYER = love.graphics.newImage("sprites/spaceship.png")
-CHARACTER_PLAYER = love.graphics.newImage("sprites/dante.jpg")
+CHARACTER_PLAYER = love.graphics.newImage("sprites/dante.png")
 
 STORY_TEXTS = {[1] = "",
     [2] = "Lost. Hopelessly lost...",
@@ -139,7 +136,7 @@ function love.keypressed(key)
         elseif level == 2 then
             for i, npc in ipairs(npcs) do
             -- if player on npc, interact with them
-                if utils.overlap(npc, player, PLAYER_PROJECTILE_SIZE_CF, PLAYER_PROJECTILE_SIZE_CF) then
+                if utils.overlap(npc, player) then
                     continue_story = true
                     start_action = false
                     speaking_char = npc

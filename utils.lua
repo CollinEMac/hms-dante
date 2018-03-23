@@ -13,12 +13,12 @@ function utils.round(num, numDecimalPlaces)
     return math.floor(num * mult + 0.5) / mult
 end
 
-function utils.overlap(first_sprite, second_sprite, first_CF, second_CF)
+function utils.overlap(first_sprite, second_sprite)
     -- checks to see if two sprites are overlapping each other
-    if first_sprite.x + (first_CF * first_sprite.image:getWidth()/2) > (second_sprite.x - (second_CF * second_sprite.image:getWidth()/2)) and
-        first_sprite.x - (first_CF * first_sprite.image:getWidth()/2) < (second_sprite.x + (second_CF * second_sprite.image:getWidth()/2)) and
-        first_sprite.y + (first_CF * first_sprite.image:getWidth()/2)  > (second_sprite.y - (second_CF * second_sprite.image:getHeight()/2)) and
-        first_sprite.y - (first_CF * first_sprite.image:getWidth()/2) < (second_sprite.y + (second_CF * second_sprite.image:getHeight()/2)) then
+    if first_sprite.x + (first_sprite.image:getWidth()/2) > (second_sprite.x - (second_sprite.image:getWidth()/2)) and
+        first_sprite.x - (first_sprite.image:getWidth()/2) < (second_sprite.x + (second_sprite.image:getWidth()/2)) and
+        first_sprite.y + (first_sprite.image:getWidth()/2)  > (second_sprite.y - (second_sprite.image:getHeight()/2)) and
+        first_sprite.y - (first_sprite.image:getWidth()/2) < (second_sprite.y + (second_sprite.image:getHeight()/2)) then
             return true
     end
 

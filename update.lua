@@ -198,8 +198,8 @@ end
 function update.ufo(dt)
     for i, ufo in ipairs(ufos) do
         if ufo.death_time == 0 then -- ufo alive
-            if ufo.x + (UFO_SIZE_CF * ufo.image:getWidth()) > 0 and
-                ufo.y + (UFO_SIZE_CF * ufo.image:getHeight()) > 0 then
+            if (ufo.x + ufo.image:getWidth()) > 0 and
+                (ufo.y + ufo.image:getHeight()) > 0 then
 
                     if ufo.toward_player == true then
                         ufo.x = ufo.x - ufo.speed -- move to the left
@@ -216,9 +216,9 @@ function update.ufo(dt)
                     end
 
                     -- don't allow ufos to go off screen (destroy ones that do manually)
-                    if ufo.y <= UFO_SIZE_CF * (ufo.image:getHeight()/2) then
+                    if ufo.y <= (ufo.image:getHeight()/2) then
                         ufo.y = ufo.y + 1
-                    elseif ufo.y >= window_height - (UFO_SIZE_CF * ufo.image:getHeight()) then
+                    elseif ufo.y >= (window_height - ufo.image:getHeight()) then
                         ufo.y = ufo.y - 1
                     else
                         -- handle vertical movement patterns
@@ -301,7 +301,7 @@ function spawn_ufo(movement_pattern)
     y_percent = love.math.random(1, 9) * 0.1
 
     -- add a new ufo to the list
-    new_ufo = {image = love.graphics.newImage("sprites/ufo.jpg"),
+    new_ufo = {image = love.graphics.newImage("sprites/ufo.png"),
         x = 0,
         y = y_percent * window_height,
         speed = 1,
@@ -317,7 +317,7 @@ function spawn_ufo(movement_pattern)
     }
 
     -- Have to do this later because it references the object image
-    new_ufo.x = window_width + (UFO_SIZE_CF * new_ufo.image:getWidth()/2)
+    new_ufo.x = window_width + new_ufo.image:getWidth()/2
 
     ufos[#ufos + 1] = new_ufo
 
@@ -326,7 +326,7 @@ end
 
 function update.create_player_projectiles()
     if level == 1 then
-        player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
+        player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/player_laser.png"),
             x = player.x,
             y = player.y,
             weapon = player.weapon, -- set to sin to test sin pattern
@@ -348,7 +348,7 @@ function create_ufo_projectiles(ufo)
     if time % div == 0 and #ufo_lasers < 1 then
         local direction = math.atan2((ufo.y - player.y), (ufo.x - player.x))
 
-        ufo_lasers[#ufo_lasers + 1] = {image = love.graphics.newImage("sprites/laser.jpg"),
+        ufo_lasers[#ufo_lasers + 1] = {image = love.graphics.newImage("sprites/enemy_laser.png"),
             x = ufo.x,
             y = ufo.y,
             weapon = 'sin',
@@ -446,7 +446,7 @@ function object_hit(projectile, projectile_i)
 
     if projectile.friendly == true then
         for i, ufo in ipairs(ufos) do
-            if utils.overlap(projectile, ufo, PLAYER_PROJECTILE_SIZE_CF, UFO_SIZE_CF) then
+            if utils.overlap(projectile, ufo) then
                 -- if player projectile overlapping enemy then destroy it
 
                 if #ufos <= 2 and ufo_counter == 2 then
@@ -462,8 +462,8 @@ function object_hit(projectile, projectile_i)
             end
         end
     else
-        if utils.overlap(projectile, player, ENEMY_PROJECTILE_SIZE_CF, PLAYER_PROJECTILE_SIZE_CF) then
-            -- if projectile overlapping player then YOU DEAD!
+        if utils.overlap(projectile, player) then
+            -- if projectile overlapping pln YOU DEAD!
             game_over()
         end
     end
@@ -473,7 +473,7 @@ function spawn_weapon(ufo)
     -- spawn a weapon on enemy death sometimes
     if love.math.random(ufo.weapon_prob) == 1 then
         -- spawn the weapon in a giant downward sine wave where it gets destroyed
-        weapons[#weapons + 1] = {image = love.graphics.newImage("sprites/gun.jpg"),
+        weapons[#weapons + 1] = {image = love.graphics.newImage("sprites/gun.png"),
             x = ufo.x,
             y = ufo.y,
             type = 'sin',
@@ -499,7 +499,7 @@ function update.weapons(dt)
             end
 
             -- check if player is picking up the weapon
-            if utils.overlap(weapon, player, ENEMY_PROJECTILE_SIZE_CF, PLAYER_PROJECTILE_SIZE_CF) then
+            if utils.overlap(weapon, player) then
                 player.weapon = weapon.type
                 player.weapon_time = love.timer.getTime()
                 table.remove(weapons, i)

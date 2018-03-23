@@ -55,8 +55,8 @@ function draw.player()
             player.x,
             player.y,
             player.rotation,
-            PLAYER_PROJECTILE_SIZE_CF,
-            PLAYER_PROJECTILE_SIZE_CF,
+            1,
+            1,
             player.image:getWidth()/2,
             player.image:getHeight()/2
         )
@@ -69,8 +69,8 @@ function draw.projectile()
             player_laser.x,
             player_laser.y,
             3 * math.pi / 2,
-            PLAYER_PROJECTILE_SIZE_CF,
-            PLAYER_PROJECTILE_SIZE_CF,
+            1,
+            1,
             player_laser.image:getWidth()/2,
             player_laser.image:getHeight()/2
         )
@@ -100,8 +100,8 @@ function draw.ufos()
             ufo.x,
             ufo.y,
             0,
-            UFO_SIZE_CF,
-            UFO_SIZE_CF,
+            1,
+            1,
             ufo.image:getWidth()/2,
             ufo.image:getHeight()/2
         )
@@ -117,8 +117,8 @@ function draw.npcs()
                 npc.x,
                 npc.y,
                 0,
-                PLAYER_PROJECTILE_SIZE_CF,
-                PLAYER_PROJECTILE_SIZE_CF,
+                1,
+                1,
                 player.image:getWidth()/2,
                 player.image:getHeight()/2
             )
@@ -181,8 +181,8 @@ function draw.ufo_projectiles()
             ufo_laser.x,
             ufo_laser.y,
             3 * math.pi / 2,
-            ENEMY_PROJECTILE_SIZE_CF,
-            ENEMY_PROJECTILE_SIZE_CF,
+            1,
+            1,
             ufo_laser.image:getWidth()/2,
             ufo_laser.image:getHeight()/2
         )
@@ -195,8 +195,8 @@ function draw.weapons()
             weapon.x,
             weapon.y,
             0,
-            ENEMY_PROJECTILE_SIZE_CF,
-            ENEMY_PROJECTILE_SIZE_CF,
+            1,
+            1,
             weapon.image:getWidth()/2,
             weapon.image:getHeight()/2
         )
