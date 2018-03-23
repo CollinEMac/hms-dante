@@ -333,8 +333,8 @@ function update.create_player_projectiles()
             time = 0,
             speed = 7,
             friendly = true,
-            dx = math.cos(player.rotation - PLAYER_IMG_ROTATION_CF),
-            dy = math.sin(player.rotation - PLAYER_IMG_ROTATION_CF),
+            dx = math.cos(player.rotation),
+            dy = math.sin(player.rotation),
             create_time = love.timer.getTime()
         }
     end

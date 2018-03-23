@@ -24,9 +24,6 @@ utils = require("utils")
 update = require("update")
 draw = require("draw")
 
--- Correction for the image, it's tilted to the side
-PLAYER_IMG_ROTATION_CF = 0.75 * math.pi
-
 SPACE_BACKGROUND = love.graphics.newImage("sprites/background.jpg")
 SHIP_BACKGROUND = love.graphics.newImage("sprites/brown.jpg")
 

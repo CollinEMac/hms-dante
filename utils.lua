@@ -4,7 +4,7 @@ local utils={}
 
 function utils.get_player_rotation()
     -- returns the players rotation in radians
-    player.rotation = math.atan2((mouse_y - player.y), (mouse_x - player.x)) + PLAYER_IMG_ROTATION_CF
+    player.rotation = math.atan2((mouse_y - player.y), (mouse_x - player.x))
 end
 
 function utils.round(num, numDecimalPlaces)
