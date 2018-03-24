@@ -63,6 +63,16 @@ function draw.player()
     end
 end
 
+function draw.player_hitbox() -- for testing purposes
+    if player.alive == true then
+        love.graphics.rectangle('line',
+        player.x - player.image:getWidth()/2,
+        player.y - player.image:getHeight()/2,
+        player.image:getWidth(),
+        player.image:getHeight())
+    end
+end
+
 function draw.projectile()
     for i, player_laser in ipairs(player_lasers) do
         love.graphics.draw(player_laser.image,

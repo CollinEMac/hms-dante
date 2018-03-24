@@ -462,6 +462,8 @@ function object_hit(projectile, projectile_i)
             end
         end
     else
+        -- FIXME: This is broken because it doesn't account for the rotation
+        -- of the player
         if utils.overlap(projectile, player) then
             -- if projectile overlapping pln YOU DEAD!
             game_over()
