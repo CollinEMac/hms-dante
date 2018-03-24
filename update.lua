@@ -181,6 +181,7 @@ function update.projectiles(projectiles, dt)
                     if projectile.weapon == 'sin' then
                         projectile.time = projectile.time + dt
                         projectile.y = projectile.y +
+                                         (projectile.dy * projectile.speed) +
                                          ((window_height/60) * math.sin(2 * math.pi * projectile.time))
                     else
                         projectile.y = projectile.y + projectile.dy * projectile.speed
