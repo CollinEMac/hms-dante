@@ -307,7 +307,7 @@ function spawn_ufo(movement_pattern)
         time = 0,
         friendly = false,
         movement_pattern = movement_pattern,
-        weapon_prob = 10,
+        weapon_prob = 3,
         toward_player = true,
         y_delta = 1, -- Move up or down on y axis? default down
         create_time = love.timer.getTime(), -- for timed events like firing projectiles
@@ -478,7 +478,7 @@ function spawn_weapon(ufo)
             x = ufo.x,
             y = ufo.y,
             type = 'sin',
-            time = 0
+            time = love.timer.getTime()
         }
     end
 end
@@ -486,18 +486,25 @@ end
 function update.weapons(dt)
     if level == 1 then
         for i, weapon in ipairs(weapons) do
-            if 0 < weapon.x and
-                0 < weapon.y and
-                weapon.x < window_width and
-                weapon.y < window_height then
 
-                    weapon.x = weapon.x - 3
-
-                    weapon.time = weapon.time + dt
-                    weapon.y = weapon.y + (window_height/30) * math.sin(weapon.time)
-            else
+            -- I think maybe the weapon shouldn't fall off the screen for now
+            -- It should stay where it is for a moment and then disappear
+            if utils.time_check(weapon.time, 3) then
                 table.remove(weapons, i)
             end
+
+            -- if 0 < weapon.x and
+            --     0 < weapon.y and
+            --     weapon.x < window_width and
+            --     weapon.y < window_height then
+            --
+            --         weapon.x = weapon.x - 3
+            --
+            --         weapon.time = weapon.time + dt
+            --         weapon.y = weapon.y + (window_height/60) * math.sin(weapon.time)
+            -- else
+            --     table.remove(weapons, i)
+            -- end
 
             -- check if player is picking up the weapon
             if utils.overlap(weapon, player) then
