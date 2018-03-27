@@ -64,12 +64,12 @@ function draw.player()
 end
 
 function draw.player_hitbox() -- for testing purposes
+    -- Draws a circular hitbox
     if player.alive == true then
-        love.graphics.rectangle('line',
-        player.x - player.image:getWidth()/2,
-        player.y - player.image:getHeight()/2,
-        player.image:getWidth(),
-        player.image:getHeight())
+        love.graphics.circle('line',
+        player.x,
+        player.y,
+        player.image:getHeight()/2)
     end
 end
 

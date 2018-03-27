@@ -227,6 +227,7 @@ function love.draw()
     elseif player.alive then
         draw.obstacles()
         draw.player()
+        -- for testing the hitbox
         -- draw.player_hitbox()
         draw.ufos()
         if level == 1 then

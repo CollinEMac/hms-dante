@@ -14,11 +14,42 @@ function utils.round(num, numDecimalPlaces)
 end
 
 function utils.overlap(first_sprite, second_sprite)
-    -- checks to see if two sprites are overlapping each other
-    if (first_sprite.x + first_sprite.image:getWidth()/2) > (second_sprite.x - (second_sprite.image:getWidth()/2)) and
-        (first_sprite.x - first_sprite.image:getWidth()/2) < (second_sprite.x + (second_sprite.image:getWidth()/2)) and
-        (first_sprite.y + first_sprite.image:getHeight()/2) > (second_sprite.y - (second_sprite.image:getHeight()/2)) and
-        (first_sprite.y - first_sprite.image:getHeight()/2) < (second_sprite.y + (second_sprite.image:getHeight()/2)) then
+
+    half_first_sprite_w = first_sprite.image:getWidth()/2
+    half_first_sprite_h = first_sprite.image:getHeight()/2
+    half_second_sprite_w = second_sprite.image:getWidth()/2
+    half_second_sprite_h = second_sprite.image:getHeight()/2
+
+    -- If a sprite is the player then do circular hitbox
+    if second_sprite.rotation ~= nil then
+        -- Find corners of first_sprite
+        -- This should be a table dear god, then do a for loop holy shit
+        upper_left_x = first_sprite.x - half_first_sprite_w
+        upper_left_y = first_sprite.y - half_first_sprite_w
+        upper_right_x = first_sprite.x + half_first_sprite_w
+        upper_right_y = first_sprite.y - half_first_sprite_w
+        lower_left_x = first_sprite.x - half_first_sprite_w
+        lower_left_y = first_sprite.y + half_first_sprite_w
+        lower_right_x = first_sprite.x + half_first_sprite_w
+        lower_right_y = first_sprite.y + half_first_sprite_w
+
+        r2 = math.pow((player.image:getHeight()/2), 2) -- Seems like a good size
+
+        -- Equation of a circle
+        -- (x−h)^2+(y−k)^2=r^2
+
+        if (math.pow((upper_left_x - second_sprite.x), 2) + math.pow((upper_left_y - second_sprite.y), 2) < r2) or
+            (math.pow((upper_right_x - second_sprite.x), 2) + math.pow((upper_right_y - second_sprite.y), 2) < r2) or
+            (math.pow((lower_left_x - second_sprite.x), 2) + math.pow((lower_left_y - second_sprite.y), 2) < r2) or
+            (math.pow((lower_right_x - second_sprite.x), 2) + math.pow((lower_right_y - second_sprite.y), 2) < r2) then
+                return true
+        end
+
+    -- checks to see if two rectangular ssprites are overlapping each other
+    elseif (first_sprite.x + half_first_sprite_w) > (second_sprite.x - half_second_sprite_w) and
+        (first_sprite.x - half_first_sprite_w) < (second_sprite.x + half_second_sprite_w) and
+        (first_sprite.y + half_first_sprite_h) > (second_sprite.y - half_second_sprite_h) and
+        (first_sprite.y - half_first_sprite_h) < (second_sprite.y + half_second_sprite_h) then
             return true
     end
 
