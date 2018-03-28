@@ -21,28 +21,43 @@ function utils.overlap(first_sprite, second_sprite)
     half_second_sprite_h = second_sprite.image:getHeight()/2
 
     -- If a sprite is the player then do circular hitbox
+    -- Note: this might create issues with projectiles that are bigger
+    -- than the player
     if second_sprite.rotation ~= nil then
         -- Find corners of first_sprite
-        -- This should be a table dear god, then do a for loop holy shit
-        upper_left_x = first_sprite.x - half_first_sprite_w
-        upper_left_y = first_sprite.y - half_first_sprite_w
-        upper_right_x = first_sprite.x + half_first_sprite_w
-        upper_right_y = first_sprite.y - half_first_sprite_w
-        lower_left_x = first_sprite.x - half_first_sprite_w
-        lower_left_y = first_sprite.y + half_first_sprite_w
-        lower_right_x = first_sprite.x + half_first_sprite_w
-        lower_right_y = first_sprite.y + half_first_sprite_w
+        first_sprite_corners = {}
 
-        r2 = math.pow((player.image:getHeight()/2), 2) -- Seems like a good size
+        -- upper left
+        first_sprite_corners[#first_sprite_corners + 1] = {
+            x = first_sprite.x - half_first_sprite_w,
+            y = first_sprite.y - half_first_sprite_w
+        }
 
-        -- Equation of a circle
-        -- (x−h)^2+(y−k)^2=r^2
+        -- upper right
+        first_sprite_corners[#first_sprite_corners + 1] = {
+            x = first_sprite.x + half_first_sprite_w,
+            y = first_sprite.y - half_first_sprite_w
+        }
 
-        if (math.pow((upper_left_x - second_sprite.x), 2) + math.pow((upper_left_y - second_sprite.y), 2) < r2) or
-            (math.pow((upper_right_x - second_sprite.x), 2) + math.pow((upper_right_y - second_sprite.y), 2) < r2) or
-            (math.pow((lower_left_x - second_sprite.x), 2) + math.pow((lower_left_y - second_sprite.y), 2) < r2) or
-            (math.pow((lower_right_x - second_sprite.x), 2) + math.pow((lower_right_y - second_sprite.y), 2) < r2) then
+        -- lower left
+        first_sprite_corners[#first_sprite_corners + 1] = {
+            x = first_sprite.x - half_first_sprite_w,
+            y = first_sprite.y + half_first_sprite_w
+        }
+
+        -- lower right
+        first_sprite_corners[#first_sprite_corners + 1] = {
+            x = first_sprite.x + half_first_sprite_w,
+            y = first_sprite.y + half_first_sprite_w
+        }
+
+        for i, corner in ipairs(first_sprite_corners) do
+
+            -- Equation of a circle
+            -- (x−h)^2+(y−k)^2=r^2
+            if (math.pow((corner.x - second_sprite.x), 2) + math.pow((corner.y - second_sprite.y), 2) < math.pow((player.image:getHeight()/2), 2)) then
                 return true
+            end
         end
 
     -- checks to see if two rectangular ssprites are overlapping each other
