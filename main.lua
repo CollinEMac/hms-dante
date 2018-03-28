@@ -50,9 +50,9 @@ function love.load()
 
     --TODO:
     -- I could set the cursor invisible and put a sprite there.
-    love.mouse.setGrabbed( true )
-    -- this feels pretty good but I'm not sure about setting the cursor invisible
-    -- love.mouse.setRelativeMode( true )
+    -- love.mouse.setGrabbed( true )
+    -- Alternatively I could change this whole mechanic to work with the mouse
+    -- moving up or down to rotate, no need for cursor stuff at all
 
     background = {image = SPACE_BACKGROUND,
         x = 0,
