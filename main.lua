@@ -66,7 +66,8 @@ function love.load()
         speed = 5,
         weapon = '',
         weapon_time = love.timer.getTime(),
-        alive = true
+        alive = true,
+        rotation = 0
     }
 
     restart_game()
