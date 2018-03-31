@@ -18,7 +18,7 @@ function utils.overlap(first_sprite, second_sprite)
     -- If a sprite is the player then do circular hitbox
     -- Note: this might create issues with projectiles that are bigger
     -- than the player
-    if second_sprite.name == 'Dante' then
+    if second_sprite.name == 'Dante' and level == 1 then
         -- Find corners of first_sprite
         first_sprite_corners = {}
 
@@ -55,7 +55,7 @@ function utils.overlap(first_sprite, second_sprite)
             end
         end
 
-    -- checks to see if two rectangular ssprites are overlapping each other
+    -- checks to see if two rectangular sprites are overlapping each other
     elseif (first_sprite.x + half_first_sprite_w) > (second_sprite.x - half_second_sprite_w) and
         (first_sprite.x - half_first_sprite_w) < (second_sprite.x + half_second_sprite_w) and
         (first_sprite.y + half_first_sprite_h) > (second_sprite.y - half_second_sprite_h) and
