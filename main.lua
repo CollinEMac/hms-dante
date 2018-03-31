@@ -236,6 +236,7 @@ function love.draw()
         draw.ufos()
         if level == 1 then
             draw.projectile()
+            draw.crosshair()
             draw.ufo_projectiles()
             draw.weapons()
         end

@@ -73,6 +73,17 @@ function draw.player_hitbox() -- for testing purposes
     end
 end
 
+function draw.crosshair()
+    if player.alive == true then
+        love.graphics.setColor(255, 0, 0) -- red dot
+        love.graphics.circle("fill",
+            player.x + (math.cos(player.rotation) * player.image:getWidth() * 0.75),
+            player.y + (math.sin(player.rotation) * player.image:getWidth() * 0.75),
+            window_width/100)
+        love.graphics.setColor(255, 255, 255) -- default white
+    end
+end
+
 function draw.projectile()
     for i, player_laser in ipairs(player_lasers) do
         love.graphics.draw(player_laser.image,
