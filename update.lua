@@ -30,10 +30,12 @@ function update.select_menu_item()
 
         if level == 0 then
             level = 1
+            love.mouse.setRelativeMode( true )
         end
 
         if level == 100 then
             level = unpause_level
+            love.mouse.setRelativeMode( true )
         end
 
     elseif menu_selection == 2 then
@@ -89,8 +91,7 @@ end
 function update.player()
     -- Handle player movement
     if level == 1 then
-        mouse_x, mouse_y = love.mouse.getPosition()
-        utils.get_player_rotation()
+        player.rotation = (2 * math.pi * (rotation_y))/window_height
     elseif level == 2 then
         player.image = CHARACTER_PLAYER
         player.rotation = 0

@@ -48,12 +48,6 @@ function love.load()
     love.window.setMode(window_width, window_height)
     love.window.setTitle('Starship Dante')
 
-    --TODO:
-    -- I could set the cursor invisible and put a sprite there.
-    -- love.mouse.setGrabbed( true )
-    -- Alternatively I could change this whole mechanic to work with the mouse
-    -- moving up or down to rotate, no need for cursor stuff at all
-
     background = {image = SPACE_BACKGROUND,
         x = 0,
         y = 0
@@ -76,6 +70,7 @@ end
 function restart_game()
     -- Runs when the game launches and when the game restarts after a game over
     level = 0
+    love.mouse.setRelativeMode( false )
     player.x = window_width / 2
     player.y = window_height / 2
     menu_selection = 1
@@ -94,6 +89,7 @@ function restart_game()
     start_action = false
     ufo_destroyed = 99999
     level_over = false
+    rotation_y = love.mouse.getY()
 
     -- might want to move these
     cam = {x = -5,
@@ -124,6 +120,10 @@ function love.mousereleased(x, y, button)
     if #type_writer_c < #story_text then
         type_writer_c = story_text
     end
+end
+
+function love.mousemoved( x, y, dx, dy )
+    rotation_y = rotation_y + dy
 end
 
 function love.keypressed(key)
@@ -167,6 +167,9 @@ function love.keypressed(key)
             unpause_start_action = start_action
             level = 100
             start_action = false
+
+            love.mouse.setRelativeMode( false )
+
         elseif level == 100 and start_action == false then
             level = unpause_level
             start_action = unpause_start_action

@@ -2,11 +2,6 @@
 
 local utils={}
 
-function utils.get_player_rotation()
-    -- returns the players rotation in radians
-    player.rotation = math.atan2((mouse_y - player.y), (mouse_x - player.x))
-end
-
 function utils.round(num, numDecimalPlaces)
     -- round num to defined number of places
     local mult = 10^(numDecimalPlaces or 0)
