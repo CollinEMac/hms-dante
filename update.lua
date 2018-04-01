@@ -261,7 +261,6 @@ end
 
 function action()
     -- call events like spawning enemies
-    -- spawn just the first ufo in the
     if level == 1 then
         if ufo_counter == 0 then
             spawn_ufo('random')
@@ -380,7 +379,7 @@ function update.npcs()
         end
     end
 
-    function update.story(char)
+function update.story(char)
         --Write story text if time is correct and last_story text cleared (enter or space)
         -- later this will depend on time/level
     advance_text(char)
