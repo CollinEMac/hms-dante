@@ -86,7 +86,7 @@ function restart_game()
     story_text = STORY_TEXTS[1]
     type_writer_c = ""
     type_writer_time = 0
-    start_action = false
+    start_action = 0
     ufo_destroyed = 99999
     level_over = false
     rotation_y = love.mouse.getY()
@@ -102,11 +102,11 @@ end
 
 function love.mousereleased(x, y, button)
     -- Create a laser if player is alive
-    if start_action == false or level == 100 then
+    if start_action == 0 or level == 100 then
         update.select_menu_item()
 
     elseif player.alive and
-        start_action == true and
+        start_action > 0 and
         (#player_lasers == 0 or
             utils.time_check(player_lasers[#player_lasers].create_time, 0.3)) then
                 -- If there are already player_lasers then wait some milliseconds before creating another
@@ -136,7 +136,7 @@ function love.keypressed(key)
             -- if player on npc, interact with them
                 if utils.overlap(npc, player) then
                     continue_story = true
-                    start_action = false
+                    start_action = 0
                     speaking_char = npc
                 end
             end
@@ -166,11 +166,11 @@ function love.keypressed(key)
             unpause_level = level
             unpause_start_action = start_action
             level = 100
-            start_action = false
+            start_action = 0
 
             love.mouse.setRelativeMode( false )
 
-        elseif level == 100 and start_action == false then
+        elseif level == 100 and start_action == 0 then
             level = unpause_level
             start_action = unpause_start_action
         end
@@ -201,7 +201,7 @@ function love.update(dt)
             background.y = 0
 
             -- Might need to rename this, can't continue story unless this if false
-            start_action = false
+            start_action = 0
         elseif level == 1 then
             update.projectiles(player_lasers, dt)
             update.ufo(dt)

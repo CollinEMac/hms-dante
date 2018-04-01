@@ -19,13 +19,13 @@ end
 
 function update.select_menu_item()
     -- Handle menu button selections and story continue but only one or the other
-    if level ~= 0 and level ~= 100 and start_action == false and
+    if level ~= 0 and level ~= 100 and start_action == 0 and
         continue_story == false and #type_writer_c == #story_text then
             -- advance story text on enter or space or click
             continue_story = true
     elseif menu_selection == 1 then
         if level == 100 and story_text == "" then
-            start_action = true
+            start_action = love.timer.getTime()
         end
 
         if level == 0 then
@@ -262,7 +262,7 @@ end
 function action()
     -- call events like spawning enemies
     if level == 1 then
-        if ufo_counter == 0 then
+        if ufo_counter == 0 and utils.time_check(start_action, 2) then
             spawn_ufo('random')
         end
 
@@ -384,37 +384,37 @@ function update.story(char)
         -- later this will depend on time/level
     advance_text(char)
 
-    if start_action == true then
+    if start_action > 0 then
         action()
     end
 end
 
 function advance_text(char)
     if level == 1 then
-        if start_action == false and continue_story == true and story_text == STORY_TEXTS[1] then
+        if start_action == 0 and continue_story == true and story_text == STORY_TEXTS[1] then
             type_writer_c = ""
             story_text = STORY_TEXTS[2]
             continue_story = false
         end
 
-        if start_action == false and continue_story == true and story_text == STORY_TEXTS[2] then
+        if start_action == 0 and continue_story == true and story_text == STORY_TEXTS[2] then
             type_writer_c = ""
             story_text = STORY_TEXTS[3]
             continue_story = false
         end
 
-        if start_action == false and continue_story == true and story_text == STORY_TEXTS[3] then
+        if start_action == 0 and continue_story == true and story_text == STORY_TEXTS[3] then
             type_writer_c = ""
             character = char.name
             story_text = STORY_TEXTS[4]
             continue_story = false
         end
 
-        if start_action == false and continue_story == true and story_text == STORY_TEXTS[4] then
+        if start_action == 0 and continue_story == true and story_text == STORY_TEXTS[4] then
             type_writer_c = ""
             character = "narrator"
             story_text = STORY_TEXTS[1]
-            start_action = true
+            start_action = love.timer.getTime()
             continue_story = false
         end
     elseif level == 2 and char then
@@ -430,7 +430,7 @@ function advance_text(char)
             character = "narrator"
             story_text = STORY_TEXTS[1]
             continue_story = false
-            start_action = true
+            start_action = love.timer.getTime()
         end
     end
 
