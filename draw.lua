@@ -160,9 +160,9 @@ function draw.text()
 
         -- define the text box
         text_box_vertex = {
-            { left_most_text_box, bottom_of_text_box, 0, 0, 190, 190, 190, 100 }, -- top left vertex
+            { left_most_text_box, bottom_of_text_box, 0, 0, 190, 190, 190, 255 }, -- top left vertex
             { right_most_text_box, bottom_of_text_box, 0, 0, 190, 190, 190, 100 }, -- top right vertex
-            { right_most_text_box, top_of_text_box, 0, 0, 190, 190, 190, 100 }, -- bottom right vertex
+            { right_most_text_box, top_of_text_box, 0, 0, 190, 190, 190, 255 }, -- bottom right vertex
             { left_most_text_box,top_of_text_box, 0, 0, 190, 190, 190, 100 } -- bottom left vertex
         }
 
