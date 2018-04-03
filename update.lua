@@ -268,11 +268,7 @@ function action()
 
         -- spawn a second ufo
         if ufo_counter == 1 then
-            if #ufos > 0 then
-                if utils.time_check(ufos[#ufos].create_time, 2) then
-                    spawn_ufo('random')
-                end
-            else
+            if #ufos == 0 then
                 spawn_ufo('random')
             end
         end
