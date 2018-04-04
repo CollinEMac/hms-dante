@@ -75,12 +75,12 @@ end
 
 function draw.crosshair()
     if player.alive == true then
-        love.graphics.setColor(255, 0, 0) -- red dot
+        love.graphics.setColor(1, 0, 0) -- red dot
         love.graphics.circle("fill",
             player.x + (math.cos(player.rotation) * player.image:getWidth() * 0.75),
             player.y + (math.sin(player.rotation) * player.image:getWidth() * 0.75),
             window_width/100)
-        love.graphics.setColor(255, 255, 255) -- default white
+        love.graphics.setColor(1, 1, 1) -- default white
     end
 end
 
@@ -165,7 +165,6 @@ function draw.text()
             { right_most_text_box, top_of_text_box, 0, 0, 0.75, 0.75, 0.75, 0.75 }, -- bottom right vertex
             { left_most_text_box,top_of_text_box, 0, 0, 0.75, 0.75, 0.75, 0.40 } -- bottom left vertex
         }
-
 
         if text_box == nil then
             text_box = love.graphics.newMesh(text_box_vertex, "fan", "static")
