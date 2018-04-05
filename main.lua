@@ -16,7 +16,8 @@
 -- make the game feel bigger. Either way I need to focus on gameplay
 -- for now
 
--- circle I: ghosts that can become translucent?
+-- circle I: ghosts that can become translucent, little flied and wasps that
+-- are really fast, writhing worms
 -- circle II: giant tail monster defining which circle to go to?
 -- tough winds
 
