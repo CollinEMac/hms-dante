@@ -7,6 +7,6 @@ Movement - WASD or Arrow keys
 Increase ship speed - E  
 Decrease ship speed - Q  
 Aim - Mouse  
-Fire - Mouse Button 1  
+Fire - Space or Mouse Button 1
 Interact with NPC's - E  
 Advance Text - Space or Mouse Button 1  
