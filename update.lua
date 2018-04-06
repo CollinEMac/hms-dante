@@ -188,17 +188,17 @@ function update.projectiles(projectiles, dt)
                                          ((window_height/60) * math.sin(2 * math.pi * projectile.time))
                     elseif projectile.weapon == 'crazy_sin' then
                         projectile.time = projectile.time + dt
-                        sin = math.sin(projectile.amplitude * projectile.time)
+                        sin = math.sin( 2 * math.pi * projectile.time)
 
                         if 0.1 >= sin and sin >= 0 then
                             -- this is hacky as heck but it's the best way I can
                             -- figure to update the amplitude every cycle
-                            projectile.amplitude = love.math.random(3) * math.pi
+                            projectile.amplitude = window_height/love.math.random(35, 85)
                         end
 
                         projectile.y = projectile.y +
                                          (projectile.dy * projectile.speed) +
-                                         ((window_height/60) * sin)
+                                         (projectile.amplitude * sin)
                     else
                         projectile.y = projectile.y + projectile.dy * projectile.speed
                     end
@@ -362,8 +362,7 @@ function create_ufo_projectiles(ufo)
         ufo_lasers[#ufo_lasers + 1] = {image = love.graphics.newImage("sprites/enemy_laser.png"),
             x = ufo.x,
             y = ufo.y,
-            -- weapon = 'sin',
-            weapon = 'crazy_sin', -- testing the 'crazy_sin' weapon type
+            weapon = 'sin',
             amplitude = 2 * math.pi, -- for sin wave stuff
             time = 0,
             friendly = false,
