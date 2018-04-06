@@ -102,25 +102,8 @@ function restart_game()
 end
 
 function love.mousereleased(x, y, button)
-    -- Create a laser if player is alive
-    if start_action == 0 or level == 100 then
-        update.select_menu_item()
-
-    elseif player.alive and
-        start_action > 0 and
-        (#player_lasers == 0 or
-            utils.time_check(player_lasers[#player_lasers].create_time, 0.3)) then
-                -- If there are already player_lasers then wait some milliseconds before creating another
-                update.create_player_projectiles()
-    end
-
-    if player.alive == false then
-        restart_game()
-    end
-
-    if #type_writer_c < #story_text then
-        type_writer_c = story_text
-    end
+    -- Should this be mousepressed?
+    _select()
 end
 
 function love.mousemoved( x, y, dx, dy )
@@ -151,14 +134,7 @@ function love.keypressed(key)
     end
 
     if key == "space" or key == "return" or key == "kpenter" then
-        update.select_menu_item()
-        if player.alive == false then
-            restart_game()
-        end
-
-        if #type_writer_c < #story_text then
-            type_writer_c = story_text
-        end
+        _select()
     end
 
     if key == "escape" and player.alive then
@@ -175,6 +151,28 @@ function love.keypressed(key)
             level = unpause_level
             start_action = unpause_start_action
         end
+    end
+end
+
+function _select()
+    -- Create a laser if player is alive
+    if start_action == 0 or level == 100 then
+        update.select_menu_item()
+
+    elseif player.alive and
+        start_action > 0 and
+        (#player_lasers == 0 or
+            utils.time_check(player_lasers[#player_lasers].create_time, 0.3)) then
+                -- If there are already player_lasers then wait some milliseconds before creating another
+                update.create_player_projectiles()
+    end
+
+    if player.alive == false then
+        restart_game()
+    end
+
+    if #type_writer_c < #story_text then
+        type_writer_c = story_text
     end
 end
 
