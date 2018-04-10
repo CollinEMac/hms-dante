@@ -180,12 +180,23 @@ function update.projectiles(projectiles, dt)
                     projectile.x = projectile.x + projectile.dx * projectile.speed
 
                     if projectile.weapon == 'sin' then
-                        -- TODO: make this sin function rotate so things aren't weird if the player is
-                        -- right underneath an enemy or something like that
                         projectile.time = projectile.time + dt
+                        --
+                        -- -- The sine wave kind of tracks you
+                        -- projectile.x = projectile.x + (-projectile.dx * 2*math.pi*projectile.time)
+                        -- sin_wave = ((window_height/60) * math.sin(2*math.pi*projectile.time))
+                        -- projectile.y = projectile.y + (projectile.dy * projectile.speed) + sin_wave
+
+
+                        -- The sine wave goes where you were
+                        -- projectile.y = projectile.y +
+                        --                  (projectile.dy * projectile.speed) +
+                        --                  ((window_height/60) * math.sin(2 * math.pi * projectile.time))
+
                         projectile.y = projectile.y +
                                          (projectile.dy * projectile.speed) +
                                          ((window_height/60) * math.sin(2 * math.pi * projectile.time))
+
                     elseif projectile.weapon == 'crazy_sin' then
                         projectile.time = projectile.time + dt
                         sin = math.sin( 2 * math.pi * projectile.time)
