@@ -293,26 +293,24 @@ function action()
         end
 
         -- spawn a second ufo
-        if ufo_counter == 1 then
-            if #ufos == 0 then
-                spawn_ufo('random')
-            end
+        if ufo_counter == 1 and #ufos == 0 and utils.time_check(ufo_destroyed, 4) then
+            spawn_ufo('random')
         end
 
-        if #ufos <= 2 and ufo_counter == 2 then
-            if utils.time_check(ufo_destroyed, 2) then
-                spawn_ufo('random')
-            end
+        if ufo_counter == 2 and #ufos == 0 and utils.time_check(ufo_destroyed, 2) then
+            spawn_ufo('random')
         end
 
-        if #ufos == 0 and ufo_counter == 3 then
-
-            if utils.time_check(ufo_destroyed, 3) then
-                spawn_ufo('sin')
-            end
+        if ufo_counter == 3 and #ufos == 0 then
+            spawn_ufo('sin')
         end
 
-        if #ufos == 0 and ufo_counter == 4 then
+        if ufo_counter == 4 and #ufos == 0 and utils.time_check(ufo_destroyed, 2) then
+            spawn_ufo('random')
+            spawn_ufo('sin')
+        end
+
+        if #ufos == 0 and ufo_counter == 6 then
             level_over = true
         end
     end
@@ -472,9 +470,7 @@ function object_hit(projectile, projectile_i)
             if utils.overlap(projectile, ufo) then
                 -- if player projectile overlapping enemy then destroy it
 
-                if #ufos <= 2 and ufo_counter == 2 then
-                    ufo_destroyed = love.timer.getTime()
-                end
+                ufo_destroyed = love.timer.getTime()
 
                 if ufo.death_time == 0 then
                     -- Only set death time and incremember player score once
