@@ -310,7 +310,15 @@ function action()
             spawn_ufo('sin')
         end
 
-        if #ufos == 0 and ufo_counter == 6 then
+        if ufo_counter == 5 and #ufos <= 1 then
+            spawn_ufo('random')
+        end
+
+        if ufo_counter == 6 and #ufos <= 1 then
+            spawn_ufo('random')
+        end
+
+        if #ufos == 0 and ufo_counter == 7 then
             level_over = true
         end
     end
