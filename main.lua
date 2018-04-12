@@ -26,7 +26,7 @@ update = require("update")
 draw = require("draw")
 
 SPACE_BACKGROUND = love.graphics.newImage("sprites/background.jpg")
-SHIP_BACKGROUND = love.graphics.newImage("sprites/brown.jpg")
+SHIP_BACKGROUND = love.graphics.newImage("sprites/mothership.jpg")
 
 SHIP_PLAYER = love.graphics.newImage("sprites/spaceship.png")
 CHARACTER_PLAYER = love.graphics.newImage("sprites/dante.png")
