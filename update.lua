@@ -413,11 +413,18 @@ end
 function update.npcs()
     if level == 2 and #npcs == 0 then
         -- create npc's
-        npc1 = create_npc('npc guy #1', 0.5 * window_width, window_height + 10)
+        npc1 = create_npc('Cicero', 0.5 * window_width, window_height + 10)
 
-        npc2 = create_npc('npc guy #2', 0.7 * window_width , npc1.y)
+        npc2 = create_npc('Helen', 0.7 * window_width , npc1.y)
 
-        npc3 = create_npc('npc guy #3', 0.9 * window_width, npc1.y)
+        npc3 = create_npc('Ciacco', 0.9 * window_width, npc1.y)
+
+        -- 4. 'Plutus'
+        -- 5. 'Filippo'
+        -- 6. 'Frederick'
+        -- 7. 'Icarus'
+        -- 8. 'Ali'
+        -- 9. 'Judecca'
 
         npcs[#npcs+1] = npc1
         npcs[#npcs+1] = npc2
