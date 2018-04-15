@@ -160,10 +160,10 @@ function draw.text()
 
         -- define the text box
         text_box_vertex = {
-            { left_most_text_box, bottom_of_text_box, 0, 0, 0.75, 0.75, 0.75, 0.75 }, -- top left vertex
-            { right_most_text_box, bottom_of_text_box, 0, 0, 0.75, 0.75, 0.75, 0.40 }, -- top right vertex
-            { right_most_text_box, top_of_text_box, 0, 0, 0.75, 0.75, 0.75, 0.75 }, -- bottom right vertex
-            { left_most_text_box,top_of_text_box, 0, 0, 0.75, 0.75, 0.75, 0.40 } -- bottom left vertex
+            { left_most_text_box, bottom_of_text_box, 0, 0, 0.75, 0.75, 0.75, 1 }, -- top left vertex
+            { right_most_text_box, bottom_of_text_box, 0, 0, 0.75, 0.75, 0.75, 0.75 }, -- top right vertex
+            { right_most_text_box, top_of_text_box, 0, 0, 0.75, 0.75, 0.75, 1 }, -- bottom right vertex
+            { left_most_text_box,top_of_text_box, 0, 0, 0.75, 0.75, 0.75, 0.75 } -- bottom left vertex
         }
 
         if text_box == nil then

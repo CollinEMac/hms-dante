@@ -412,21 +412,34 @@ end
 
 function update.npcs()
     if level == 2 and #npcs == 0 then
-        -- create npc
-        npc1 = {image = CHARACTER_PLAYER,
-            name = 'Game master',
-                x = window_width / 2,
-                y = window_height + 10,
-                speech = {[1] =
-                    "Congrats! You've made it to the end of this demo. At some point there will be more " ..
-                    "characters here that you can talk to to advance the story. For now, you can close " ..
-                    "the game from the pause menu (escape key)."
-                }
-            }
+        -- create npc's
+        npc1 = create_npc('npc guy #1', 0.5 * window_width, window_height + 10)
 
-            npcs[#npcs+1] = npc1
-        end
+        npc2 = create_npc('npc guy #2', 0.7 * window_width , npc1.y)
+
+        npc3 = create_npc('npc guy #3', 0.9 * window_width, npc1.y)
+
+        npcs[#npcs+1] = npc1
+        npcs[#npcs+1] = npc2
+        npcs[#npcs+1] = npc3
     end
+end
+
+function create_npc(name, x, y)
+    npc = {image = CHARACTER_PLAYER,
+        name = name,
+        x = x + (window_width/10),
+        y = y,
+        talked_to = false,
+        speech = {[1] = "I'm an npc.",
+            [2] = "I'm also an npc.",
+            [3] = "Me too!. I'm an npc and you've made it to the end of this demo!"
+        },
+        annoyed_speech = "I'm still an npc..."
+    }
+
+    return npc
+end
 
 function update.story(char)
         --Write story text if time is correct and last_story text cleared (enter or space)
@@ -467,19 +480,42 @@ function advance_text(char)
             continue_story = false
         end
     elseif level == 2 and char then
-        if continue_story == true and story_text == STORY_TEXTS[1] then
-            type_writer_c = ""
-            character = char.name
-            story_text = char.speech[1]
-            continue_story = false
-        end
+        if continue_story == true then
+            if story_text == STORY_TEXTS[1] then
+                type_writer_c = ""
+                character = char.name
 
-        if continue_story == true and story_text == char.speech[1] then
-            type_writer_c = ""
-            character = "narrator"
-            story_text = STORY_TEXTS[1]
+                if char.talked_to == true then
+                    story_text = char.annoyed_speech
+                else
+                    -- Count how many npcs have been talked to
+                    npcs_talked_to = 0
+
+                    for i, npc in ipairs(npcs) do
+                        if npc.talked_to == true then
+                            npcs_talked_to = npcs_talked_to + 1
+                        end
+                    end
+
+                    if npcs_talked_to == 0 then
+                        story_text = char.speech[1]
+                    elseif npcs_talked_to == 1 then
+                        story_text = char.speech[2]
+                    elseif npcs_talked_to == 2 then
+                        story_text = char.speech[3]
+                        -- Start level 3 or something
+                    end
+
+                    char.talked_to = true
+                end
+            else
+                type_writer_c = ""
+                character = "narrator"
+                story_text = STORY_TEXTS[1]
+                start_action = love.timer.getTime()
+            end
+
             continue_story = false
-            start_action = love.timer.getTime()
         end
     end
 
