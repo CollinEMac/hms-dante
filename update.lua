@@ -75,25 +75,22 @@ function Projectile.new(ufo)
     end
 end
 
-
+-- Functions
 function update.create_player_projectile()
     Projectile.new(nil)
 end
 
 local Npc = {}
 
-function Npc.new(name, x, y)
+function Npc.new(name, x, y, speech)
     local self = setmetatable({}, Npc)
     self.image = CHARACTER_PLAYER
     self.name = name or ''
     self.x = x or 0
     self.y = y or 0
-    self.talked_to = false
-    self.speech = {[1] = "I'm an npc.",
-        [2] = "I'm also an npc.",
-        [3] = "Me too!. I'm an npc and you've made it to the end of this demo!"
-    }
-    self.annoyed_speech = "I'm still an npc..."
+    self.talked_to = 0
+    self.speech = speech
+    self.annoyed_speech = "I've already talked to you..."
 
     npcs[#npcs+1] = self
     return self
@@ -445,9 +442,13 @@ end
 function update.npcs()
     if level == 2 and #npcs == 0 then
         -- create npc's
-        npc1 = Npc.new('Cicero', 0.5 * window_width, window_height + 10)
-        Npc.new('Helen', 0.7 * window_width , npc1.y)
-        Npc.new('Ciacco', 0.9 * window_width, npc1.y)
+        speech = {[1] = "I'm an npc.",
+            [2] = "I'm talking to you",
+        }
+
+        Npc.new('Cicero', 0.5 * window_width, window_height + 10, speech)
+        Npc.new('Helen', 0.7 * window_width, window_height + 10, speech)
+        Npc.new('Ciacco', 0.9 * window_width, window_height + 10, speech)
 
         -- 4. 'Plutus'
         -- 5. 'Filippo'
@@ -498,38 +499,38 @@ function advance_text(char)
         end
     elseif level == 2 and char then
         if continue_story == true then
-            if story_text == STORY_TEXTS[1] then
-                type_writer_c = ""
-                character = char.name
+            type_writer_c = ""
+            character = char.name
 
-                if char.talked_to == true then
-                    story_text = char.annoyed_speech
-                else
-                    -- Count how many npcs have been talked to
-                    npcs_talked_to = 0
-
-                    for i, npc in ipairs(npcs) do
-                        if npc.talked_to == true then
-                            npcs_talked_to = npcs_talked_to + 1
-                        end
-                    end
-
-                    if npcs_talked_to == 0 then
-                        story_text = char.speech[1]
-                    elseif npcs_talked_to == 1 then
-                        story_text = char.speech[2]
-                    elseif npcs_talked_to == 2 then
-                        story_text = char.speech[3]
-                        -- Start level 3 or something
-                    end
-
-                    char.talked_to = true
-                end
-            else
+            if char.talked_to < #char.speech then
+                story_text = char.speech[char.talked_to + 1]
+                char.talked_to = char.talked_to + 1
+            elseif char.talked_to == #char.speech then
                 type_writer_c = ""
                 character = "narrator"
                 story_text = STORY_TEXTS[1]
                 start_action = love.timer.getTime()
+                char.talked_to = char.talked_to + 1
+            elseif char.talked_to > #char.speech then
+                if story_text == char.annoyed_speech then
+                    type_writer_c = ""
+                    character = "narrator"
+                    story_text = STORY_TEXTS[1]
+                    start_action = love.timer.getTime()
+                else
+                    story_text = char.annoyed_speech
+
+                    -- The very end of the dialogue stuff
+                    local npcs_talked_to = 0
+                    for i, npc in ipairs(npcs) do
+                        if npc.talked_to > #npc.speech then
+                            npcs_talked_to = npcs_talked_to + 1
+                            if npcs_talked_to >= #npcs then
+                                story_text = "That's all the dialogue we've got so far!"
+                            end
+                        end
+                    end
+                end
             end
 
             continue_story = false
