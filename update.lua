@@ -2,6 +2,103 @@
 
 update = {}
 
+-- models
+local Ufo = {}
+
+function Ufo.new(movement_pattern)
+    local self = setmetatable({}, Ufo)
+
+    -- Percent of y axis the ufo will appear on
+    y_percent = love.math.random(1, 9) * 0.1
+
+    self.image = love.graphics.newImage("sprites/ufo.png")
+    self.x = window_width + self.image:getWidth()/2
+    self.y = y_percent * window_height
+    self.speed = 1
+    self.time = 0
+    self.friendly = false
+    self.movement_pattern = movement_pattern
+    self.weapon_prob = 3
+    self.toward_player = true
+    self.y_delta = 1 -- Move up or down on y axis? default down
+    self.create_time = love.timer.getTime() -- for timed events like firing projectiles
+    self.death_time = 0
+    self.fade_time = 0
+
+    ufos[#ufos + 1] = self
+
+    ufo_counter = ufo_counter + 1
+    return self
+end
+
+Projectile = {}
+
+function Projectile.new(ufo)
+    local self = setmetatable({}, Projectile)
+    if level == 1 then
+        if ufo == nil then
+            -- This is a player projectile
+            self.image = love.graphics.newImage("sprites/player_laser.png")
+            self.x = player.x
+            self.y = player.y
+            self.weapon = player.weapon -- set to sin to test sin pattern
+            self.time = 0
+            self.speed = 7
+            self.friendly = true
+            self.dx = math.cos(player.rotation)
+            self.dy = math.sin(player.rotation)
+            self.create_time = love.timer.getTime()
+
+            player_lasers[#player_lasers + 1] = self
+        else
+            local div = love.math.random(3, 5)
+            local time = utils.round((love.timer.getTime() - ufo.create_time), 0)
+
+            if time % div == 0 and #ufo_lasers < 1 then
+                local direction = math.atan2((ufo.y - player.y), (ufo.x - player.x))
+
+                self.image = love.graphics.newImage("sprites/enemy_laser.png")
+                self.x = ufo.x
+                self.y = ufo.y
+                self.weapon = 'sin'
+                self.amplitude = 2 * math.pi -- for sin wave stuff
+                self.time = 0
+                self.friendly = false
+                self.dx = math.cos(direction)
+                self.dy = math.sin(direction)
+                self.speed = -3
+
+                ufo_lasers[#ufo_lasers + 1] = self
+            end
+        end
+        return self
+    end
+end
+
+
+function update.create_player_projectile()
+    Projectile.new(nil)
+end
+
+local Npc = {}
+
+function Npc.new(name, x, y)
+    local self = setmetatable({}, Npc)
+    self.image = CHARACTER_PLAYER
+    self.name = name or ''
+    self.x = x or 0
+    self.y = y or 0
+    self.talked_to = false
+    self.speech = {[1] = "I'm an npc.",
+        [2] = "I'm also an npc.",
+        [3] = "Me too!. I'm an npc and you've made it to the end of this demo!"
+    }
+    self.annoyed_speech = "I'm still an npc..."
+
+    npcs[#npcs+1] = self
+    return self
+end
+
 function update.menu()
     -- Handles menu stuff
     mouse_y = love.mouse.getY()
@@ -268,7 +365,8 @@ function update.ufo(dt)
 
                     -- kill player on contact with ufo
                     object_hit(ufo, 0)
-                    create_ufo_projectiles(ufo)
+                    Projectile.new(ufo)
+                    -- create_ufo_projectiles(ufo)
             else
                 table.remove(ufos, i)
             end
@@ -289,53 +387,53 @@ function action()
     -- call events like spawning enemies
     if level == 1 then
         if ufo_counter == 0 and utils.time_check(start_action, 2) then
-            spawn_ufo('random')
+            Ufo.new('random')
         end
 
         -- spawn a second ufo
         if ufo_counter == 1 and #ufos == 0 and utils.time_check(ufo_destroyed, 4) then
-            spawn_ufo('random')
+            Ufo.new('random')
         end
 
         if ufo_counter == 2 and #ufos == 0 and utils.time_check(ufo_destroyed, 2) then
-            spawn_ufo('random')
+            Ufo.new('random')
         end
 
         if ufo_counter == 3 and #ufos == 0 then
-            spawn_ufo('sin')
+            Ufo.new('sin')
         end
 
         if ufo_counter == 4 and #ufos == 0 and utils.time_check(ufo_destroyed, 2) then
-            spawn_ufo('random')
-            spawn_ufo('sin')
+            Ufo.new('random')
+            Ufo.new('sin')
         end
 
         if ufo_counter == 5 and #ufos <= 1 then
-            spawn_ufo('random')
+            Ufo.new('random')
         end
 
         if ufo_counter == 6 and #ufos <= 1 then
-            spawn_ufo('random')
+            Ufo.new('random')
         end
 
         if ufo_counter == 7 and #ufos == 0 then
-            spawn_ufo('random')
-            spawn_ufo('sin')
+            Ufo.new('random')
+            Ufo.new('sin')
         end
 
         if ufo_counter == 9 and #ufos <= 1 then
-            spawn_ufo('sin')
+            Ufo.new('sin')
         end
 
         if ufo_counter == 10 and #ufos == 0 then
-            spawn_ufo('random')
-            spawn_ufo('random')
-            spawn_ufo('sin')
+            Ufo.new('random')
+            Ufo.new('random')
+            Ufo.new('sin')
         end
 
         if ufo_counter == 13 and #ufos <= 2 then
-            spawn_ufo('random')
-            spawn_ufo('random')
+            Ufo.new('random')
+            Ufo.new('random')
         end
 
         if #ufos == 0 and ufo_counter == 15 then
@@ -344,80 +442,12 @@ function action()
     end
 end
 
-function spawn_ufo(movement_pattern)
-    -- Percent of y axis the ufo will appear on
-    y_percent = love.math.random(1, 9) * 0.1
-
-    -- add a new ufo to the list
-    new_ufo = {image = love.graphics.newImage("sprites/ufo.png"),
-        x = 0,
-        y = y_percent * window_height,
-        speed = 1,
-        time = 0,
-        friendly = false,
-        movement_pattern = movement_pattern,
-        weapon_prob = 3,
-        toward_player = true,
-        y_delta = 1, -- Move up or down on y axis? default down
-        create_time = love.timer.getTime(), -- for timed events like firing projectiles
-        death_time = 0,
-        fade_time = 0
-    }
-
-    -- Have to do this later because it references the object image
-    new_ufo.x = window_width + new_ufo.image:getWidth()/2
-
-    ufos[#ufos + 1] = new_ufo
-
-    ufo_counter = ufo_counter + 1
-end
-
-function update.create_player_projectiles()
-    if level == 1 then
-        player_lasers[#player_lasers + 1] = {image = love.graphics.newImage("sprites/player_laser.png"),
-            x = player.x,
-            y = player.y,
-            weapon = player.weapon, -- set to sin to test sin pattern
-            time = 0,
-            speed = 7,
-            friendly = true,
-            dx = math.cos(player.rotation),
-            dy = math.sin(player.rotation),
-            create_time = love.timer.getTime()
-        }
-    end
-end
-
-function create_ufo_projectiles(ufo)
-    -- create a projectile every div seconds for variation
-    div = love.math.random(3, 5)
-    time = utils.round((love.timer.getTime() - ufo.create_time), 0)
-
-    if time % div == 0 and #ufo_lasers < 1 then
-        local direction = math.atan2((ufo.y - player.y), (ufo.x - player.x))
-
-        ufo_lasers[#ufo_lasers + 1] = {image = love.graphics.newImage("sprites/enemy_laser.png"),
-            x = ufo.x,
-            y = ufo.y,
-            weapon = 'sin',
-            amplitude = 2 * math.pi, -- for sin wave stuff
-            time = 0,
-            friendly = false,
-            dx = math.cos(direction),
-            dy = math.sin(direction),
-            speed = -3
-        }
-    end
-end
-
 function update.npcs()
     if level == 2 and #npcs == 0 then
         -- create npc's
-        npc1 = create_npc('Cicero', 0.5 * window_width, window_height + 10)
-
-        npc2 = create_npc('Helen', 0.7 * window_width , npc1.y)
-
-        npc3 = create_npc('Ciacco', 0.9 * window_width, npc1.y)
+        npc1 = Npc.new('Cicero', 0.5 * window_width, window_height + 10)
+        Npc.new('Helen', 0.7 * window_width , npc1.y)
+        Npc.new('Ciacco', 0.9 * window_width, npc1.y)
 
         -- 4. 'Plutus'
         -- 5. 'Filippo'
@@ -425,27 +455,7 @@ function update.npcs()
         -- 7. 'Icarus'
         -- 8. 'Ali'
         -- 9. 'Judecca'
-
-        npcs[#npcs+1] = npc1
-        npcs[#npcs+1] = npc2
-        npcs[#npcs+1] = npc3
     end
-end
-
-function create_npc(name, x, y)
-    npc = {image = CHARACTER_PLAYER,
-        name = name,
-        x = x + (window_width/10),
-        y = y,
-        talked_to = false,
-        speech = {[1] = "I'm an npc.",
-            [2] = "I'm also an npc.",
-            [3] = "Me too!. I'm an npc and you've made it to the end of this demo!"
-        },
-        annoyed_speech = "I'm still an npc..."
-    }
-
-    return npc
 end
 
 function update.story(char)

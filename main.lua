@@ -164,7 +164,7 @@ function _select()
         (#player_lasers == 0 or
             utils.time_check(player_lasers[#player_lasers].create_time, 0.3)) then
                 -- If there are already player_lasers then wait some milliseconds before creating another
-                update.create_player_projectiles()
+                update.create_player_projectile()
     end
 
     if player.alive == false then
