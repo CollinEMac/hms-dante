@@ -449,13 +449,12 @@ function update.npcs()
         Npc.new('Cicero', 0.5 * window_width, window_height + 10, speech)
         Npc.new('Helen', 0.7 * window_width, window_height + 10, speech)
         Npc.new('Ciacco', 0.9 * window_width, window_height + 10, speech)
-
-        -- 4. 'Plutus'
-        -- 5. 'Filippo'
-        -- 6. 'Frederick'
-        -- 7. 'Icarus'
-        -- 8. 'Ali'
-        -- 9. 'Judecca'
+        Npc.new('Plutus', 1.1 * window_width, window_height + 10, speech)
+        Npc.new('Filippo', 1.3 * window_width, window_height + 10, speech)
+        Npc.new('Frederick', 1.5 * window_width, window_height + 10, speech)
+        Npc.new('Icarus', 1.7 * window_width, window_height + 10, speech)
+        Npc.new('Ali', 1.9 * window_width, window_height + 10, speech)
+        Npc.new('Judecca', 2.1 * window_width, window_height + 10, speech)
     end
 end
 
