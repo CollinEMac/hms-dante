@@ -124,6 +124,7 @@ function update.select_menu_item()
 
         if level == 0 then
             level = 1
+            level_start = love.timer.getTime()
             love.mouse.setRelativeMode( true )
         end
 
@@ -151,18 +152,24 @@ function update.select_menu_item()
         level = 0
         player.alive = true
     end
-
 end
 
 function update.background(stage)
     if level == 1 then
-        background.image = SPACE_BACKGROUND
-        -- move the background Flintstones style
-        if background.x > - background.image:getWidth() + window_width then
-            background.x = background.x - 3
+        if utils.time_check(level_start, 3) == false then
+            background.image = nil
         else
-            background.x = 0
+            background.image = SPACE_BACKGROUND
+            -- move the background Flintstones style
+            if background.x > - background.image:getWidth() + window_width then
+                background.x = background.x - 3
+            else
+                background.x = 0
+            end
         end
+
+    elseif level == 2 then
+        background.image = SHIP_BACKGROUND
     end
 end
 
@@ -185,6 +192,12 @@ end
 function update.player()
     -- Handle player movement
     if level == 1 then
+        if utils.time_check(level_start, 3) == false then
+            player.image = nil
+        else
+            player.image = SHIP_PLAYER
+        end
+
         player.rotation = (2 * math.pi * (rotation_y))/window_height
     elseif level == 2 then
         player.image = CHARACTER_PLAYER
@@ -459,9 +472,11 @@ function update.npcs()
 end
 
 function update.story(char)
-        --Write story text if time is correct and last_story text cleared (enter or space)
-        -- later this will depend on time/level
-    advance_text(char)
+    --Write story text if time is correct and last_story text cleared (enter or space)
+    -- later this will depend on time/level
+    if utils.time_check(level_start, 3) == true then
+        advance_text(char)
+    end
 
     if start_action > 0 then
         action()

@@ -187,15 +187,12 @@ function love.update(dt)
         if level == 1 and level_over == true then
             -- action level stuff
             ufos = {}
-            -- ufo_projectiles = {}
-            -- player_projectiles = {}
             love.graphics.clear()
             level = level + 1
             level_over = false
 
             player.x = window_width / 2
             player.y = window_height / 2
-            background.image = SHIP_BACKGROUND
             background.x = 0
             background.y = 0
 
@@ -242,6 +239,7 @@ function love.draw()
 
         draw.npcs()
         draw.text()
+        draw.title_card()
     else
         draw.game_over_text()
     end

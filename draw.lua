@@ -28,12 +28,14 @@ function draw.menu(type)
 end
 
 function draw.background()
-    love.graphics.setShader(red_shader)
-    love.graphics.draw(background.image,
-        background.x,
-        background.y
-    )
-    love.graphics.setShader()
+    if background.image ~= nil then
+        love.graphics.setShader(red_shader)
+        love.graphics.draw(background.image,
+            background.x,
+            background.y
+        )
+        love.graphics.setShader()
+    end
 end
 
 function draw.obstacles()
@@ -50,16 +52,18 @@ function draw.obstacles()
 end
 
 function draw.player()
-    if player.alive == true then
-        love.graphics.draw(player.image,
-            player.x,
-            player.y,
-            player.rotation,
-            1,
-            1,
-            player.image:getWidth()/2,
-            player.image:getHeight()/2
-        )
+    if player.image ~= nil then
+        if player.alive == true then
+            love.graphics.draw(player.image,
+                player.x,
+                player.y,
+                player.rotation,
+                1,
+                1,
+                player.image:getWidth()/2,
+                player.image:getHeight()/2
+            )
+        end
     end
 end
 
@@ -74,13 +78,15 @@ function draw.player_hitbox() -- for testing purposes
 end
 
 function draw.crosshair()
-    if player.alive == true then
-        love.graphics.setColor(1, 0, 0) -- red dot
-        love.graphics.circle("fill",
-            player.x + (math.cos(player.rotation) * player.image:getWidth() * 0.75),
-            player.y + (math.sin(player.rotation) * player.image:getWidth() * 0.75),
-            window_width/100)
-        love.graphics.setColor(1, 1, 1) -- default white
+    if player.image ~= nil then
+        if player.alive == true then
+            love.graphics.setColor(1, 0, 0) -- red dot
+            love.graphics.circle("fill",
+                player.x + (math.cos(player.rotation) * player.image:getWidth() * 0.75),
+                player.y + (math.sin(player.rotation) * player.image:getWidth() * 0.75),
+                window_width/100)
+            love.graphics.setColor(1, 1, 1) -- default white
+        end
     end
 end
 
@@ -144,6 +150,18 @@ function draw.npcs()
                 player.image:getHeight()/2
             )
         end
+    end
+end
+
+function draw.title_card()
+    if level == 1 and utils.time_check(level_start, 3) == false then
+        love.graphics.print(
+            'I',
+            0.5 * window_width,
+            0.5 * window_height,
+            0,
+            2.5
+        )
     end
 end
 
