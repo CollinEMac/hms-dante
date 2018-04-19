@@ -91,6 +91,7 @@ function restart_game()
     ufo_destroyed = 99999
     level_over = false
     rotation_y = love.mouse.getY()
+    melee_active = 0
 
     -- might want to move these
     cam = {x = -5,
@@ -108,6 +109,10 @@ end
 
 function love.mousemoved( x, y, dx, dy )
     rotation_y = rotation_y + dy
+
+    if dy > 25 then
+        melee_active = love.timer.getTime()
+    end
 end
 
 function love.keypressed(key)
@@ -202,6 +207,7 @@ function love.update(dt)
             update.projectiles(player_lasers, dt)
             update.ufo(dt)
             update.projectiles(ufo_lasers, dt)
+            update.melee_attack()
             update.weapons(dt)
             update.story(player)
         elseif level == 2 then

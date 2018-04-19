@@ -276,6 +276,12 @@ function update.player()
     end
 end
 
+function update.melee_attack()
+    if utils.time_check(melee_active, 1) == false then
+        print('melee attack')
+    end
+end
+
 function update.projectiles(projectiles, dt)
     if level == 1 then
         for i, projectile in ipairs(projectiles) do
