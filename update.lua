@@ -278,7 +278,22 @@ end
 
 function update.melee_attack()
     if utils.time_check(melee_active, 1) == false then
-        print('melee attack')
+        for i, ufo in ipairs(ufos) do
+          -- TODO: Need to extend this overlap so that the player can kill enemies
+          -- from a small distance.
+          -- TODO: Put some kind of delay so you can't just flip around all day
+          -- and never get hit
+          -- TODO: Make the melee attacks kill enemy projectiles
+            if utils.overlap(player, ufo) then
+                ufo_destroyed = love.timer.getTime()
+
+                if ufo.death_time == 0 then
+                    -- Only set death time and incremember player score once
+                    ufo.death_time = love.timer.getTime()
+                    player_score = player_score + 10
+                end
+            end
+        end
     end
 end
 

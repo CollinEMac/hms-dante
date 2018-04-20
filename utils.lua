@@ -9,7 +9,7 @@ function utils.round(num, numDecimalPlaces)
 end
 
 function utils.overlap(first_sprite, second_sprite)
-
+    -- Check if the sprites of these 2 objects overlap
     half_first_sprite_w = first_sprite.image:getWidth()/2
     half_first_sprite_h = first_sprite.image:getHeight()/2
     half_second_sprite_w = second_sprite.image:getWidth()/2
