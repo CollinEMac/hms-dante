@@ -8,10 +8,16 @@ function utils.round(num, numDecimalPlaces)
     return math.floor(num * mult + 0.5) / mult
 end
 
-function utils.overlap(first_sprite, second_sprite)
+function utils.overlap(first_sprite, second_sprite, fat_sprite)
     -- Check if the sprites of these 2 objects overlap
+    if fat_sprite == true then
+       --TODO: tweak this, seems a little big
+        half_first_sprite_h = first_sprite.image:getWidth()/2
+    else
+        half_first_sprite_h = first_sprite.image:getHeight()/2
+    end
+
     half_first_sprite_w = first_sprite.image:getWidth()/2
-    half_first_sprite_h = first_sprite.image:getHeight()/2
     half_second_sprite_w = second_sprite.image:getWidth()/2
     half_second_sprite_h = second_sprite.image:getHeight()/2
 

@@ -110,8 +110,10 @@ end
 function love.mousemoved( x, y, dx, dy )
     rotation_y = rotation_y + dy
 
-    if dy > 25 then
-        melee_active = love.timer.getTime()
+    now = love.timer.getTime()
+
+    if dy > 25 and now > melee_active + 2 then
+        melee_active = now
     end
 end
 

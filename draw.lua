@@ -65,6 +65,14 @@ function draw.player()
             )
         end
     end
+    -- For testing melee attacks
+    if utils.time_check(melee_active, 1) == false and player.alive then
+        love.graphics.rectangle('line',
+        (player.x - player.image:getWidth()/2),
+        (player.y - player.image:getWidth()/2),
+        player.image:getWidth(),
+        player.image:getWidth())
+    end
 end
 
 function draw.player_hitbox() -- for testing purposes
