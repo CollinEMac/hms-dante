@@ -277,9 +277,14 @@ function update.player()
 end
 
 function update.melee_attack()
-    if utils.time_check(melee_active, 1) == false then
+    if utils.time_check(melee_active, 0.5) == false then
+        for i, projectile in ipairs(ufo_lasers) do
+            if utils.overlap(player, projectile, true) then
+                table.remove(ufo_lasers, i)
+            end
+        end
+
         for i, ufo in ipairs(ufos) do
-          -- TODO: Make the melee attacks kill enemy projectiles
             if utils.overlap(player, ufo, true) then
                 ufo_destroyed = love.timer.getTime()
 
