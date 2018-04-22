@@ -9,4 +9,5 @@ Decrease ship speed - Q
 Aim - Mouse  
 Fire - Space or Mouse Button 1
 Interact with NPC's - E  
-Advance Text - Space or Mouse Button 1  
+Advance Text - Space or Mouse Button 1 
+[NEW!] Move mouse up or down rapidly to do a melee attack! 
