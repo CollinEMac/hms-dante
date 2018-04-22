@@ -64,14 +64,17 @@ function draw.player()
                 player.image:getHeight()/2
             )
         end
-    end
-    -- For testing melee attacks
-    if utils.time_check(melee_active, 1) == false and player.alive then
-        love.graphics.rectangle('line',
-        (player.x - player.image:getWidth()/2),
-        (player.y - player.image:getWidth()/2),
-        player.image:getWidth(),
-        player.image:getWidth())
+        -- For testing melee attacks
+        if utils.time_check(melee_active, 1) == false and player.alive then
+            love.graphics.setColor(1, 0, 0)
+            love.graphics.setLineWidth(3)
+            love.graphics.rectangle('line',
+            (player.x - player.image:getWidth()/2),
+            (player.y - player.image:getWidth()/2),
+            player.image:getWidth(),
+            player.image:getWidth())
+            love.graphics.setColor(1, 1, 1)
+        end
     end
 end
 
