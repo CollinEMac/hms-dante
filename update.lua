@@ -481,7 +481,11 @@ function update.npcs()
             [2] = "I'm talking to you",
         }
 
-        Npc.new('Cicero', 0.5 * window_width, window_height + 10, speech)
+        cicero_speech = {[1] = "I'm an npc. My name is Cicero",
+            [2] = "I'm talking to you",
+        }
+
+        Npc.new('Cicero', 0.5 * window_width, window_height + 10, cicero_speech)
         Npc.new('Helen', 0.7 * window_width, window_height + 10, speech)
         Npc.new('Ciacco', 0.9 * window_width, window_height + 10, speech)
         Npc.new('Plutus', 1.1 * window_width, window_height + 10, speech)
