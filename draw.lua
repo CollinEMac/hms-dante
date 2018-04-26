@@ -65,7 +65,7 @@ function draw.player()
             )
         end
         -- For testing melee attacks
-        if utils.time_check(melee_active, 1) == false and player.alive then
+        if utils.time_check(melee_active, 1) == false and player.alive and level == 1 then
             love.graphics.setColor(1, 0, 0)
             love.graphics.setLineWidth(3)
             love.graphics.rectangle('line',
