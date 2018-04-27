@@ -125,7 +125,7 @@ function update.select_menu_item()
         end
 
         if level == 0 then
-            level = 2
+            level = 1
             level_start = love.timer.getTime()
             love.mouse.setRelativeMode( true )
         end
