@@ -77,7 +77,10 @@ end
 
 -- Functions
 function update.create_player_projectile()
-    Projectile.new(nil)
+    if player.ammo > 0 then
+        Projectile.new(nil)
+        player.ammo = player.ammo - 1
+    end
 end
 
 local Npc = {}
@@ -294,6 +297,7 @@ function update.melee_attack()
                     -- Only set death time and incremember player score once
                     ufo.death_time = love.timer.getTime()
                     player_score = player_score + 10
+                    player.ammo = player.ammo + 1
                 end
             end
         end

@@ -221,6 +221,7 @@ function draw.text()
 
     if level == 1 then
         love.graphics.print(player_score, 0.9 * window_width, 0.04 * window_height)
+        love.graphics.print(player.ammo, 0.1 * window_width, 0.04 * window_height)
     end
 end
 
