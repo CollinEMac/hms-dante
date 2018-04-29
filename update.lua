@@ -91,11 +91,13 @@ function Npc.new(name, x, y, speech)
     self.name = name or ''
     self.x = x or 0
     self.y = y or 0
-    self.speech = {[1] = "I'm an npc. My name is " .. self.name .. '.',
-        [2] = "I'm talking to you.",
-    }
+    self.speech = {[1] = "I'm an npc. My name is " .. self.name .. '.'}
     self.talked_to = 0
     self.annoyed_speech = "I've already talked to you..."
+
+    for i, speech_line in ipairs(speech) do
+        self.speech[#self.speech + 1] = speech[i]
+    end
 
     npcs[#npcs+1] = self
     return self
@@ -128,7 +130,7 @@ function update.select_menu_item()
         end
 
         if level == 0 then
-            level = 1
+            level = 2 -- testing
             level_start = love.timer.getTime()
             love.mouse.setRelativeMode( true )
         end
@@ -484,15 +486,29 @@ function update.npcs()
     if level == 2 and #npcs == 0 then
         -- create npc's
 
-        Npc.new('Cicero', 0.5 * window_width, window_height + 10)
-        Npc.new('Helen', 0.7 * window_width, window_height + 10)
-        Npc.new('Ciacco', 0.9 * window_width, window_height + 10)
-        Npc.new('Plutus', 1.1 * window_width, window_height + 10)
-        Npc.new('Filippo', 1.3 * window_width, window_height + 10)
-        Npc.new('Frederick', 1.5 * window_width, window_height + 10)
-        Npc.new('Icarus', 1.7 * window_width, window_height + 10)
-        Npc.new('Ali', 1.9 * window_width, window_height + 10)
-        Npc.new('Judecca', 2.1 * window_width, window_height + 10)
+        -- For now all of them will have the same speech, ultimately I'll give
+        -- each character their own dialogue
+        speech = {[1] = "I'm talking to you."}
+
+        cicero_speech = speech
+        helen_speech = speech
+        ciacco_speech = speech
+        plutus_speech = speech
+        filippo_speech = speech
+        frederick_speech = speech
+        icarus_speech = speech
+        ali_speech = speech
+        judecca_speech = speech
+
+        Npc.new('Cicero', 0.5 * window_width, window_height + 10, cicero_speech)
+        Npc.new('Helen', 0.7 * window_width, window_height + 10, helen_speech)
+        Npc.new('Ciacco', 0.9 * window_width, window_height + 10, ciacco_speech)
+        Npc.new('Plutus', 1.1 * window_width, window_height + 10, plutus_speech)
+        Npc.new('Filippo', 1.3 * window_width, window_height + 10, filippo_speech)
+        Npc.new('Frederick', 1.5 * window_width, window_height + 10, frederick_speech)
+        Npc.new('Icarus', 1.7 * window_width, window_height + 10, icarus_speech)
+        Npc.new('Ali', 1.9 * window_width, window_height + 10, ali_speech)
+        Npc.new('Judecca', 2.1 * window_width, window_height + 10, judecca_speech)
     end
 end
 
@@ -542,8 +558,6 @@ function advance_text(char)
             character = char.name
 
             if char.talked_to < #char.speech then
-                -- char.speech = speech
-                -- char.speech[1] = speech[1] .. character .. '.'
                 story_text = char.speech[char.talked_to + 1]
                 char.talked_to = char.talked_to + 1
             elseif char.talked_to == #char.speech then
