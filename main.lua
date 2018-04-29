@@ -59,7 +59,6 @@ function love.load()
         x = window_width / 2,
         y = window_height / 2,
         speed = 5,
-        ammo = 3,
         weapon = '',
         weapon_time = love.timer.getTime(),
         alive = true,
@@ -93,6 +92,8 @@ function restart_game()
     level_over = false
     rotation_y = love.mouse.getY()
     melee_active = 0
+
+    player.ammo = 3
 
     -- might want to move these
     cam = {x = -5,

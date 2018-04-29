@@ -650,6 +650,7 @@ function update.weapons(dt)
             if utils.overlap(weapon, player) then
                 player.weapon = weapon.type
                 player.weapon_time = love.timer.getTime()
+                player.ammo = player.ammo + 1
                 table.remove(weapons, i)
             end
         end
