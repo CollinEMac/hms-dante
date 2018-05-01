@@ -130,7 +130,7 @@ function update.select_menu_item()
         end
 
         if level == 0 then
-            level = 2 -- testing
+            level = 1
             level_start = love.timer.getTime()
             love.mouse.setRelativeMode( true )
         end
@@ -499,6 +499,8 @@ function update.npcs()
         icarus_speech = speech
         ali_speech = speech
         judecca_speech = speech
+
+        judecca_speech = judecca_speech[3] = "Welcome to the HMS Dante!"
 
         Npc.new('Cicero', 0.5 * window_width, window_height + 10, cicero_speech)
         Npc.new('Helen', 0.7 * window_width, window_height + 10, helen_speech)
