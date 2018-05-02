@@ -500,7 +500,8 @@ function update.npcs()
         ali_speech = speech
         judecca_speech = speech
 
-        judecca_speech = judecca_speech[3] = "Welcome to the HMS Dante!"
+        judecca_speech[1] = "Welcome to the HMS Dante!"
+        judecca_speech[2] = "I'm the captain of this ship!"
 
         Npc.new('Cicero', 0.5 * window_width, window_height + 10, cicero_speech)
         Npc.new('Helen', 0.7 * window_width, window_height + 10, helen_speech)
