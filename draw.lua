@@ -54,6 +54,21 @@ end
 function draw.player()
     if player.image ~= nil then
         if player.alive == true then
+
+            -- For testing melee attacks
+            if utils.time_check(melee_active, 1) == false and player.alive and level == 1 then
+                love.graphics.setColor(1, 0, 0)
+                love.graphics.setLineWidth(3)
+                love.graphics.rectangle('line',
+                (player.x - player.image:getWidth()/2),
+                (player.y - player.image:getWidth()/2),
+                player.image:getWidth(),
+                player.image:getWidth())
+                love.graphics.setColor(1, 1, 1)
+
+                love.graphics.setShader(melee_shader)
+            end
+
             love.graphics.draw(player.image,
                 player.x,
                 player.y,
@@ -63,17 +78,11 @@ function draw.player()
                 player.image:getWidth()/2,
                 player.image:getHeight()/2
             )
-        end
-        -- For testing melee attacks
-        if utils.time_check(melee_active, 1) == false and player.alive and level == 1 then
-            love.graphics.setColor(1, 0, 0)
-            love.graphics.setLineWidth(3)
-            love.graphics.rectangle('line',
-            (player.x - player.image:getWidth()/2),
-            (player.y - player.image:getWidth()/2),
-            player.image:getWidth(),
-            player.image:getWidth())
-            love.graphics.setColor(1, 1, 1)
+
+            -- For testing melee attacks
+            if utils.time_check(melee_active, 1) == false and player.alive and level == 1 then
+                love.graphics.setShader()
+            end
         end
     end
 end
