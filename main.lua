@@ -31,6 +31,8 @@ SHIP_BACKGROUND = love.graphics.newImage("sprites/mothership.jpg")
 SHIP_PLAYER = love.graphics.newImage("sprites/spaceship.png")
 CHARACTER_PLAYER = love.graphics.newImage("sprites/dante.png")
 
+MAIN_THEME = love.audio.newSource( "music/Soft_and_Furious_-_09_-_Horizon_Ending.mp3", "static")
+
 STORY_TEXTS = {[1] = "",
     [2] = "Lost. Hopelessly lost...",
     [3] = "I don't know how long it's been but I'm running low on fuel and food.",
@@ -64,6 +66,9 @@ function love.load()
         alive = true,
         rotation = 0
     }
+
+    love.audio.play(MAIN_THEME)
+    music_start_time = love.timer.getTime()
 
     restart_game()
 end
@@ -186,6 +191,7 @@ function _select()
 end
 
 function love.update(dt)
+    update.music()
     if level == 0 or level == 100 then
         update.menu()
     else

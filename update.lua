@@ -76,6 +76,12 @@ function Projectile.new(ufo)
 end
 
 -- Functions
+function update.music()
+    if love.audio.getActiveSourceCount() < 1 then
+        love.audio.play(MAIN_THEME)
+    end
+end
+
 function update.create_player_projectile()
     if player.ammo > 0 then
         Projectile.new(nil)
@@ -141,6 +147,8 @@ function update.select_menu_item()
         end
 
     elseif menu_selection == 2 then
+        -- love.audio.setVolume( volume )
+
         -- TODO: put fullscreen option in options menu
         -- This fullscreen stuff mostly works
         -- window_width = desktop_width
