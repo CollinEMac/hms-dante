@@ -112,20 +112,38 @@ end
 function update.menu()
     -- Handles menu stuff
     mouse_y = love.mouse.getY()
-    if mouse_y < 0.33 * window_height then
-        -- first menu selection is selected
-        menu_selection = 1
-    elseif (0.33 * window_height) < mouse_y and mouse_y < (0.67 * window_height) then
-        -- second menu selection is selected
-        menu_selection = 2
+
+    if options_menu == true then
+        if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and volume > 0 then
+            volume = volume - 1
+        elseif (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and volume < 100 then
+            volume = volume + 1
+        end
+        -- 1.0 volume is max volume and 0.0 is off
+        love.audio.setVolume( volume/100 )
+
+        if mouse_y > 0.5 * window_height then
+            menu_selection = 2
+        else
+            menu_selection = 0
+        end
     else
-        -- third menu selection is selected
-        menu_selection = 3
+        if mouse_y < 0.33 * window_height then
+            -- first menu selection is selected
+            menu_selection = 1
+        elseif (0.33 * window_height) < mouse_y and mouse_y < (0.67 * window_height) then
+            -- second menu selection is selected
+            menu_selection = 2
+        else
+            -- third menu selection is selected
+            menu_selection = 3
+        end
     end
 end
 
 function update.select_menu_item()
     -- Handle menu button selections and story continue but only one or the other
+
     if level ~= 0 and level ~= 100 and start_action == 0 and
         continue_story == false and #type_writer_c == #story_text then
             -- advance story text on enter or space or click
@@ -147,16 +165,21 @@ function update.select_menu_item()
         end
 
     elseif menu_selection == 2 then
-        -- love.audio.setVolume( volume )
-
         -- TODO: put fullscreen option in options menu
         -- This fullscreen stuff mostly works
         -- window_width = desktop_width
         -- window_height = desktop_height
         -- love.window.setMode(window_width, window_height, {fullscreen=true})
-        -- TODO: Add volume slider
         -- TODO: add text speed controls?
         -- TODO: add a save feature?
+
+        options_menu = true
+
+        if options_menu == true then
+            if love.mouse.getY() > (0.50 * window_height) then
+                options_menu = false
+            end
+        end
 
     elseif menu_selection == 3 then
         love.event.quit()

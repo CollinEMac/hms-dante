@@ -7,24 +7,35 @@ shaders = require("shaders")
 function draw.menu(type)
     -- Draws a menu, takes a string defining if 'main' menu or 'pause' menu
     menu_selection_x = 0.25 * window_width
-    if menu_selection == 1 then
-        menu_selection_y = 0.25 * window_height
-    elseif menu_selection == 2 then
-        menu_selection_y = 0.50 * window_height
-    elseif menu_selection == 3 then
-        menu_selection_y = 0.75 * window_height
-    end
 
-    if type == 'main' then
-        game_text = 'Start Game'
-    elseif type == 'pause' then
-        game_text = 'Resume'
-    end
+    if options_menu == true then
+        if menu_selection == 2 then
+            love.graphics.rectangle('fill', menu_selection_x, 0.66 * window_height, 10, 10)
+        end
 
-    love.graphics.rectangle('fill', menu_selection_x, menu_selection_y, 10, 10)
-    love.graphics.printf(game_text, 0, 0.25 * window_height, window_width, "center")
-    love.graphics.printf('Options', 0, 0.50 * window_height, window_width, "center")
-    love.graphics.printf('Quit Game', 0, 0.75 * window_height, window_width, "center")
+        love.graphics.printf('Master Volume: ' .. volume, 0, 0.33 * window_height, window_width, "center")
+        love.graphics.printf('Save Changes', 0, 0.66 * window_height, window_width, "center")
+    else
+        -- main menu
+        if menu_selection == 1 then
+            menu_selection_y = 0.25 * window_height
+        elseif menu_selection == 2 then
+            menu_selection_y = 0.50 * window_height
+        elseif menu_selection == 3 then
+            menu_selection_y = 0.75 * window_height
+        end
+
+        if type == 'main' then
+            game_text = 'Start Game'
+        elseif type == 'pause' then
+            game_text = 'Resume'
+        end
+
+        love.graphics.rectangle('fill', menu_selection_x, menu_selection_y, 10, 10)
+        love.graphics.printf(game_text, 0, 0.25 * window_height, window_width, "center")
+        love.graphics.printf('Options', 0, 0.50 * window_height, window_width, "center")
+        love.graphics.printf('Quit Game', 0, 0.75 * window_height, window_width, "center")
+    end
 end
 
 function draw.background()

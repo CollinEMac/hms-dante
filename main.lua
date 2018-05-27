@@ -97,6 +97,8 @@ function restart_game()
     level_over = false
     rotation_y = love.mouse.getY()
     melee_active = 0
+    options_menu = false
+    volume = 100
 
     player.ammo = 3
 
