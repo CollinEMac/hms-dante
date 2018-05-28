@@ -10,11 +10,15 @@ function draw.menu(type)
 
     if options_menu == true then
         if menu_selection == 2 then
-            love.graphics.rectangle('fill', menu_selection_x, 0.66 * window_height, 10, 10)
+            menu_selection_y = 0.50 * window_height
+        elseif menu_selection == 3 then
+            menu_selection_y = 0.75 * window_height
         end
 
-        love.graphics.printf('Master Volume: ' .. volume, 0, 0.33 * window_height, window_width, "center")
-        love.graphics.printf('Save Changes', 0, 0.66 * window_height, window_width, "center")
+        love.graphics.rectangle('fill', menu_selection_x, menu_selection_y, 10, 10)
+        love.graphics.printf('Master Volume: ' .. volume, 0, 0.25 * window_height, window_width, "center")
+        love.graphics.printf('Toggle Fullscreen', 0, 0.50 * window_height, window_width, "center")
+        love.graphics.printf('Save Changes', 0, 0.75 * window_height, window_width, "center")
     else
         -- main menu
         if menu_selection == 1 then

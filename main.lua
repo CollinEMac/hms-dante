@@ -45,10 +45,7 @@ function love.load()
     local _, _, flags = love.window.getMode()
     desktop_width, desktop_height = love.window.getDesktopDimensions(flags.display)
 
-    window_width = desktop_width / 3
-    window_height = window_width
-
-    love.window.setMode(window_width, window_height)
+    utils.set_window()
     love.window.setTitle('Starship Dante')
 
     background = {image = SPACE_BACKGROUND,

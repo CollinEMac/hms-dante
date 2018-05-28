@@ -88,4 +88,11 @@ function utils.clear_all_shaders()
         end
 end
 
+function utils.set_window()
+    window_width = desktop_width / 3
+    window_height = window_width
+
+    love.window.setMode(window_width, window_height)
+end
+
 return utils
