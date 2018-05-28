@@ -113,21 +113,16 @@ function update.menu()
     -- Handles menu stuff
     mouse_y = love.mouse.getY()
 
-    -- if options_menu == true then
-    --     if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and volume > 0 then
-    --         volume = volume - 1
-    --     elseif (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and volume < 100 then
-    --         volume = volume + 1
-    --     end
-    --     -- 1.0 volume is max volume and 0.0 is off
-    --     love.audio.setVolume( volume/100 )
-    --
-    --     if mouse_y > 0.33 * window_height then
-    --         menu_selection = 2
-    --     elseif mouse_y > 0.66 * window_height then
-    --         menu_selection = 3
-    --     end
-    -- else
+    if options_menu == true then
+        if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) and volume > 0 then
+            volume = volume - 1
+        elseif (love.keyboard.isDown("up") or love.keyboard.isDown("w")) and volume < 100 then
+            volume = volume + 1
+        end
+        -- 1.0 volume is max volume and 0.0 is off
+        love.audio.setVolume( volume/100 )
+    end
+
     if mouse_y < 0.33 * window_height then
         -- first menu selection is selected
         menu_selection = 1
@@ -138,7 +133,6 @@ function update.menu()
         -- third menu selection is selected
         menu_selection = 3
     end
-    -- end
 end
 
 function update.select_menu_item()
@@ -444,7 +438,6 @@ function update.ufo(dt)
                     -- kill player on contact with ufo
                     object_hit(ufo, 0)
                     Projectile.new(ufo)
-                    -- create_ufo_projectiles(ufo)
             else
                 table.remove(ufos, i)
             end
