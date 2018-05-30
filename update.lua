@@ -517,19 +517,16 @@ function update.npcs()
     if level == 2 and #npcs == 0 then
         -- create npc's
 
-        -- For now all of them will have the same speech, ultimately I'll give
-        -- each character their own dialogue
-        speech = {[1] = "I'm talking to you."}
-
-        cicero_speech = speech
-        helen_speech = speech
-        ciacco_speech = speech
-        plutus_speech = speech
-        filippo_speech = speech
-        frederick_speech = speech
-        icarus_speech = speech
-        ali_speech = speech
-        judecca_speech = speech
+        -- later these speech objects will be populated
+        cicero_speech = {}
+        helen_speech = {}
+        ciacco_speech = {}
+        plutus_speech = {}
+        filippo_speech = {}
+        frederick_speech = {}
+        icarus_speech = {}
+        ali_speech = {}
+        judecca_speech = {}
 
         judecca_speech[1] = "Welcome to the HMS Dante!"
         judecca_speech[2] = "I'm the captain of this ship!"
