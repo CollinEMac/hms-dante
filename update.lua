@@ -147,6 +147,8 @@ function update.select_menu_item()
             is_fullscreen = love.window.getFullscreen()
             if is_fullscreen == false then
                 love.window.setFullscreen(true)
+                window_width = desktop_width
+                window_height = desktop_height
             else
                 utils.set_window()
             end
