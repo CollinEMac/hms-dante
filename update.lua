@@ -97,7 +97,8 @@ function Npc.new(name, x, y, speech)
     self.name = name or ''
     self.x = x or 0
     self.y = y or 0
-    self.speech = {[1] = "I'm an npc. My name is " .. self.name .. '.'}
+    -- self.speech = {[1] = "I'm an npc. My name is " .. self.name .. '.'}
+    self.speech = {}
     self.talked_to = 0
     self.annoyed_speech = "I've already talked to you..."
 
@@ -168,6 +169,7 @@ function update.select_menu_item()
 
             if level == 0 then
                 level = 1
+                -- level = 2 -- testing rpg part
                 level_start = love.timer.getTime()
                 love.mouse.setRelativeMode( true )
             end
@@ -519,19 +521,21 @@ function update.npcs()
     if level == 2 and #npcs == 0 then
         -- create npc's
 
-        -- later these speech objects will be populated
-        cicero_speech = {}
-        helen_speech = {}
-        ciacco_speech = {}
-        plutus_speech = {}
-        filippo_speech = {}
-        frederick_speech = {}
-        icarus_speech = {}
-        ali_speech = {}
-        judecca_speech = {}
+        -- TODO: I don't really want this dialogue to all be in code right here
+        -- Maybe I should make a big dictionary full of constants somewhere?
 
-        judecca_speech[1] = "Welcome to the HMS Dante!"
-        judecca_speech[2] = "I'm the captain of this ship!"
+        -- later these speech objects will be populated
+        cicero_speech = {[1] = "Hi, my name is Cicero."}
+        helen_speech = {[1] = "Hi, my name is Helen."}
+        ciacco_speech = {[1] = "Hi, my name is Ciacco."}
+        plutus_speech = {[1] = "Hi, my name is Plutus."}
+        filippo_speech = {[1] = "Hi, my name is Filippo."}
+        frederick_speech = {[1] = "Hi, my name is Frederick."}
+        icarus_speech = {[1] = "Hi, my name is Icarus."}
+        ali_speech = {[1] = "Hi, my name is Ali."}
+        judecca_speech = {[1] = "Welcome to the HMS Dante!",
+            [2] = "I'm the captain of this ship!"
+        }
 
         Npc.new('Cicero', 0.5 * window_width, window_height + 10, cicero_speech)
         Npc.new('Helen', 0.7 * window_width, window_height + 10, helen_speech)

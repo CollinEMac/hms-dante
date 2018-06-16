@@ -1,23 +1,12 @@
 -- A little side scrolling shooter
 
---
 -- TODO / ideas
 -- RPG stages
 -- obstacles / asteroids
--- options menu
 -- sprites
 --
 
--- Design notes
--- I'm thinking about maybe not doing this whole "rpg stage" things
--- and instead just doing a visual novel type of approach where
--- discussion happens and the player is always in the ship
--- On the other hand, the rpg hub section will probably do a lot to
--- make the game feel bigger. Either way I need to focus on gameplay
--- for now
-
--- circle I: ghosts that can become translucent, little flied and wasps that
--- are really fast, writhing worms
+-- circle I: ghosts that can become translucent
 -- circle II: giant tail monster defining which circle to go to?
 -- tough winds
 
