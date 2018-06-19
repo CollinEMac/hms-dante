@@ -91,7 +91,7 @@ end
 
 local Npc = {}
 
-function Npc.new(name, x, y, speech)
+function Npc.new(name, x, y, speech, question_indexes)
     local self = setmetatable({}, Npc)
     self.image = CHARACTER_PLAYER
     self.name = name or ''
@@ -101,6 +101,10 @@ function Npc.new(name, x, y, speech)
     self.speech = {}
     self.talked_to = 0
     self.annoyed_speech = "I've already talked to you..."
+
+    -- this is probably like the worst thing ever
+    -- I'm going to create an array defining which text is a question
+    self.question_indexes = question_indexes
 
     for i, speech_line in ipairs(speech) do
         self.speech[#self.speech + 1] = speech[i]
@@ -162,6 +166,10 @@ function update.select_menu_item()
             continue_story == false and #type_writer_c == #story_text then
                 -- advance story text on enter or space or click
                 continue_story = true
+
+                -- if is_question then
+                --      present the choices?
+
         elseif menu_selection == 1 then
             if level == 100 and story_text == "" then
                 start_action = love.timer.getTime()
@@ -524,6 +532,10 @@ function update.npcs()
         -- TODO: I don't really want this dialogue to all be in code right here
         -- Maybe I should make a big dictionary full of constants somewhere?
 
+        -- TODO: Questions and answers with npcs, I think I want the player
+        -- to type out their response. Probably harder to implement but I like how
+        -- involved that feels
+
         -- later these speech objects will be populated
         cicero_speech = {[1] = "Hi, my name is Cicero."}
         helen_speech = {[1] = "Hi, my name is Helen."}
@@ -537,15 +549,17 @@ function update.npcs()
             [2] = "I'm the captain of this ship!"
         }
 
-        Npc.new('Cicero', 0.5 * window_width, window_height + 10, cicero_speech)
-        Npc.new('Helen', 0.7 * window_width, window_height + 10, helen_speech)
-        Npc.new('Ciacco', 0.9 * window_width, window_height + 10, ciacco_speech)
-        Npc.new('Plutus', 1.1 * window_width, window_height + 10, plutus_speech)
-        Npc.new('Filippo', 1.3 * window_width, window_height + 10, filippo_speech)
-        Npc.new('Frederick', 1.5 * window_width, window_height + 10, frederick_speech)
-        Npc.new('Icarus', 1.7 * window_width, window_height + 10, icarus_speech)
-        Npc.new('Ali', 1.9 * window_width, window_height + 10, ali_speech)
-        Npc.new('Judecca', 2.1 * window_width, window_height + 10, judecca_speech)
+        Npc.new('Cicero', 0.5 * window_width, window_height + 10, cicero_speech, {0})
+        Npc.new('Helen', 0.7 * window_width, window_height + 10, helen_speech, {0})
+        Npc.new('Ciacco', 0.9 * window_width, window_height + 10, ciacco_speech, {0})
+        Npc.new('Plutus', 1.1 * window_width, window_height + 10, plutus_speech, {0})
+        Npc.new('Filippo', 1.3 * window_width, window_height + 10, filippo_speech, {0})
+        Npc.new('Frederick', 1.5 * window_width, window_height + 10, frederick_speech, {0})
+        Npc.new('Icarus', 1.7 * window_width, window_height + 10, icarus_speech, {0})
+        Npc.new('Ali', 1.9 * window_width, window_height + 10, ali_speech, {0})
+        judecca = Npc.new('Judecca', 2.1 * window_width, window_height + 10, judecca_speech, {3})
+
+        judecca.annoyed_speech = "Are you ready to move on to the next mission?"
     end
 end
 
